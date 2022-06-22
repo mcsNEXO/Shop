@@ -1,0 +1,39 @@
+.first-div{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    background-color: rgb(209, 206, 206);
+    min-height:24px;
+    width: 100%;
+}
+.blank-div{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    min-width: fit-content;
+    width: 300px;
+    height: 100%;
+}
+.actually-news{
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: black;
+    font-family: 'Franklin Gothic Medium';
+    max-width: 100%;
+    width: 100%;
+    min-width: 60%;
+}
+
+.options{
+    display: flex;
+    min-width: fit-content;
+    width: 300px;
+    justify-content: right;
+}
+
+.option{
+    margin: 0 .4rem 0 .4rem;
+}

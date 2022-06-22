@@ -1,6 +1,4 @@
-require('dotenv').config();
-
 module.exports={
-    port: process.env.PORT,
-    database: process.env.PORT
-};
+    port: 3001,
+    database:'mongodb://localhost:27017/shop'
+}
