@@ -12,6 +12,7 @@ nav{
     position: relative;
     align-items: center;
     background-color: rgb(228, 234, 240);
+    border-bottom: 1px solid rgb(163, 163, 163);
 }
 .left-side-menu{
     display: flex;
@@ -45,9 +46,17 @@ img{
     font-family: 'Lato';
     font-size: 1.1rem;
 }
-.option{
+.option-panel{
     padding: 0 10px;
+    height: 100%;
+    display: flex;
+    width:100%;
+    align-items: center;
     color: black;
+}
+.option-panel:hover {
+    margin-bottom:-3px;
+    border-bottom: 3px #000000 solid;
 }
 a:visited,a:link{
     color: black;
@@ -62,17 +71,37 @@ a:visited,a:link{
     font-size: 24px;
     height: 100%;
 }
-.right-side-menu i{
+.right-side-menu button i{
     flex:1;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    width: 42px;
+    height: 42px;
 }
-
+.right-side-menu button i:hover{
+    background-color: rgb(216, 215, 215);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+i{
+    font-size: 1.4rem;
+}
+i.bi-heart{
+    padding-top: 3px;
+}
 .searchbar{
     position: relative;
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+.btn-icon{
+    background-color: transparent;
+    outline: none;
+    border: none;
 }

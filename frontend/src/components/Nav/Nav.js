@@ -10,18 +10,18 @@ export default function Nav(props) {
         <nav>
             <div className="left-side-menu">  <img src={logo} alt='logo'/></div>
             <div className="main-panel-menu">
-                <div className="option"><NavLink to='news'>News</NavLink></div>
-                <div className="option"><NavLink to='men'>Men</NavLink></div>
-                <div className="option"><NavLink to='women'>Women</NavLink></div>
-                <div className="option"><NavLink to='children'>Children</NavLink></div>
-                <div className="option"><NavLink to='collections'>Collections</NavLink></div>
-                <div className="option"><NavLink to='sport'>Sport</NavLink></div>
+                <div className="option-panel"><NavLink  to='news'>News</NavLink></div>
+                <div className="option-panel"><NavLink to='men'>Men</NavLink></div>
+                <div className="option-panel"><NavLink to='women'>Women</NavLink></div>
+                <div className="option-panel"><NavLink to='children'>Children</NavLink></div>
+                <div className="option-panel"><NavLink to='collections'>Collections</NavLink></div>
+                <div className="option-panel"><NavLink to='sport'>Sport</NavLink></div>
             </div>
             <div className="right-side-menu">
                 <div className="searchbar"><Serachbar/></div>
-                <i className="bi bi-person"></i>
-                <i className="bi bi-heart"></i>
-                <i className="bi bi-bag"></i>
+                <button className="btn-icon"><i className="bi bi-person"></i></button>
+                <button className="btn-icon"><i className="bi bi-heart"></i></button>
+                <button className="btn-icon"><i className="bi bi-bag"></i></button>
             </div>
         </nav>
     )
