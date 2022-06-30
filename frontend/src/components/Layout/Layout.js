@@ -3,6 +3,7 @@ export default function Layout(props) {
         <>   
             <>{props.header}</>
             <>{props.nav}</>
+            <>{props.menu}</>
             <>{props.footer}</>
         </>
 )
