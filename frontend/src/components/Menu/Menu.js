@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom'
 import Collection from '../Collection/Collection';
 import Option from '../Option/Option';
 import OftenChosen from '../OftenChosen/OftenChosen';
+import SummerCollection from '../SummerCollection/SummerCollection';
 
 export default function Menu(props) {
     const logo = process.env.PUBLIC_URL + '/img/jpg/picture5.png';
@@ -23,6 +24,7 @@ export default function Menu(props) {
             <Collection/>
             <Option/>
             <OftenChosen/>
+            <SummerCollection/>
         </main>
     )
 };

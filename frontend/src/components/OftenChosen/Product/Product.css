@@ -1,0 +1,27 @@
+.product{
+    width: 230px;
+    height: auto;
+    margin: 15px 10px;
+    font-size: .95rem;
+    font-family: 'Roboto', sans-serif;
+}
+.img-product{
+    width: 230px;
+    height: 230px;
+    border: 1px solid black;
+}
+  
+.desc-product{
+    width: 100%;
+    margin: 15px 0;
+    padding: 5px 10px;
+}
+  
+.name-product{
+    width: 100%;
+}
+  
+.prize-product{
+    width: 100%;
+    margin-top: 8px;
+}
