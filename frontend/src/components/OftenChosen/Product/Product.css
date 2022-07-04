@@ -1,13 +1,13 @@
 .product{
-    width: 230px;
+    width: 200px;
     height: auto;
     margin: 15px 10px;
     font-size: .95rem;
     font-family: 'Roboto', sans-serif;
 }
 .img-product{
-    width: 230px;
-    height: 230px;
+    width: 200px;
+    height: 200px;
     border: 1px solid black;
 }
   

@@ -1,25 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@1,700&display=swap');
-
-.container-summer{
-    width: 100%;
-    height: auto;
-    margin-top: 5rem;
+@import url("https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap");
+.container-summer {
+  width: 100%;
+  height: auto;
+  margin-top: 5rem;
 }
 
-.title-summer{
-    width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    font-size: 2.8rem;
-    font-family: 'Finlandica', sans-serif;
+.title-summer {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  font-size: 2.8rem;
+  font-family: "Finlandica", sans-serif;
+}
+.thumb-summer {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.img-summer {
+  width: 100%;
+  height: 400px;
+  margin-top: 2.5rem;
 }
 
-.img-summer{
-    width: 100%;
-    height: 400px;
-    padding: ;
-    margin-top: 2.5rem;
+.block-summer {
+  position: absolute;
+  width: 200px;
+  top: 50%;
+  left: 70vw;
+}
+.block-summer-desc {
+  width: 100%;
+  font-size: 1.6rem;
+  margin-top: 10px;
+  text-align: center;
+  color: rgb(160, 151, 151);
+  text-transform: uppercase;
+  /* background-color: rgba(0, 0, 0, 0.24); */
+  font-family: "Ubuntu", sans-serif;
+}
+
+.btn-summer {
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  background-color: antiquewhite;
+}
+
+.btn-summer button {
+  width: 200px;
 }
