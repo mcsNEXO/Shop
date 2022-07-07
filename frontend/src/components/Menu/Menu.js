@@ -25,6 +25,9 @@ export default function Menu(props) {
             <Option/>
             <OftenChosen/>
             <SummerCollection/>
+            <div className='newsletter'>
+                <div>You want to receive information about new products. Subscribe</div> <div><form><input type='text'placeholder='Adress email' name='email-newsletter'/></form></div>
+            </div>
         </main>
     )
 };

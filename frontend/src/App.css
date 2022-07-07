@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-*{
-    box-sizing: border-box;
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+* {
+  box-sizing: border-box;
 }
-body{
-    margin: 0;
-    font-family: 'arial' ;
-    max-width: 1920px;
-    margin: auto;
-    height: 1000vh;
+body {
+  margin: 0;
+  font-family: "arial";
+  max-width: 1920px;
+  margin: auto;
 }

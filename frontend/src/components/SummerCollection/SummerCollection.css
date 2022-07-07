@@ -29,10 +29,11 @@
 
 .block-summer {
   position: absolute;
-  width: 200px;
+  width: auto;
   top: 50%;
-  left: 70vw;
+  left: 60vw;
 }
+
 .block-summer-desc {
   width: 100%;
   font-size: 1.6rem;
@@ -45,13 +46,16 @@
 }
 
 .btn-summer {
-  width: 250px;
+  width: 100%;
   height: 40px;
   border-radius: 10px;
   font-size: 1.2rem;
   background-color: antiquewhite;
 }
-
-.btn-summer button {
-  width: 200px;
+.desc-summer {
+  width: 100%;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: black;
+  text-shadow: 1px 1px blue;
 }

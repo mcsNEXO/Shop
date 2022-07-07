@@ -12,7 +12,7 @@ export default function SummerCollection(props) {
           <img src={beach} alt="beach"></img>
         </div>
         <div className="block-summer">
-          Say hello to summer with SUDO
+          <div className="desc-summer">Say hello to summer with SUDO</div>
           <button className="btn-summer">Check it out</button>
         </div>
       </div>
