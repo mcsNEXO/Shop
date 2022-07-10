@@ -2,9 +2,9 @@ import './Menu.css'
 import React from 'react';
 import {NavLink} from 'react-router-dom'
 import Collection from '../Collection/Collection';
-import Option from '../Option/Option';
-import OftenChosen from '../OftenChosen/OftenChosen';
-import SummerCollection from '../SummerCollection/SummerCollection';
+import Option from './Option/Option';
+import OftenChosen from './OftenChosen/OftenChosen';
+import SummerCollection from './SummerCollection/SummerCollection';
 
 export default function Menu(props) {
     const logo = process.env.PUBLIC_URL + '/img/jpg/picture5.png';
@@ -18,7 +18,7 @@ export default function Menu(props) {
                     </div>
                 </div>
                 <div className="picture">
-                    <img src={logo} alt="picture-clothes"/>
+                    <img src={logo} alt='img-clothes'/>
                 </div>
             </div>
             <Collection/>

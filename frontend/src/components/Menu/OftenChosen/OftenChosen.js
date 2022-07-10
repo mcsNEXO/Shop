@@ -1,14 +1,12 @@
 import './OftenChosen.css'
 import Product from './Product/Product'
-import {useEffect} from 'react'
 
 export default function OftenChosen(props) {
-    const i = [1,2,3,4,5,6,7,8];
+    const i = [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},];
 
     const next = ()=>{
             const container = [...document.querySelectorAll('.slider-chosen')]
             container.forEach((item,i)=>{
-                console.log(container);
                 let containerWidth = item.getBoundingClientRect().width;
                 item.scrollLeft +=containerWidth;
             })
@@ -16,7 +14,6 @@ export default function OftenChosen(props) {
     const pre = ()=>{
         const container = [...document.querySelectorAll('.slider-chosen')]
         container.forEach((item,i)=>{
-            console.log(container);
             let containerWidth = item.getBoundingClientRect().width;
             item.scrollLeft -=containerWidth;
         })
@@ -25,10 +22,10 @@ export default function OftenChosen(props) {
         <div className='often-chosen'>
             <div className='title-slider'>Often chosen products</div>
             <div className='slider-chosen'>
-                     {i.map(()=>{
+                     {i.map((item)=>{
                         return(
                             <Product
-                            key='1'/>
+                            key={item.id}/>
                         )
                      })}
             </div>

@@ -1,6 +1,8 @@
 import React from "react"
 import './Nav.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { navItems } from "./NavItems";
+import { navButtons } from "./NavItems";
 import {NavLink} from 'react-router-dom'
 import Serachbar from "../UI/Searchbar.js/Serachbar";
 
@@ -10,18 +12,21 @@ export default function Nav(props) {
         <nav>
             <div className="left-side-menu">  <img src={logo} alt='logo'/></div>
             <div className="main-panel-menu">
-                <div className="option-panel"><NavLink  to='news'>News</NavLink></div>
-                <div className="option-panel"><NavLink to='men'>Men</NavLink></div>
-                <div className="option-panel"><NavLink to='women'>Women</NavLink></div>
-                <div className="option-panel"><NavLink to='children'>Children</NavLink></div>
-                <div className="option-panel"><NavLink to='collections'>Collections</NavLink></div>
-                <div className="option-panel"><NavLink to='sport'>Sport</NavLink></div>
+                {navItems.map((item)=>{
+                    return(
+                        <div key={item.id} className="option-panel">
+                            <NavLink to={item.path}>{item.title}</NavLink>
+                        </div>
+                    )
+                })}
             </div>
             <div className="right-side-menu">
                 <div className="searchbar"><Serachbar/></div>
-                <button className="btn-icon"><i className="bi bi-person"></i></button>
-                <button className="btn-icon"><i className="bi bi-heart"></i></button>
-                <button className="btn-icon"><i className="bi bi-bag"></i></button>
+                {navButtons.map(item=>{
+                    return(
+                        <button key={item.id} className="btn-icon"><i className={item.cName}></i></button>
+                    )
+                })}
             </div>
         </nav>
     )
