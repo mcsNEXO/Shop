@@ -9,44 +9,43 @@ import Dropdown from "./Dropdown/Dropdown";
 
 export default function Nav(props) {
   const logo = process.env.PUBLIC_URL + "/img/svg/logo.svg";
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav>
-      <div className="left-side-menu">
-        <img src={logo} alt="logo" />
-      </div>
-      <div className="main-panel-menu">
-        {navItems.map((item) => {
-          return (
-            <div className="con-option-panel" key={item.id}>
-              <>
-                {item.submenu ? (
-                  <div className="option-panel">
-                    <NavLink to={item.path}>{item.title}</NavLink>
-                    <Dropdown item={item.submenu} />
-                  </div>
-                ) : (
-                  <div className="option-panel">
-                    <NavLink to={item.path}>{item.title}</NavLink>
-                  </div>
-                )}
-              </>
-            </div>
-          );
-        })}
-      </div>
-      <div className="right-side-menu">
-        <div className="searchbar">
-          <Serachbar />
+    <>
+      <nav className={isOpen ? "is-open nav-open" : null}>
+        <div className="left-side-menu">
+          <img src={logo} alt="logo" />
         </div>
-        {navButtons.map((item) => {
-          return (
-            <button key={item.id} className="btn-icon">
-              <i className={item.cName}></i>
-            </button>
-          );
-        })}
-      </div>
-    </nav>
+        <div className="main-panel-menu">
+          {navItems.map((item, index) => {
+            return (
+              <div
+                key={item.id}
+                className="option-panel"
+                onPointerEnter={() => setIsOpen(true)}
+                onPointerLeave={() => setIsOpen(false)}
+              >
+                <NavLink to={item.path}>{item.title}</NavLink>
+                <Dropdown item={item.submenu} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="right-side-menu">
+          <div className="searchbar">
+            <Serachbar />
+          </div>
+          {navButtons.map((item) => {
+            return (
+              <button key={item.id} className="btn-icon">
+                <i className={item.cName}></i>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+      <div className={`bg-page ${isOpen ? "is-open" : ""}`}></div>
+    </>
   );
 }

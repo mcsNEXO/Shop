@@ -8,3 +8,8 @@ body {
   max-width: 1920px;
   margin: auto;
 }
+
+.is-open {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
