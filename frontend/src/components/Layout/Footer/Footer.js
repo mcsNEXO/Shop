@@ -23,7 +23,7 @@ export default function Footer(props) {
               >
                 {item.title}
               </div>
-              {item.option.map((item) => {
+              {item.option.map((item, index) => {
                 return item.flag === "true" ? (
                   <div key={item.id} className="footer-column-option">
                     <i className={item.cN}></i>
