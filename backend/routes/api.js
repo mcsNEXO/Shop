@@ -1,7 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const hoodieController = require('../controllers/hoodie-controller');
+const userController = require("../controllers/api/user-controller");
 
-router.get(hoodieController.showAllHoodie);
+router.get("/users", userController.showUsers);
+router.post("/users", userController.getUser);
+router.post("/users", userController.register);
 
 module.exports = router;

@@ -1,55 +1,44 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthContext from "../../../components/context/authContext";
-import "./Login.css";
 import axios from "../../../axios";
 
-export default function Login(props) {
-  const user = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [error, setError] = useState();
+export default function Register(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
 
   const fun = (e) => {
     if (e.target.value !== "") {
       e.target.nextElementSibling.classList.add("filled");
-    } else {
+    } else if (e.target.value === "") {
       e.target.nextElementSibling.classList.remove("filled");
     }
   };
 
-  const login = async () => {
-    const data = {
+  const register = async () => {
+    const user = {
       email: email,
       password: password,
+      firstName: firstName,
+      lastName: lastName,
     };
-    try {
-      const res = await axios.post("/users", data);
-      console.log("udane");
-      user.login();
-      navigate("/");
-    } catch (e) {
-      console.log(e.response.data?.message[0]);
-      setError(e.response.data?.message[0]);
-    }
+    await axios.post("/users", user);
   };
 
   const submit = (e) => {
     e.preventDefault();
-    // setTimeout(() => {
-    //   setAuth(true);
-    //   navigate("/");
-    // }, 500);
-    login();
+    register();
+    // navigate("login");
   };
 
   return (
     <div className="auth-container">
       <div className="auth-box">
-        {user.isAuthentiacted ? <div>Logged</div> : <div>No-logged</div>}
-        <div className="auth-title">Sign In</div>
+        <div className="auth-title">Register</div>
         <form className="auth-form" method="post">
+          <span className="register-title">Login data</span>
           <div className="input-container">
             <input
               type="email"
@@ -80,29 +69,50 @@ export default function Login(props) {
               Password
             </label>
           </div>
-          {error ? <div className="auth-error">{error}</div> : null}
+          <span className="register-title">Personal data</span>
+          <div className="input-container">
+            <input
+              type="firstName"
+              name="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="auth-input"
+              id="firstName-input"
+              onBlur={fun}
+              placeholder="First name"
+            />
+            <label className="label" htmlFor="firstName-input">
+              First Name
+            </label>
+          </div>
+          <div className="input-container">
+            <input
+              type="lastName"
+              name="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="auth-input"
+              id="lastName-input"
+              onBlur={fun}
+              placeholder="LastName"
+            />
+            <label className="label" htmlFor="lastName-input">
+              Last name
+            </label>
+          </div>
           <div className="help-panel">
-            <div className="keepLoggedIn">
-              <input
-                type="checkbox"
-                id="keepLoggedIn"
-                className="keep-logged"
-              />
-              <label htmlFor="keepLoggedIn">Keep me logged in</label>
-            </div>
-            <div className="not-remember">
-              <span>Forgot your password?</span>
+            <div className="terms">
+              <input type="checkbox" id="terms" className="term" />
+              <label htmlFor="terms">I agree to the given regulations</label>
             </div>
           </div>
           <div className="submit-btn">
             <button className="auth-btn" onClick={submit}>
-              Login
+              Register
             </button>
           </div>
           <div className="register-acc">
-            <NavLink to="/register">
-              You do not have an account? Sign up
-            </NavLink>
+            <NavLink to="/login">Have you got an account? Sign in</NavLink>
           </div>
         </form>
       </div>
