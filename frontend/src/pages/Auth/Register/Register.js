@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 import axios from "../../../axios";
 
 export default function Register(props) {
@@ -7,6 +8,7 @@ export default function Register(props) {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
 
   const fun = (e) => {
@@ -17,24 +19,38 @@ export default function Register(props) {
     }
   };
 
-  const register = async () => {
+  const register = async (e) => {
     const user = {
       email: email,
       password: password,
       firstName: firstName,
       lastName: lastName,
     };
-    await axios.post("/users", user);
+    try {
+      const res = await axios.post("/sign-up", user);
+      console.log(res);
+      setAuth({
+        email: res.data.user.email,
+        token: res.data.user._id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const test = () => {
+    console.log(auth);
   };
 
   const submit = (e) => {
     e.preventDefault();
     register();
-    // navigate("login");
+    // navigate("/login");
   };
 
   return (
     <div className="auth-container">
+      <button onClick={test}></button>
       <div className="auth-box">
         <div className="auth-title">Register</div>
         <form className="auth-form" method="post">

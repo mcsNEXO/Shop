@@ -7,23 +7,11 @@ import Nav from "./components/Nav/Nav";
 import Footer from "./components/Layout/Footer/Footer";
 import Menu from "./components/Menu/Menu";
 import Login from "./pages/Auth/Login/Login";
-import AuthContext from "./components/context/authContext";
+import AuthContext from "./context/authContext";
 import Register from "./pages/Auth/Register/Register";
+import { reducer, initialState } from "./reducer";
 
 function App() {
-  const initialState = { isAuthentiacted: false };
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "login":
-        return { ...state, isAuthentiacted: true };
-      case "logout":
-        return { ...state, isAuthentiacted: false };
-      default:
-        throw new Error("This action does not exist: ".action.type);
-    }
-  };
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const header = <Header />;
   const nav = <Nav />;
@@ -40,8 +28,8 @@ function App() {
     <Router>
       <AuthContext.Provider
         value={{
-          isAuthentiacted: state.isAuthentiacted,
-          login: () => dispatch({ type: "login" }),
+          user: state.user,
+          login: (user) => dispatch({ type: "login", user }),
           logout: () => dispatch({ type: "logout" }),
         }}
       >

@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthContext from "../../../components/context/authContext";
+import AuthContext from "../../../context/authContext";
 import "./Login.css";
 import axios from "../../../axios";
+import useAuth from "../../../hooks/useAuth";
 
 export default function Login(props) {
-  const user = useContext(AuthContext);
+  // const user = useContext(AuthContext);
   const navigate = useNavigate();
+  const [auth, setAuth] = useAuth();
   const [error, setError] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,29 +27,34 @@ export default function Login(props) {
       password: password,
     };
     try {
-      const res = await axios.post("/users", data);
-      console.log("udane");
-      user.login();
-      navigate("/");
+      const res = await axios.post("/sign-in", data);
+      console.log(res);
+      // navigate("/");
+      setAuth({
+        email: res.data.user.email,
+        token: res.data.user._id,
+      });
+
+      // user.login();
     } catch (e) {
-      console.log(e.response.data?.message[0]);
-      setError(e.response.data?.message[0]);
+      setError(e.response.data.message);
+      console.log(e);
     }
   };
 
+  const test = () => {
+    console.log(auth);
+  };
   const submit = (e) => {
     e.preventDefault();
-    // setTimeout(() => {
-    //   setAuth(true);
-    //   navigate("/");
-    // }, 500);
     login();
   };
 
   return (
     <div className="auth-container">
+      <button onClick={test}></button>
       <div className="auth-box">
-        {user.isAuthentiacted ? <div>Logged</div> : <div>No-logged</div>}
+        {/* {user.isAuthenticated ? <div>Logged</div> : <div>No-logged</div>} */}
         <div className="auth-title">Sign In</div>
         <form className="auth-form" method="post">
           <div className="input-container">

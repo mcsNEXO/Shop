@@ -1,44 +1,52 @@
 const User = require("../../db/models/user");
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
 
 class UserController {
-  async showUsers(req, res) {
-    let doc;
+  async register(req, res) {
+    const user = new User({
+      email: req.body.email,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    });
     try {
-      doc = await User.find({});
-      // console.log(res);
+      await user.save();
     } catch (e) {
-      return res.status(422).json({ message: e.message });
-    }
-    res.status(200).json(doc);
-  }
-  async getUser(req, res) {
-    try {
-      const email = req.body.email;
-      const password = req.body.password;
-      const user = await User.findOne({
-        email: email,
-        password: password,
-      });
-      if (!user || user === null) {
-        throw new Error("The login, e-mail or password is incorrect");
+      if (e.code === 11000) {
+        e.message = "This email exist";
       }
-      return res.status(220).json(true);
+
+      return res.status(401).json({ message: [e.message] });
+    }
+    return res.status(200).json({ user });
+  }
+
+  async login(req, res) {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+        return res.status(401).send({ message: "Invalid Email or Password" });
+      }
+      const isValidPassword = user.comparePassword(req.body.password);
+      if (!isValidPassword) {
+        return res.status(401).send({ message: "Invalid Email or Password" });
+      }
+      // req.session.user = {
+      // _id: user._id,
+      // email: user.email,
+      // };
+
+      // const token = user.generateAuthToken();
+      // const token = "dj";
+      // const data = {
+      //   user: req.session.user,
+      //   token: token,
+      // };
+      return res.status(200).json({ user: user });
     } catch (e) {
       return res.status(401).json({ message: [e.message] });
     }
-  }
-  async register(req, res) {
-    try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const user = new User({
-        email: req.body.email,
-        password: hashedPassword,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      });
-      await user.save();
-    } catch (e) {}
   }
 }
 

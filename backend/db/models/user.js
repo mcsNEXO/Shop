@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt");
+const { validateEmail } = require("../validators");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new Schema({
   email: {
@@ -7,8 +10,8 @@ const userSchema = new Schema({
     required: [true, "Email is required"],
     lowercase: true,
     trim: true,
-    unique: true,
-    validate: [],
+    unique: [true, "This email address is already in use"],
+    validate: [validateEmail, "Email is not corecct"],
   },
   password: {
     type: String,
@@ -22,6 +25,43 @@ const userSchema = new Schema({
     type: String,
   },
 });
+
+userSchema.pre("save", function (next) {
+  const user = this;
+  if (!user.isModified("password")) return next();
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(user.password, salt);
+  user.password = hash;
+  next();
+});
+
+userSchema.methods = {
+  comparePassword(password) {
+    return bcrypt.compareSync(password, this.password);
+  },
+};
+
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
+    expiresIn: "7d",
+  });
+  return token;
+};
+
+// userSchema.pre("save", function (next) {
+//   const user = this;
+//   if (!user.isModified("password")) return next();
+//   const salt = bcrypt.genSaltSync(10);
+//   const hash = bcrypt.hashSync(user.password, salt);
+//   user.password = hash;
+//   next();
+// });
+
+// userSchema.methods = {
+//   comparePassword(password) {
+//     return bcrypt.compareSync(password, this.password);
+//   },
+// };
 
 const User = mongoose.model("User", userSchema);
 
