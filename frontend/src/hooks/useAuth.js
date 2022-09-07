@@ -5,7 +5,6 @@ export default function useAuth() {
   const authContext = useContext(AuthContext);
 
   const auth = authContext.user;
-  console.log(authContext);
   useDebugValue(auth ? "Zalogowany" : "Wylogowany");
 
   const setAuth = (user) => {

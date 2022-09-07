@@ -32,18 +32,10 @@ class UserController {
       if (!isValidPassword) {
         return res.status(401).send({ message: "Invalid Email or Password" });
       }
-      // req.session.user = {
-      // _id: user._id,
-      // email: user.email,
-      // };
 
-      // const token = user.generateAuthToken();
-      // const token = "dj";
-      // const data = {
-      //   user: req.session.user,
-      //   token: token,
-      // };
-      return res.status(200).json({ user: user });
+      const token = user.generateAuthToken(user._id);
+
+      return res.status(200).json({ user: user, token });
     } catch (e) {
       return res.status(401).json({ message: [e.message] });
     }

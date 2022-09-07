@@ -1,19 +1,17 @@
 import "./Header.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthContext from "../../../context/authContext";
-import { useContext } from "react";
+import useAuth from "../../../hooks/useAuth";
 
 export default function Header(props) {
-  const user = useContext(AuthContext);
+  const [auth, setAuth] = useAuth();
   const history = useNavigate();
   const login = (e) => {
     e.preventDefault();
     history("login");
   };
   const logout = (e) => {
+    setAuth(false);
     e.preventDefault();
-    user.logout();
-    history("/");
   };
   return (
     <div className="first-div">
@@ -23,7 +21,7 @@ export default function Header(props) {
         <div className="option">
           <NavLink to="/help">Help</NavLink>
         </div>
-        {user.isAuthentiacted ? (
+        {auth ? (
           <div className="option">
             <NavLink to="/" onClick={logout}>
               Log out

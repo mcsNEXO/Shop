@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import AuthContext from "../../../context/authContext";
 import "./Login.css";
 import axios from "../../../axios";
 import useAuth from "../../../hooks/useAuth";
 
 export default function Login(props) {
-  // const user = useContext(AuthContext);
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
   const [error, setError] = useState();
@@ -21,40 +19,35 @@ export default function Login(props) {
     }
   };
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     const data = {
       email: email,
       password: password,
     };
     try {
       const res = await axios.post("/sign-in", data);
-      console.log(res);
-      // navigate("/");
       setAuth({
         email: res.data.user.email,
-        token: res.data.user._id,
+        userId: res.data.user._id,
+        token: res.data.token,
       });
-
-      // user.login();
+      navigate("/");
     } catch (e) {
       setError(e.response.data.message);
       console.log(e);
     }
   };
 
-  const test = () => {
-    console.log(auth);
-  };
-  const submit = (e) => {
-    e.preventDefault();
-    login();
-  };
+  useEffect(() => {
+    if (auth) {
+      navigate("/");
+    }
+  });
 
   return (
     <div className="auth-container">
-      <button onClick={test}></button>
       <div className="auth-box">
-        {/* {user.isAuthenticated ? <div>Logged</div> : <div>No-logged</div>} */}
         <div className="auth-title">Sign In</div>
         <form className="auth-form" method="post">
           <div className="input-container">
@@ -102,7 +95,7 @@ export default function Login(props) {
             </div>
           </div>
           <div className="submit-btn">
-            <button className="auth-btn" onClick={submit}>
+            <button className="auth-btn" onClick={login}>
               Login
             </button>
           </div>

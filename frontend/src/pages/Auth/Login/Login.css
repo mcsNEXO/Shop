@@ -147,8 +147,8 @@ input.keep-logged {
 }
 
 .register-acc a:visited,
-a:link,
-a {
+.register-acc a:link,
+.register-acc a {
   color: black;
   text-decoration: none;
 }

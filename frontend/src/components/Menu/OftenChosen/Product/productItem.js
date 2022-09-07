@@ -1,0 +1,81 @@
+const img = process.env.PUBLIC_URL + "/img/jpg/shoes/";
+
+export const productItem = [
+  {
+    id: 1,
+    sex: "man",
+    img: img + "shoes_1.webp",
+    name: "Nike Air Presto",
+    prize: 30,
+  },
+  {
+    id: 2,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 3,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 4,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 5,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 6,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 7,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 8,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 9,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 10,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+  {
+    id: 11,
+    sex: "man",
+    img: img + "shoes_2.webp",
+    name: "Nike Renew Run 2",
+    prize: 30,
+  },
+];
