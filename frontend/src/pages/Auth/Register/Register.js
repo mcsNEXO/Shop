@@ -2,14 +2,25 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import axios from "../../../axios";
+import { validate } from "../../../components/helpers/validations";
 
 export default function Register(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: {
+      value: "",
+      error: "",
+      rules: ["email", { rule: "min", number: 6 }, "required"],
+    },
+    password: {
+      value: "",
+      error: "",
+      rules: [{ rule: "min", number: 6 }, "required"],
+    },
+  });
 
   const fun = (e) => {
     if (e.target.value !== "") {
@@ -20,47 +31,60 @@ export default function Register(props) {
   };
 
   const register = async (e) => {
+    e.preventDefault();
     const user = {
-      email: email,
-      password: password,
+      email: form.email.value,
+      password: form.password.value,
       firstName: firstName,
       lastName: lastName,
     };
+    if (form.email.error || form.password.error) {
+      if (form.email.error) {
+        setError(form.email.error);
+        if ((form.email.error = "")) {
+          console.log("s");
+        }
+      } else if (form.password.error) {
+        setError(form.password.error);
+      }
+    } else {
+      setError("");
+    }
     try {
       const res = await axios.post("/sign-up", user);
       console.log(res);
-      setAuth({
-        email: res.data.user.email,
-        token: res.data.user._id,
-      });
+      navigate("/login");
     } catch (e) {
       console.log(e);
     }
   };
 
-  const test = () => {
-    console.log(auth);
-  };
-
-  const submit = (e) => {
-    e.preventDefault();
-    register();
-    // navigate("/login");
+  const changeHandler = (value, type) => {
+    const { error } = validate(form[type].rules, value, type);
+    console.log(error);
+    setForm({
+      ...form,
+      [type]: {
+        ...form[type],
+        value,
+        error: error,
+      },
+    });
+    console.log(form.email.error);
   };
 
   return (
     <div className="auth-container">
-      <button onClick={test}></button>
       <div className="auth-box">
         <div className="auth-title">Register</div>
-        <form className="auth-form" method="post">
+        <form className="auth-form" onSubmit={register}>
           <span className="register-title">Login data</span>
           <div className="input-container">
             <input
               type="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              // value={form.email.value}
+              onChange={(e) => changeHandler(e.target.value, "email")}
               className="auth-input"
               id="email-input"
               onBlur={fun}
@@ -74,8 +98,8 @@ export default function Register(props) {
             <input
               type="password"
               name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              // value={form.password.value}
+              onChange={(e) => changeHandler(e.target.value, "password")}
               className="auth-input"
               id="password-input"
               onBlur={fun}
@@ -85,6 +109,8 @@ export default function Register(props) {
               Password
             </label>
           </div>
+          {error ? <div className="input-check-auth">{error}</div> : null}
+
           <span className="register-title">Personal data</span>
           <div className="input-container">
             <input
@@ -123,7 +149,7 @@ export default function Register(props) {
             </div>
           </div>
           <div className="submit-btn">
-            <button className="auth-btn" onClick={submit}>
+            <button className="auth-btn" type="submit">
               Register
             </button>
           </div>

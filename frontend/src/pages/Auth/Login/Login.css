@@ -30,6 +30,9 @@
   width: 80%;
   position: relative;
 }
+.input-container:nth-child(1) {
+  /* margin-bottom: 10px !important; */
+}
 
 .label {
   position: absolute;
@@ -163,4 +166,16 @@ input.keep-logged {
   text-align: center;
   color: red;
   margin: 5px 0 5px 0;
+}
+
+.input-check-auth {
+  color: red;
+  font-weight: 600;
+  text-align: left;
+  margin: auto;
+  padding: 0.3rem;
+  width: 80%;
+}
+.input-check-auth::first-letter {
+  text-transform: capitalize;
 }

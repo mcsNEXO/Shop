@@ -10,8 +10,9 @@ const userSchema = new Schema({
     required: [true, "Email is required"],
     lowercase: true,
     trim: true,
+    minlength: [6, "Email must be at least 6 characters long"],
     unique: [true, "This email address is already in use"],
-    validate: [validateEmail, "Email is not corecct"],
+    validate: [validateEmail, "Email is invalid"],
   },
   password: {
     type: String,

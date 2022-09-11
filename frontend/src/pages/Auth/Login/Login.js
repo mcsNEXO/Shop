@@ -49,7 +49,7 @@ export default function Login(props) {
     <div className="auth-container">
       <div className="auth-box">
         <div className="auth-title">Sign In</div>
-        <form className="auth-form" method="post">
+        <form className="auth-form" onSubmit={login}>
           <div className="input-container">
             <input
               type="email"
@@ -95,7 +95,7 @@ export default function Login(props) {
             </div>
           </div>
           <div className="submit-btn">
-            <button className="auth-btn" onClick={login}>
+            <button className="auth-btn" type="submit">
               Login
             </button>
           </div>
