@@ -20,6 +20,16 @@ export default function Register(props) {
       error: "",
       rules: [{ rule: "min", number: 6 }, "required"],
     },
+    firstname: {
+      value: "",
+      error: "",
+      rules: ["required"],
+    },
+    lastname: {
+      value: "",
+      error: "",
+      rules: ["required"],
+    },
   });
 
   const fun = (e) => {
@@ -38,30 +48,25 @@ export default function Register(props) {
       firstName: firstName,
       lastName: lastName,
     };
-    if (form.email.error || form.password.error) {
-      if (form.email.error) {
-        setError(form.email.error);
-        if ((form.email.error = "")) {
-          console.log("s");
-        }
-      } else if (form.password.error) {
-        setError(form.password.error);
-      }
-    } else {
+    if (form.email.error) setError(form.email.error);
+    else if (form.password.error) setError(form.password.error);
+    else if (form.email.value === "") setError("Email is required");
+    else if (form.password.value === "") setError("Password is required");
+    else {
       setError("");
     }
     try {
       const res = await axios.post("/sign-up", user);
-      console.log(res);
       navigate("/login");
     } catch (e) {
-      console.log(e);
+      !e.response.data.message.includes(":")
+        ? setError(e.response.data.message)
+        : setError(e.response.data.message[0].split(":")[2].split(",")[0]);
     }
   };
 
   const changeHandler = (value, type) => {
     const { error } = validate(form[type].rules, value, type);
-    console.log(error);
     setForm({
       ...form,
       [type]: {
@@ -70,7 +75,6 @@ export default function Register(props) {
         error: error,
       },
     });
-    console.log(form.email.error);
   };
 
   return (
@@ -83,7 +87,6 @@ export default function Register(props) {
             <input
               type="email"
               name="email"
-              // value={form.email.value}
               onChange={(e) => changeHandler(e.target.value, "email")}
               className="auth-input"
               id="email-input"
@@ -98,7 +101,6 @@ export default function Register(props) {
             <input
               type="password"
               name="password"
-              // value={form.password.value}
               onChange={(e) => changeHandler(e.target.value, "password")}
               className="auth-input"
               id="password-input"
@@ -109,14 +111,13 @@ export default function Register(props) {
               Password
             </label>
           </div>
-          {error ? <div className="input-check-auth">{error}</div> : null}
 
           <span className="register-title">Personal data</span>
           <div className="input-container">
             <input
               type="firstName"
               name="firstName"
-              value={firstName}
+              // value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="auth-input"
               id="firstName-input"
@@ -142,6 +143,7 @@ export default function Register(props) {
               Last name
             </label>
           </div>
+          {error ? <div className="input-check-auth">{error}</div> : null}
           <div className="help-panel">
             <div className="terms">
               <input type="checkbox" id="terms" className="term" />

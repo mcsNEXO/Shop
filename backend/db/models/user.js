@@ -16,14 +16,16 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Password is required"],
     minlength: [6, "Password must be at least 6 characters long"],
   },
   firstName: {
     type: String,
+    required: [true, "First name is required"],
   },
   lastName: {
     type: String,
+    required: [true, "Last name is required"],
   },
 });
 

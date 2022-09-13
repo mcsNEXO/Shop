@@ -15,7 +15,7 @@
 }
 
 .auth-title {
-  margin-top: 3rem;
+  margin-top: 2rem;
   font-size: 2.3rem;
   width: 100%;
   text-align: center;
@@ -30,8 +30,8 @@
   width: 80%;
   position: relative;
 }
-.input-container:nth-child(1) {
-  /* margin-bottom: 10px !important; */
+.input-container {
+  margin: 24px auto 10px auto !important;
 }
 
 .label {
