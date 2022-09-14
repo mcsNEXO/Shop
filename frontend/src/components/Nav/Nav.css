@@ -76,7 +76,6 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   width: 42px;
   height: 42px;
 }
@@ -87,11 +86,13 @@ img {
   justify-content: center;
   align-content: center;
 }
-i {
+
+.right-side-menu i {
+  cursor: pointer;
   font-size: 1.4rem;
 }
-i.bi-heart {
-  padding-top: 3px;
+.right-side-menu .bi-heart {
+  padding-top: -3px;
 }
 .searchbar {
   position: relative;
@@ -104,6 +105,8 @@ i.bi-heart {
   background-color: transparent;
   outline: none;
   border: none;
+}
+.btn-icon:hover {
 }
 
 .option-panel:hover > .dropdown {
@@ -139,3 +142,59 @@ i.bi-heart {
     }
 }
 */
+.i-icon {
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.i-icon:hover {
+}
+.container-icon button .i-icon:hover > .person-container {
+  opacity: 1;
+  transform: scaleY(1);
+  visibility: visible;
+}
+.container-icon {
+  position: relative;
+  height: 100%;
+}
+.container-icon button {
+  height: 100%;
+}
+.person-container {
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity linear 0.1s, visibility linear 0.1s;
+  transform-origin: top;
+  transform: scaleY(0);
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  min-width: 165px;
+  right: -50%;
+  left: -100%;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom: 1px solid rgb(164, 156, 156);
+  border-left: 1px solid rgb(164, 156, 156);
+  border-right: 1px solid rgb(164, 156, 156);
+  padding: 5px;
+  top: 98%;
+}
+.person-option {
+  font-size: 16.5px;
+  margin: auto;
+  width: 100%;
+  height: auto;
+  text-align: center;
+  margin: 8px 0;
+}
+.person-option:last-child {
+  margin: 10px 0 0 0;
+}
+
+.right-side-menu .person-option a:visited,
+.right-side-menu .person-option a:link {
+  color: black;
+  text-decoration: none;
+}

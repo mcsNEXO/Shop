@@ -13,3 +13,15 @@ body {
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+a.black:visited,
+a.black:link {
+  text-decoration: none;
+  color: black;
+}
+
+a.white:visited,
+a.white:link {
+  text-decoration: none;
+  color: white;
+}

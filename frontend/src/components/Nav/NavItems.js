@@ -38,17 +38,3 @@ export const navItems = [
     submenu: DropItem.sale,
   },
 ];
-export const navButtons = [
-  {
-    id: 1,
-    cName: "bi bi-person",
-  },
-  {
-    id: 2,
-    cName: "bi bi-heart",
-  },
-  {
-    id: 3,
-    cName: "bi bi-bag",
-  },
-];

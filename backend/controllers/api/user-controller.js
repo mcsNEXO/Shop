@@ -1,6 +1,4 @@
 const User = require("../../db/models/user");
-const bcrypt = require("bcrypt");
-const Joi = require("joi");
 
 class UserController {
   async register(req, res) {

@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap");
+
+.container-profile {
+  width: 100%;
+  height: auto;
+}
+.container-profile aside {
+  width: 20%;
+  background-color: rgb(228, 228, 228);
+  height: 500px;
+  padding: 20px;
+}
+.profile-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-indent: 50px;
+}
+
+.profile-option {
+  width: 100%;
+  text-align: start;
+  text-indent: 90px;
+  margin: 10px 0;
+  font-size: 1.4rem;
+  padding: 3px;
+  letter-spacing: 1.2px;
+  font-family: "Ubuntu";
+}
+.container-profile i::before {
+  display: initial;
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+  height: fit-content;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgb(55, 55, 55);
+  background-color: transparent;
+}
+
+.profile-title i::before {
+  font-size: 1.6rem;
+}

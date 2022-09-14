@@ -121,7 +121,7 @@ a:link {
 }
 
 .btn-collection button a:link,
-a:visited {
+.btn-collection button a:visited {
   color: white;
   text-decoration: none;
 }

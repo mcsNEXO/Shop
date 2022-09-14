@@ -35,7 +35,6 @@ export default function Login(props) {
       navigate("/");
     } catch (e) {
       setError(e.response.data.message);
-      console.log(e);
     }
   };
 

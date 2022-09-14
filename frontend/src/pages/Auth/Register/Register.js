@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
 import axios from "../../../axios";
+import useAuth from "../../../hooks/useAuth";
 import { validate } from "../../../components/helpers/validations";
 
 export default function Register(props) {
   const [error, setError] = useState("");
+  const [auth, setAuth] = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export default function Register(props) {
       setError("");
     }
     try {
-      const res = await axios.post("/sign-up", user);
+      await axios.post("/sign-up", user);
       navigate("/login");
     } catch (e) {
       !e.response.data.message.includes(":")
@@ -76,6 +77,9 @@ export default function Register(props) {
       },
     });
   };
+  useEffect(() => {
+    if (auth) navigate("/");
+  });
 
   return (
     <div className="auth-container">
