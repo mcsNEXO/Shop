@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Nav.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { navItems } from "./NavItems";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Serachbar from "../UI/Searchbar.js/Serachbar";
 import Dropdown from "./Dropdown/Dropdown";
 import useAuth from "../../hooks/useAuth";
@@ -11,13 +11,19 @@ export default function Nav(props) {
   const logo = process.env.PUBLIC_URL + "/img/svg/logo.svg";
   const [auth, setAuth] = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openAccount = () => {};
 
   return (
     <>
       <nav className={isOpen ? "is-open nav-open" : null}>
-        <div className="left-side-menu">
+        <div
+          className="left-side-menu"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <img src={logo} alt="logo" />
         </div>
         <div className="main-panel-menu">

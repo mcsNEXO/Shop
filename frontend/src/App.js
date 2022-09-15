@@ -11,6 +11,7 @@ import AuthContext from "./context/authContext";
 import Register from "./pages/Auth/Register/Register";
 import { reducer, initialState } from "./reducer";
 import Profile from "./pages/Profile/Profile";
+import MyData from "./pages/Profile/MyData/MyData";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -20,7 +21,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Menu />} />
       <Route path="profile" element={<Profile />}>
+        <Route path="my-data" element={<MyData />} />
+        <Route path="cart" element />
         <Route path="favorite" element />
+        <Route path="orders" element />
       </Route>
       <Route path="/news" element={<div>News</div>} />
       <Route path="/login" element={<Login />} />

@@ -1,39 +1,45 @@
 import "./Profile.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet, Route, Routes } from "react-router-dom";
+import MyData from "../Profile/MyData/MyData";
 
 export default function Profile(props) {
   return (
     <div className="container-profile">
       <aside>
         <div className="profile-title">
-          <i class="bi bi-person-circle"></i> Profile
+          <i className="bi bi-person-circle"></i> Profile
         </div>
         <div className="profile-option">
           <NavLink className="black" to="my-data">
-            <i className="bi bi-person-square"></i> My data
-          </NavLink>
-        </div>
-        <div className="profile-option">
-          <NavLink className="black" to="/favorite">
-            <i class="bi bi-heart-fill"></i> Favorite
+            <i className="bi bi-person"></i>
+            My data
           </NavLink>
         </div>
         <div className="profile-option">
           <NavLink className="black" to="cart">
-            <i class="bi bi-bag-fill"></i> Your cart
+            <i className="bi bi-bag"></i> Your cart
+          </NavLink>
+        </div>
+        <div className="profile-option">
+          <NavLink className="black" to="favorite">
+            <i className="bi bi-heart"></i> Favorite
           </NavLink>
         </div>
         <div className="profile-option">
           <NavLink className="black" to="orders">
-            <i class="bi bi-archive-fill"></i> Orders
+            <i className="bi bi-bag-check"></i> Orders
           </NavLink>
         </div>
         <div className="profile-option">
           <NavLink className="black" to="/">
-            <i class="bi bi-door-closed-fill"></i> Logout
+            <i className="bi bi-door-closed"></i> Logout
           </NavLink>
         </div>
       </aside>
+      <Routes>
+        <Route path="my-data" element={<MyData />} />
+        <Route path="my-data" element={<MyData />} />
+      </Routes>
     </div>
   );
 }

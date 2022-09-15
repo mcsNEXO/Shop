@@ -1,30 +1,37 @@
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&display=swap");
 
 .container-profile {
   width: 100%;
   height: auto;
+  display: flex;
 }
 .container-profile aside {
-  width: 20%;
-  background-color: rgb(228, 228, 228);
+  width: 17%;
+  background-color: rgb(234, 234, 234);
   height: 500px;
   padding: 20px;
+  border-right: 1px solid rgb(164, 164, 164);
 }
 .profile-title {
   font-size: 1.6rem;
-  font-weight: 600;
-  text-indent: 50px;
+  font-weight: 500;
+  margin: 8px 0 15px 0;
 }
 
 .profile-option {
   width: 100%;
   text-align: start;
-  text-indent: 90px;
-  margin: 10px 0;
-  font-size: 1.4rem;
-  padding: 3px;
-  letter-spacing: 1.2px;
+  margin: 5px 0;
+  font-size: 1.1rem;
+  padding: 5px 12px;
+  letter-spacing: 1px;
   font-family: "Ubuntu";
+}
+.profile-option a {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .container-profile i::before {
   display: initial;
@@ -32,7 +39,7 @@
   margin: 0;
   padding: 0;
   height: fit-content;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: rgb(55, 55, 55);
   background-color: transparent;
@@ -40,4 +47,8 @@
 
 .profile-title i::before {
   font-size: 1.6rem;
+}
+.profile-option:hover {
+  background-color: rgb(213, 213, 213);
+  border-radius: 14px;
 }
