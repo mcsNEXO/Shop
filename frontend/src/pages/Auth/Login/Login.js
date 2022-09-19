@@ -29,6 +29,7 @@ export default function Login(props) {
       const res = await axios.post("/sign-in", data);
       setAuth({
         email: res.data.user.email,
+        firstName: res.data.user.firstName,
         userId: res.data.user._id,
         token: res.data.token,
       });

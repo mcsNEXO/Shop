@@ -8,9 +8,12 @@
 .container-profile aside {
   width: 17%;
   background-color: rgb(234, 234, 234);
-  height: 500px;
+  height: auto;
   padding: 20px;
   border-right: 1px solid rgb(164, 164, 164);
+}
+.profile-position {
+  top: 2rem;
 }
 .profile-title {
   font-size: 1.6rem;

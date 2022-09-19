@@ -12,6 +12,7 @@ import Register from "./pages/Auth/Register/Register";
 import { reducer, initialState } from "./reducer";
 import Profile from "./pages/Profile/Profile";
 import MyData from "./pages/Profile/MyData/MyData";
+import ProfilePage from "./pages/Profile/ProfilePage/ProfilePage";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -20,11 +21,13 @@ function App() {
   const menu = (
     <Routes>
       <Route path="/" element={<Menu />} />
-      <Route path="profile" element={<Profile />}>
+      <Route path="profile/*" element={<Profile />}>
+        <Route path="" element={<ProfilePage />} />
         <Route path="my-data" element={<MyData />} />
         <Route path="cart" element />
         <Route path="favorite" element />
         <Route path="orders" element />
+        <Route path="*" element={<div>Not Found</div>} />
       </Route>
       <Route path="/news" element={<div>News</div>} />
       <Route path="/login" element={<Login />} />

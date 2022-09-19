@@ -60,9 +60,10 @@ export default function Register(props) {
       await axios.post("/sign-up", user);
       navigate("/login");
     } catch (e) {
-      !e.response.data.message.includes(":")
-        ? setError(e.response.data.message)
-        : setError(e.response.data.message[0].split(":")[2].split(",")[0]);
+      console.log(e.response.data.message[0]);
+      e.response.data.message[0].includes(":")
+        ? setError(e.response.data.message[0].split(":")[2].split(",")[0])
+        : setError(e.response.data.message);
     }
   };
 
