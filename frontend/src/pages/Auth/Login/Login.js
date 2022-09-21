@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
 import axios from "../../../axios";
 import useAuth from "../../../hooks/useAuth";
+import Input from "../../../components/Input/Input";
 
 export default function Login(props) {
   const navigate = useNavigate();
@@ -10,14 +11,6 @@ export default function Login(props) {
   const [error, setError] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const fun = (e) => {
-    if (e.target.value !== "") {
-      e.target.nextElementSibling.classList.add("filled");
-    } else {
-      e.target.nextElementSibling.classList.remove("filled");
-    }
-  };
 
   const login = async (e) => {
     e.preventDefault();
@@ -50,36 +43,25 @@ export default function Login(props) {
       <div className="auth-box">
         <div className="auth-title">Sign In</div>
         <form className="auth-form" onSubmit={login}>
-          <div className="input-container">
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="auth-input"
-              id="email-input"
-              onBlur={fun}
-              placeholder="Adress e-mail"
-            />
-            <label className="label" htmlFor="email-input">
-              Adress e-mail
-            </label>
-          </div>
-          <div className="input-container">
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="auth-input"
-              id="password-input"
-              onBlur={fun}
-              placeholder="Password"
-            />
-            <label className="label" htmlFor="password-input">
-              Password
-            </label>
-          </div>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            class="auth"
+            id="email-input"
+            placeholder="Adress e-mail"
+          />
+          <Input
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="auth-input"
+            id="password-input"
+            class="auth"
+            placeholder="Password"
+          />
           {error ? <div className="auth-error">{error}</div> : null}
           <div className="help-panel">
             <div className="keepLoggedIn">

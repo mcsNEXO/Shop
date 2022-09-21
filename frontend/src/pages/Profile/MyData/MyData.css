@@ -1,0 +1,105 @@
+.md-container {
+  width: 1000px;
+  height: auto;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+.md-box {
+  margin: 5rem 0;
+  width: auto;
+  position: relative;
+  display: flex;
+}
+.md-img {
+  width: 140px;
+  height: 140px;
+  display: block;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.md-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  margin-right: 100px;
+  object-fit: cover;
+}
+
+input[type="file"] {
+  display: none;
+}
+label.md-file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  height: 24px;
+  width: 140px;
+  border-radius: 10px;
+  margin: 5px 0;
+  background-color: rgb(221, 220, 220);
+  position: absolute;
+}
+.md-input-file {
+  height: 170px;
+}
+
+.md-con-input {
+  margin-top: 20px;
+  position: relative;
+}
+
+.md-input {
+  width: 200px;
+  height: 34px;
+  border: none;
+  background-color: whitesmoke;
+  outline: none;
+  border: 1px solid rgb(159, 159, 159);
+  border-radius: 5px;
+  padding: 0 5px;
+  color: rgb(39, 39, 39);
+}
+.md-label {
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  font-size: 13px;
+  z-index: 1;
+  padding: 0 3px;
+  transition: all 150ms ease;
+  color: gray;
+}
+.md-input:focus + .md-label,
+.filled {
+  top: -10px;
+  color: gray;
+  font-weight: 600;
+}
+.md-label::before {
+  content: "";
+  height: 5px;
+  background-color: whitesmoke;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 100%;
+  z-index: -1;
+}
+.md-input::placeholder {
+  font-size: 14px;
+  opacity: 0;
+  transition: all 150ms ease;
+}
+
+.md-input:focus::placeholder {
+  opacity: 1;
+}
+
+.md-inputs {
+  padding: 10px 25px;
+}

@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from "../../../axios";
 import useAuth from "../../../hooks/useAuth";
 import { validate } from "../../../components/helpers/validations";
+import Input from "../../../components/Input/Input";
 
 export default function Register(props) {
   const [error, setError] = useState("");
@@ -32,14 +33,6 @@ export default function Register(props) {
       rules: ["required"],
     },
   });
-
-  const fun = (e) => {
-    if (e.target.value !== "") {
-      e.target.nextElementSibling.classList.add("filled");
-    } else if (e.target.value === "") {
-      e.target.nextElementSibling.classList.remove("filled");
-    }
-  };
 
   const register = async (e) => {
     e.preventDefault();
@@ -88,66 +81,39 @@ export default function Register(props) {
         <div className="auth-title">Register</div>
         <form className="auth-form" onSubmit={register}>
           <span className="register-title">Login data</span>
-          <div className="input-container">
-            <input
-              type="email"
-              name="email"
-              onChange={(e) => changeHandler(e.target.value, "email")}
-              className="auth-input"
-              id="email-input"
-              onBlur={fun}
-              placeholder="Adress e-mail"
-            />
-            <label className="label" htmlFor="email-input">
-              Adress e-mail
-            </label>
-          </div>
-          <div className="input-container">
-            <input
-              type="password"
-              name="password"
-              onChange={(e) => changeHandler(e.target.value, "password")}
-              className="auth-input"
-              id="password-input"
-              onBlur={fun}
-              placeholder="Password"
-            />
-            <label className="label" htmlFor="password-input">
-              Password
-            </label>
-          </div>
-
+          <Input
+            type="email"
+            name="email"
+            onChange={(e) => changeHandler(e.target.value, "email")}
+            class="auth"
+            id="email-input"
+            placeholder="Adress e-mail"
+          />
+          <Input
+            type="password"
+            name="password"
+            onChange={(e) => changeHandler(e.target.value, "password")}
+            class="auth"
+            id="password-input"
+            placeholder="Password"
+          />
           <span className="register-title">Personal data</span>
-          <div className="input-container">
-            <input
-              type="firstName"
-              name="firstName"
-              // value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="auth-input"
-              id="firstName-input"
-              onBlur={fun}
-              placeholder="First name"
-            />
-            <label className="label" htmlFor="firstName-input">
-              First Name
-            </label>
-          </div>
-          <div className="input-container">
-            <input
-              type="lastName"
-              name="lastName"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="auth-input"
-              id="lastName-input"
-              onBlur={fun}
-              placeholder="LastName"
-            />
-            <label className="label" htmlFor="lastName-input">
-              Last name
-            </label>
-          </div>
+          <Input
+            type="firstName"
+            name="firstName"
+            onChange={(e) => setFirstName(e.target.value)}
+            id="firstName-input"
+            placeholder="First name"
+            class="auth"
+          />
+          <Input
+            type="lastName"
+            name="lastName"
+            onChange={(e) => setLastName(e.target.value)}
+            class="auth"
+            id="lastName-input"
+            placeholder="LastName"
+          />
           {error ? <div className="input-check-auth">{error}</div> : null}
           <div className="help-panel">
             <div className="terms">

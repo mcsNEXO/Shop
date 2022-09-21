@@ -25,7 +25,7 @@
 .auth-form {
   margin-top: 50px;
 }
-.input-container {
+.auth-con-input {
   margin: 24px auto;
   width: 80%;
   position: relative;
@@ -34,7 +34,7 @@
   margin: 24px auto 10px auto !important;
 }
 
-.label {
+.auth-label {
   position: absolute;
   left: 10px;
   top: 14px;
@@ -61,7 +61,7 @@
   border: 2px solid #89898d;
 }
 
-.label::before {
+.auth-label::before {
   content: "";
   height: 5px;
   background-color: #e0dee6;
@@ -75,8 +75,7 @@
   border: 2px solid #4b4a4e;
   background-color: #dad8e0;
 }
-
-.auth-input:focus + .label,
+.auth-input:focus + .auth-label,
 .filled {
   top: -10px;
   color: #727272;
