@@ -55,7 +55,7 @@ export default function Login(props) {
           <Input
             type="password"
             name="password"
-            value={password}
+            // value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="auth-input"
             id="password-input"

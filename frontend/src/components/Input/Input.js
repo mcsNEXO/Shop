@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const fun = (e) => {
   if (e.target.value !== "") {
     return e.target.nextElementSibling.classList.add("filled");
@@ -7,14 +9,27 @@ const fun = (e) => {
 };
 
 const InputText = ({ props }) => {
+  useEffect(() => {
+    const inputs1 = document.querySelectorAll(".auth-input");
+    const inputs2 = document.querySelectorAll(".md-input");
+    inputs2.forEach((e) => {
+      if (e.value) {
+        e.nextElementSibling.classList.add("filled");
+      } else {
+        return null;
+      }
+    });
+  });
   return (
     <div className={`${props.class}-con-input`}>
       <input
         type={props.type}
         name={props.name}
+        value={props?.value}
         className={`${props.class}-input`}
-        onChange={props.onChange}
+        onChange={props?.onChange}
         id={`${props.name}-input`}
+        disabled={props.disabled ? true : false}
         onBlur={fun}
         placeholder={props.placeholder}
       />

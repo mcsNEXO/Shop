@@ -37,6 +37,17 @@ class UserController {
       return res.status(401).json({ message: [e.message] });
     }
   }
+  async edit(req, res) {
+    const user = await User.findById(req.body.userId);
+    user.email = req.body.email;
+    user.firstName = req.body.firstName;
+    try {
+      user.save();
+      return res.status(200).json({ user: user });
+    } catch (e) {
+      return res.status(402).json("Something went wrong");
+    }
+  }
 }
 
 module.exports = new UserController();

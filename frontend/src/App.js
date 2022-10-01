@@ -13,6 +13,7 @@ import { reducer, initialState } from "./reducer";
 import Profile from "./pages/Profile/Profile";
 import MyData from "./pages/Profile/MyData/MyData";
 import ProfilePage from "./pages/Profile/ProfilePage/ProfilePage";
+import RequireAuth from "./hoc/RequireAuth";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -21,7 +22,14 @@ function App() {
   const menu = (
     <Routes>
       <Route path="/" element={<Menu />} />
-      <Route path="profile/*" element={<Profile />}>
+      <Route
+        path="profile/*"
+        element={
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
+        }
+      >
         <Route path="" element={<ProfilePage />} />
         <Route path="my-data" element={<MyData />} />
         <Route path="cart" element />
