@@ -67,7 +67,8 @@ label.md-file {
   height: 38px;
   background-color: whitesmoke;
   outline: none;
-  border: 1px solid black;
+  border: 1px solid #198754;
+  box-shadow: 0px 0px 2px 0px #198754;
   border-radius: 5px;
   padding: 0 5px;
   font-size: 0.9rem;
@@ -89,16 +90,7 @@ label.md-file {
   color: gray;
   font-weight: 600;
 }
-.md-label::before {
-  content: "";
-  height: 5px;
-  background-color: whitesmoke;
-  position: absolute;
-  left: 0px;
-  top: 10px;
-  width: 100%;
-  z-index: -1;
-}
+
 .md-input::placeholder {
   font-size: 13.5px;
   opacity: 0;
@@ -145,4 +137,34 @@ label.md-file {
   background-color: rgb(255, 255, 255);
   margin-top: 10px;
   cursor: pointer;
+}
+
+input.md-input.error-input {
+  border: 1px solid #dc3545;
+  box-shadow: 0px 0px 2px 0.5px #dc3545;
+}
+
+.md-label::before {
+  content: "";
+  height: 5px;
+  background-color: whitesmoke;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 100%;
+  box-shadow: 0px 0px 1px 1.2px whitesmoke;
+  z-index: -1;
+}
+.error-text {
+  color: #dc3545;
+  font-size: 0.8rem;
+  padding: 2px;
+  font-variant: small-caps;
+}
+
+.positive-text {
+  color: #198754;
+  font-size: 0.8rem;
+  padding: 2px;
+  font-variant: small-caps;
 }

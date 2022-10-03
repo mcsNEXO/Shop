@@ -33,6 +33,8 @@ export default function MyData(props) {
   });
 
   const changeHandler = (value, type) => {
+    // console.log(value, type);
+    // console.log(form["firstName"].rules, value, type);
     const { error } = validate(form[type].rules, value, type);
     setForm({
       ...form,
@@ -49,7 +51,7 @@ export default function MyData(props) {
     const data = {
       email: form.email.value,
       firstName: form.firstName.value,
-      userId: auth.userId,
+      userId: auth._id,
     };
     try {
       const res = await axios.put("edit-data", data);
@@ -93,8 +95,13 @@ export default function MyData(props) {
               value={form.email.value}
               onChange={(e) => changeHandler(e.target.value, "email")}
               placeholder="E-mail"
-              class="md"
+              class={`${form.email.error ? "error-input md" : "md"}`}
             ></Input>
+            {form.email.error ? (
+              <div className="error-text">{form.email.error}</div>
+            ) : (
+              <div className="positive-text">all right</div>
+            )}
             <div className="password-edit">
               <Input
                 type="password"
@@ -114,8 +121,15 @@ export default function MyData(props) {
               placeholder="First Name"
               value={form.firstName.value}
               onChange={(e) => changeHandler(e.target.value, "firstName")}
-              class="md"
+              class={`${form.firstName.error ? "error-input md" : "md"}`}
             ></Input>
+            {form.firstName.error ? (
+              <div className="error-text">
+                {form.firstName.error.toLowerCase()}
+              </div>
+            ) : (
+              <div className="positive-text">all right</div>
+            )}
           </div>
           <div className="md-final-btn">
             <button type="submit">Save</button>

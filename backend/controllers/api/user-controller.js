@@ -38,6 +38,7 @@ class UserController {
     }
   }
   async edit(req, res) {
+    console.log(req);
     const user = await User.findById(req.body.userId);
     user.email = req.body.email;
     user.firstName = req.body.firstName;
