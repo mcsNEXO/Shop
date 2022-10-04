@@ -23,7 +23,7 @@ export default function Login(props) {
       setAuth({
         email: res.data.user.email,
         firstName: res.data.user.firstName,
-        userId: res.data.user._id,
+        _id: res.data.user._id,
         token: res.data.token,
       });
       navigate("/");

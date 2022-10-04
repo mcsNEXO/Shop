@@ -4,6 +4,7 @@
   border: 1px solid black;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 .md-box {
   margin: 5rem 0;
@@ -65,7 +66,7 @@ label.md-file {
 .md-input {
   width: 300px;
   height: 38px;
-  background-color: whitesmoke;
+  background-color: rgb(249, 249, 249);
   outline: none;
   border: 1px solid #198754;
   box-shadow: 0px 0px 2px 0px #198754;
@@ -113,14 +114,16 @@ label.md-file {
 
 .password-edit button {
   width: fit-content;
-  background-color: transparent;
-  border: 1px solid black;
   font-size: 0.66rem;
   font-weight: 600;
   height: 18px;
   border-radius: 5px;
-  margin: 3px;
+  margin-left: 7px;
   margin-bottom: 6px;
+  box-shadow: 0 0 1px 1px black;
+  border: none;
+  background-color: rgb(250, 250, 250);
+  color: black;
 }
 .md-final-btn {
   width: 100%;
@@ -129,30 +132,42 @@ label.md-file {
 }
 
 .md-final-btn button {
-  width: 100px;
-  height: 25px;
-  border: 2px solid rgb(0, 0, 0);
-  border-radius: 8px;
+  width: 80px;
+  height: 30px;
+  border: none;
+  box-shadow: 0 0 1px 1px black;
+  background-color: rgb(0, 0, 0);
+  border-radius: 10px;
   font-size: 0.9rem;
-  background-color: rgb(255, 255, 255);
+  color: white;
   margin-top: 10px;
   cursor: pointer;
 }
-
+/* .md-final-btn button:hover {
+  filter: contrast(40%);
+} */
 input.md-input.error-input {
   border: 1px solid #dc3545;
   box-shadow: 0px 0px 2px 0.5px #dc3545;
 }
-
+.md-input:focus + .md-label::before,
+.md-input:hover + .md-label::before {
+  box-shadow: 0px 0px 1px 1.2px rgb(246, 246, 246);
+  background-color: rgb(246, 246, 246) !important;
+}
+.md-input:focus,
+.md-input:hover {
+  background-color: rgb(246, 246, 246) !important;
+}
 .md-label::before {
   content: "";
   height: 5px;
-  background-color: whitesmoke;
+  background-color: rgb(249, 249, 249);
   position: absolute;
   left: 0px;
   top: 10px;
   width: 100%;
-  box-shadow: 0px 0px 1px 1.2px whitesmoke;
+  box-shadow: 0px 0px 1px 1.2px rgb(249, 249, 249);
   z-index: -1;
 }
 .error-text {

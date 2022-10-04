@@ -42,13 +42,13 @@ export default function Register(props) {
       firstName: firstName,
       lastName: lastName,
     };
-    if (form.email.error) setError(form.email.error);
-    else if (form.password.error) setError(form.password.error);
-    else if (form.email.value === "") setError("Email is required");
-    else if (form.password.value === "") setError("Password is required");
-    else {
-      setError("");
-    }
+    // if (form.email.error) setError(form.email.error);
+    // else if (form.password.error) setError(form.password.error);
+    // else if (form.email.value === "") setError("Email is required");
+    // else if (form.password.value === "") setError("Password is required");
+    // else {
+    //   setError("");
+    // }
     try {
       await axios.post("/sign-up", user);
       navigate("/login");

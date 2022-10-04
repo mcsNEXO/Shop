@@ -8,6 +8,8 @@ export const reducer = (state, action) => {
       return { ...state, user: action.user };
     case "logout":
       return { ...state, user: null };
+    case "loading":
+      return {};
     default:
       throw new Error("This action does not exist: ".action.type);
   }

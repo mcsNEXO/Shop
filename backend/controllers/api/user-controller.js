@@ -38,15 +38,14 @@ class UserController {
     }
   }
   async edit(req, res) {
-    console.log(req);
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(req.body._id);
     user.email = req.body.email;
     user.firstName = req.body.firstName;
     try {
-      user.save();
+      await user.save();
       return res.status(200).json({ user: user });
     } catch (e) {
-      return res.status(402).json("Something went wrong");
+      return res.status(402).json({ message: [e.message] });
     }
   }
 }
