@@ -5,12 +5,17 @@ import useAuth from "../../../hooks/useAuth";
 import { validate } from "../../../components/helpers/validations";
 import axios from "../../../axios";
 import ModalPassword from "../../../components/Modals/ModalPassword/ModalPassword";
+import LoadingButton from "../../../components/UI/LoadingButton/LoadingButton";
 
 export default function MyData(props) {
   const avatar = process.env.PUBLIC_URL + "/img/jpg/avatar3.png";
   const [image, setImage] = useState("");
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
+  const [error, setError] = useState({
+    error: "",
+  });
   const [form, setForm] = useState({
     email: {
       value: auth.email,
@@ -34,6 +39,8 @@ export default function MyData(props) {
     },
   });
 
+  const buttonDisabled = Object.values(error).filter((x) => x).length;
+
   const showModal = () => {
     setModal(true);
   };
@@ -46,23 +53,27 @@ export default function MyData(props) {
         ...form[type],
         value,
         error: error,
+        fun: setError({ error: error }),
       },
     });
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      email: form.email.value,
-      firstName: form.firstName.value,
-      _id: auth._id,
-    };
-    try {
-      const res = await axios.put("edit-data", data);
-      setAuth(res.data.user);
-    } catch (e) {
-      console.log(e);
-    }
+    setLoading(true);
+    setTimeout(async () => {
+      const data = {
+        email: form.email.value,
+        firstName: form.firstName.value,
+        _id: auth._id,
+      };
+      try {
+        const res = await axios.put("edit-data", data);
+        setAuth(res.data.user);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -136,7 +147,9 @@ export default function MyData(props) {
               )}
             </div>
             <div className="md-final-btn">
-              <button type="submit">Save</button>
+              <LoadingButton loading={loading} disabled={buttonDisabled}>
+                Save
+              </LoadingButton>
             </div>
           </form>
         </div>

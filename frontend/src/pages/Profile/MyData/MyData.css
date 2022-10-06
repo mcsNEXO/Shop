@@ -143,6 +143,10 @@ label.md-file {
   margin-top: 10px;
   cursor: pointer;
 }
+.md-final-btn button:disabled {
+  opacity: 65%;
+  pointer-events: none;
+}
 /* .md-final-btn button:hover {
   filter: contrast(40%);
 } */
