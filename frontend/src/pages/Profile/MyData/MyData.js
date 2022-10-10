@@ -75,10 +75,12 @@ export default function MyData(props) {
       setLoading(false);
     }, 1000);
   };
-
+  const closeModal = () => {
+    setModal(!modal);
+  };
   return (
     <>
-      {modal ? <ModalPassword /> : null}
+      {modal ? <ModalPassword closeModal={() => closeModal} /> : null}
       <div className="md-container">
         <div className="md-box">
           <form onSubmit={onSubmit}>
