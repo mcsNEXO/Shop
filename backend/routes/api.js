@@ -5,5 +5,6 @@ const userController = require("../controllers/api/user-controller");
 router.post("/sign-in", userController.login);
 router.post("/sign-up", userController.register);
 router.put("/edit-data", userController.edit);
+router.put("/edit-password", userController.editPassword);
 
 module.exports = router;

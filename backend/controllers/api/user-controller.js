@@ -48,6 +48,24 @@ class UserController {
       return res.status(402).json({ message: [e.message] });
     }
   }
+  async editPassword(req, res) {
+    const user = await User.findById(req.body._id);
+    if (user.comparePassword(req.body.currentPassword)) {
+      if (req.body.newPassword === req.body.confirmPassword) {
+        user.password = req.body.newPassword;
+      } else {
+        return res.status(404).json({ message: "Something went wrong!" });
+      }
+    } else {
+      return res.status(404).json({ message: "Something went wrong!" });
+    }
+    try {
+      await user.save();
+      return res.status(200).json({ message: "Done", user });
+    } catch (e) {
+      return res.status(404).json({ message: [e.message] });
+    }
+  }
 }
 
 module.exports = new UserController();

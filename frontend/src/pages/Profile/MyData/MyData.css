@@ -1,7 +1,6 @@
 .md-container {
-  width: 1000px;
+  width: 1200px;
   height: auto;
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   position: relative;

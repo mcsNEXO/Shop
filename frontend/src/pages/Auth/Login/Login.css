@@ -37,7 +37,7 @@
 .auth-label {
   position: absolute;
   left: 10px;
-  top: 14px;
+  top: 13px;
   transition: all 150ms;
   padding: 0 2px;
   z-index: 1;

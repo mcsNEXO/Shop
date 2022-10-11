@@ -60,20 +60,18 @@ export default function MyData(props) {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(async () => {
-      const data = {
-        email: form.email.value,
-        firstName: form.firstName.value,
-        _id: auth._id,
-      };
-      try {
-        const res = await axios.put("edit-data", data);
-        setAuth(res.data.user);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    }, 1000);
+    const data = {
+      email: form.email.value,
+      firstName: form.firstName.value,
+      _id: auth._id,
+    };
+    try {
+      const res = await axios.put("edit-data", data);
+      setAuth(res.data.user);
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
   };
   const closeModal = () => {
     setModal(!modal);
