@@ -1,10 +1,9 @@
 const express = require("express");
 const app = express();
-const { port, sessionKeySecret } = require("./config");
+const { port } = require("./config");
 const apiRouter = require("./routes/api");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const cors = require("cors");
 
 require("./db/mongoose");

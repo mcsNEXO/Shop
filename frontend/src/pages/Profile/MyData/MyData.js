@@ -6,11 +6,12 @@ import { validate } from "../../../components/helpers/validations";
 import axios from "../../../axios";
 import ModalPassword from "../../../components/Modals/ModalPassword/ModalPassword";
 import LoadingButton from "../../../components/UI/LoadingButton/LoadingButton";
+import ModalImage from "../../../components/Modals/ModalImage/ModalImage";
 
 export default function MyData(props) {
-  const avatar = process.env.PUBLIC_URL + "/img/jpg/avatar3.png";
-  const [image, setImage] = useState("");
-  const [modal, setModal] = useState(false);
+  const [image, setImage] = useState();
+  const [modalPassword, setModalPassword] = useState(false);
+  const [modalImage, setModalImage] = useState(false);
   const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
   const [error, setError] = useState({
@@ -21,11 +22,6 @@ export default function MyData(props) {
       value: auth.email,
       error: "",
       rules: ["email", { rule: "min", number: 6 }, "required"],
-    },
-    password: {
-      value: "",
-      error: "",
-      rules: [{ rule: "min", number: 6 }, "required"],
     },
     firstName: {
       value: auth.firstName,
@@ -41,8 +37,11 @@ export default function MyData(props) {
 
   const buttonDisabled = Object.values(error).filter((x) => x).length;
 
-  const showModal = () => {
-    setModal(true);
+  const showModalPassword = () => {
+    setModalPassword(true);
+  };
+  const showModalImage = () => {
+    setModalImage(true);
   };
 
   const changeHandler = (value, type) => {
@@ -74,33 +73,27 @@ export default function MyData(props) {
     setLoading(false);
   };
   const closeModal = () => {
-    setModal(!modal);
+    setModalPassword(!modalPassword);
+  };
+  const closeModalImage = () => {
+    setModalImage(!modalImage);
   };
   return (
     <>
-      {modal ? <ModalPassword closeModal={() => closeModal} /> : null}
+      {modalImage ? <ModalImage closeModal={closeModalImage} /> : null}
+      {modalPassword ? <ModalPassword closeModal={() => closeModal} /> : null}
       <div className="md-container">
         <div className="md-box">
           <form onSubmit={onSubmit}>
             <div className="md-input-file">
               <div className="md-img">
-                <img alt="avatar" src={avatar} />
-              </div>
-              <div className="md-center">
-                <input
-                  type="file"
-                  id="md-file"
-                  accept="/image/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file && file.type.substring(0, 5) === "image") {
-                      setImage(file);
-                    }
-                  }}
+                <img
+                  src={process.env.PUBLIC_URL + "/uploads/" + auth.image}
+                  alt="avatar"
                 />
-                <label className="md-file" htmlFor="md-file">
-                  Edit
-                </label>
+              </div>
+              <div className="md-center" onClick={showModalImage}>
+                Upload Image
               </div>
             </div>
             <hr className="md-hr"></hr>
@@ -123,13 +116,15 @@ export default function MyData(props) {
                   type="password"
                   value="*************"
                   disabled="true"
-                  // onChange={(e) => changeHandler(e.target.value, "password")}
                   name="password"
                   placeholder="Password"
                   class="md"
                 ></Input>
-                <button onClick={showModal}>Edit</button>
+                <button className="md-btn-pass" onClick={showModalPassword}>
+                  Edit
+                </button>
               </div>
+              <div className="positive-text">all right</div>
               <Input
                 type="text"
                 name="firstName"

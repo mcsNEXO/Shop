@@ -1,5 +1,5 @@
 const User = require("../../db/models/user");
-
+const fs = require("fs");
 class UserController {
   async register(req, res) {
     const user = new User({
@@ -54,7 +54,7 @@ class UserController {
       if (req.body.newPassword === req.body.confirmPassword) {
         user.password = req.body.newPassword;
       } else {
-        return res.status(404).json({ message: "Something went wrong!" });
+        return res.status(404).json({ message: "Passwords are not the same!" });
       }
     } else {
       return res.status(404).json({ message: "Something went wrong!" });
@@ -64,6 +64,35 @@ class UserController {
       return res.status(200).json({ message: "Done", user });
     } catch (e) {
       return res.status(404).json({ message: [e.message] });
+    }
+  }
+  async uploadImage(req, res) {
+    const user = await User.findById(req.body._id);
+    try {
+      return res.status(200).json({ file: req.file, user });
+    } catch (e) {
+      res.status(402).json("error");
+    }
+  }
+  async saveImage(req, res) {
+    const user = await User.findById(req.body._id);
+    if (req.body?.userImage) {
+      fs.unlinkSync("../frontend/public/uploads/" + req.body.userImage);
+    }
+    user.image = req.body.image.split("/")[2];
+    await user.save();
+    return res.status(200).json({ user });
+  }
+  async deleteImage(req, res) {
+    const user = await User.findById(req.body._id);
+    if (user.image === req.body.pathImage.split("/")[2]) {
+      return;
+    }
+    fs.unlinkSync("../frontend/public" + req.body.pathImage);
+    try {
+      return res.status(200).json({});
+    } catch (e) {
+      res.status(400).json("error");
     }
   }
 }

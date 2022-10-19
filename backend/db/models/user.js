@@ -27,6 +27,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Last name is required"],
   },
+  image: String,
 });
 
 userSchema.pre("save", function (next) {

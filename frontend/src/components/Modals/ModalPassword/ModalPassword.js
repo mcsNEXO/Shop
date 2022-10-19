@@ -9,6 +9,7 @@ import { validate } from "../../helpers/validations";
 export default function ModalPassword(props) {
   const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useAuth();
+  const [error, setError] = useState();
   const closeModal = props.closeModal();
 
   window.addEventListener("keydown", function (e) {
@@ -19,7 +20,6 @@ export default function ModalPassword(props) {
     currentPassword: {
       value: "",
       error: "",
-      rules: [{ rule: "min", number: 6 }, "required"],
     },
     newPassword: {
       value: "",
@@ -29,7 +29,6 @@ export default function ModalPassword(props) {
     confirmPassword: {
       value: "",
       error: "",
-      rules: [{ rule: "min", number: 6 }, "required"],
     },
   });
 
@@ -41,6 +40,7 @@ export default function ModalPassword(props) {
         ...form[type],
         value,
         error: error,
+        setError: setError(error),
       },
     });
   };
@@ -60,6 +60,11 @@ export default function ModalPassword(props) {
       closeModal();
     } catch (e) {
       console.log(e);
+      if (e.response.data.message[0].includes(":")) {
+        setError(e.response.data.message[0].split(":")[2]);
+      } else {
+        setError(e.response.data.message);
+      }
     }
     setLoading(false);
   };
@@ -67,47 +72,53 @@ export default function ModalPassword(props) {
   return (
     <>
       <div className="con-modal-pass" onClick={closeModal}></div>
-      <div className="box-modal-pass">
-        <div className="modal-pass-label">
-          <div>Edit password </div>
-          <div className="modal-pass-close">
-            <i className="bi bi-x-circle" onClick={props.closeModal()}></i>
+      <div className="con2-modal-pass">
+        <div className="box-modal-pass">
+          <div className="modal-pass-label">
+            <div>Edit password </div>
+            <div className="modal-pass-close">
+              <i className="bi bi-x-circle" onClick={props.closeModal()}></i>
+            </div>
           </div>
+          <form onSubmit={editPassword}>
+            <div className="modal-pass-input">
+              <Input
+                type="password"
+                name="password"
+                onChange={(e) =>
+                  changeHandler(e.target.value, "currentPassword")
+                }
+                class="auth"
+                placeholder="Current password"
+              />
+            </div>
+            <div className="modal-pass-input">
+              <Input
+                type="password"
+                name="new-password"
+                onChange={(e) => changeHandler(e.target.value, "newPassword")}
+                class="auth"
+                placeholder="New password"
+              />
+            </div>
+            <div className="modal-pass-input">
+              <Input
+                type="password"
+                name="confirm-new-password"
+                onChange={(e) =>
+                  changeHandler(e.target.value, "confirmPassword")
+                }
+                id="password"
+                class="auth"
+                placeholder="Confirm password"
+              />
+            </div>
+            <div className="auth-error">{error}</div>
+            <div className="modal-pass-btn">
+              <LoadingButton loading={loading}>Save</LoadingButton>
+            </div>
+          </form>
         </div>
-        <form onSubmit={editPassword}>
-          <div className="modal-pass-input">
-            <Input
-              type="password"
-              name="password"
-              onChange={(e) => changeHandler(e.target.value, "currentPassword")}
-              class="auth"
-              placeholder="Current password"
-            />
-          </div>
-          <div className="modal-pass-input">
-            <Input
-              type="password"
-              name="new-password"
-              onChange={(e) => changeHandler(e.target.value, "newPassword")}
-              class="auth"
-              placeholder="New password"
-            />
-          </div>
-          <div className="modal-pass-input">
-            <Input
-              type="password"
-              name="confirm-new-password"
-              onChange={(e) => changeHandler(e.target.value, "confirmPassword")}
-              id="password"
-              class="auth"
-              placeholder="Confirm password"
-            />
-          </div>
-
-          <div className="modal-pass-btn">
-            <LoadingButton loading={loading}>Save</LoadingButton>
-          </div>
-        </form>
       </div>
     </>
   );
