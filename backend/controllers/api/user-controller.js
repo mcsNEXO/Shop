@@ -68,10 +68,11 @@ class UserController {
   }
   async uploadImage(req, res) {
     const user = await User.findById(req.body._id);
+    console.log(req.file);
     try {
       return res.status(200).json({ file: req.file, user });
     } catch (e) {
-      res.status(402).json("error");
+      res.status(402).json({ message: e.message });
     }
   }
   async saveImage(req, res) {
@@ -83,16 +84,19 @@ class UserController {
     await user.save();
     return res.status(200).json({ user });
   }
-  async deleteImage(req, res) {
+  async cancelUpload(req, res) {
     const user = await User.findById(req.body._id);
+    console.log("cancel newImage", req.body.pathImage);
+    console.log("cancel userImage", req.body.userImage);
+    console.log("cancel authImage", user.image);
     if (user.image === req.body.pathImage.split("/")[2]) {
       return;
     }
     fs.unlinkSync("../frontend/public" + req.body.pathImage);
     try {
-      return res.status(200).json({});
+      return res.status(204).json({ status: "No Content" });
     } catch (e) {
-      res.status(400).json("error");
+      res.status(500).json({ message: e.message });
     }
   }
 }

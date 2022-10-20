@@ -1,110 +1,96 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "../../../axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import LoadingButton from "../../UI/LoadingButton/LoadingButton";
 import "./ModalImage.css";
 
 export default function ModalImage(props) {
   const [image, setImage] = useState();
   const [newImage, setNewImage] = useState();
+  const [loading, setLoading] = useState();
   const [auth, setAuth] = useAuth();
-  const navigate = useNavigate();
 
-  window.addEventListener("keydown", async function (e) {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      console.log(newImage);
-      if (newImage) {
-        const data = {
-          _id: auth._id,
-          pathImage: newImage,
-        };
-        await axios.post("delete-image", data);
+  useEffect(
+    (e) => {
+      if (image) {
+        uploadImage();
       }
-      props.closeModal();
-    }
-  });
+    },
+    [image]
+  );
+
   const uploadImage = async (e) => {
-    e ? e.preventDefault() : console.log("No");
-    // e.preventDefault();
+    e ? e.preventDefault() : console.log();
+    setLoading(true);
+    const formdata = new FormData();
+    formdata.append("image", image);
+    formdata.append("_id", auth._id);
     try {
-      let res;
       if (newImage) {
-        cancel();
+        await deleteUploadImage(e);
       }
-      const formdata = new FormData();
-      formdata.append("image", image);
-      formdata.append("_id", auth._id);
-      res = await axios.post("image", formdata);
+      const res = await axios.post("image", formdata);
+      console.log(res);
       setNewImage(
         process.env.PUBLIC_URL + "/uploads/" + res.data.file.filename
       );
-      // console.log(res);
-
-      // console.log("bez flagi", newImage);
-      // if (flag) {
-      //   if (!image || !newImage) {
-      //     return props.closeModal();
-      //   }
-      //   formdata.append("flag", true);
-      //   res = await axios.post("image", formdata);
-      //   setAuth(res.data.user);
-      //   console.log("flaga", newImage);
-      // }
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
   };
-  const cancel = async (e) => {
+  const deleteUploadImage = async (e, flag) => {
     e ? e.preventDefault() : console.log("no");
+    setLoading(true);
     if (!newImage) {
+      console.log("!NEWIMAGE", newImage, e, flag);
       return props.closeModal();
     }
+    console.log("NEWIMAGE exist", newImage, e, flag);
     try {
-      const res = await axios.post("delete-image", {
+      await axios.post("cancel-image", {
         pathImage: newImage,
         userImage: auth.image,
         _id: auth._id,
       });
-      console.log(res);
     } catch (e) {
       console.log(e);
     }
-    props.closeModal();
+    setLoading(false);
+    flag ? props.closeModal() : console.log();
   };
 
-  useEffect(() => {
-    if (image) {
-      uploadImage();
-    }
-  }, [image]);
-  const show = async (e) => {
+  const saveImage = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (!newImage) {
       return props.closeModal();
     }
-    const res = await axios.post("save-image", {
-      image: newImage,
-      userImage: auth.image,
-      _id: auth._id,
-    });
-    setAuth(res.data.user);
-    setNewImage("");
-    return;
-  };
-  const showData = (e) => {
-    e.preventDefault();
-    console.log("auth.image ", auth.image);
-    console.log("newImage ", newImage);
+    try {
+      const res = await axios.post("save-image", {
+        image: newImage,
+        userImage: auth.image,
+        _id: auth._id,
+      });
+      setAuth(res.data.user);
+      setNewImage("");
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+    props.closeModal();
   };
   return (
     <>
-      <div className="con-modal-pass"></div>
+      <div
+        className="con-modal-pass"
+        onClick={(e) => deleteUploadImage(e, { flag: true })}
+      ></div>
       <div className="con2-modal-pass">
         <div className="box-modal-pass">
           <div className="box-image">
             <img
-              // src={process.env.PUBLIC_URL + "/uploads/" + auth.image}
               src={
                 newImage
                   ? newImage
@@ -113,8 +99,7 @@ export default function ModalImage(props) {
               alt="src"
             />
           </div>
-
-          <form encType="multipart/form-data" onSubmit={show}>
+          <form encType="multipart/form-data" onSubmit={saveImage}>
             <div className="md-right">
               <input
                 type="file"
@@ -128,17 +113,29 @@ export default function ModalImage(props) {
                 Upload image
               </label>
             </div>
-            <button type="submit">Save</button>
-            <button onClick={cancel}>Cancel</button>
+            <div className="modal-img-btn">
+              <LoadingButton
+                className="img-btn"
+                loading={loading}
+                type="submit"
+              >
+                Save
+              </LoadingButton>
+              <LoadingButton
+                className="img-btn"
+                onClick={(e) => deleteUploadImage(e, { flag: true })}
+              >
+                Cancel
+              </LoadingButton>
+              {auth.image ? (
+                <LoadingButton className="del-img-btn" loading={loading}>
+                  Delete
+                </LoadingButton>
+              ) : null}
+            </div>
           </form>
         </div>
       </div>
-      <button
-        style={{ position: "absolute", top: "0", zIndex: "100" }}
-        onClick={showData}
-      >
-        SHOWME
-      </button>
     </>
   );
 }

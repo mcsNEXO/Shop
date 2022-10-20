@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 let upload = multer({ storage: storage }).single("image");
 
 router.post("/save-image", userController.saveImage);
-router.post("/delete-image", userController.deleteImage);
+router.post("/cancel-image", userController.cancelUpload);
 router.post("/image", upload, userController.uploadImage);
 router.post("/sign-in", userController.login);
 router.post("/sign-up", userController.register);

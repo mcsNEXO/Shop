@@ -88,12 +88,16 @@ export default function MyData(props) {
             <div className="md-input-file">
               <div className="md-img">
                 <img
-                  src={process.env.PUBLIC_URL + "/uploads/" + auth.image}
+                  src={
+                    auth.image
+                      ? process.env.PUBLIC_URL + "/uploads/" + auth.image
+                      : process.env.PUBLIC_URL + "/img/jpg/avatar3.png"
+                  }
                   alt="avatar"
                 />
               </div>
-              <div className="md-center" onClick={showModalImage}>
-                Upload Image
+              <div className="md-center btn-upload">
+                <button onClick={showModalImage}>Upload Image</button>
               </div>
             </div>
             <hr className="md-hr"></hr>
