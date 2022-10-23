@@ -91,7 +91,7 @@ export default function MyData(props) {
                   src={
                     auth.image
                       ? process.env.PUBLIC_URL + "/uploads/" + auth.image
-                      : process.env.PUBLIC_URL + "/img/jpg/avatar3.png"
+                      : process.env.PUBLIC_URL + "/uploads/avatar3.png"
                   }
                   alt="avatar"
                 />

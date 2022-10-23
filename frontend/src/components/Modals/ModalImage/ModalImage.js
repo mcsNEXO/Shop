@@ -44,10 +44,8 @@ export default function ModalImage(props) {
     e ? e.preventDefault() : console.log("no");
     setLoading(true);
     if (!newImage) {
-      console.log("!NEWIMAGE", newImage, e, flag);
       return props.closeModal();
     }
-    console.log("NEWIMAGE exist", newImage, e, flag);
     try {
       await axios.post("cancel-image", {
         pathImage: newImage,
@@ -59,6 +57,19 @@ export default function ModalImage(props) {
     }
     setLoading(false);
     flag ? props.closeModal() : console.log();
+  };
+
+  const deleteImage = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const data = {
+      _id: auth._id,
+      image: auth.image,
+    };
+    const res = await axios.post("delete-image", data);
+    console.log(res);
+    setAuth(res.data.user);
+    setLoading(false);
   };
 
   const saveImage = async (e) => {
@@ -81,6 +92,10 @@ export default function ModalImage(props) {
     setLoading(false);
     props.closeModal();
   };
+  const kk = (e) => {
+    e.preventDefault();
+    console.log(auth);
+  };
   return (
     <>
       <div
@@ -97,6 +112,7 @@ export default function ModalImage(props) {
                   : process.env.PUBLIC_URL + "/uploads/" + auth.image
               }
               alt="src"
+              onClick={kk}
             />
           </div>
           <form encType="multipart/form-data" onSubmit={saveImage}>
@@ -127,8 +143,12 @@ export default function ModalImage(props) {
               >
                 Cancel
               </LoadingButton>
-              {auth.image ? (
-                <LoadingButton className="del-img-btn" loading={loading}>
+              {auth.image !== "avatar.png" ? (
+                <LoadingButton
+                  className="del-img-btn"
+                  onClick={deleteImage}
+                  loading={loading}
+                >
                   Delete
                 </LoadingButton>
               ) : null}
