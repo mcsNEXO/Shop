@@ -20,12 +20,7 @@ export default function Login(props) {
     };
     try {
       const res = await axios.post("/sign-in", data);
-      setAuth({
-        email: res.data.user.email,
-        firstName: res.data.user.firstName,
-        _id: res.data.user._id,
-        token: res.data.token,
-      });
+      setAuth(res.data.user);
       navigate("/");
     } catch (e) {
       setError(e.response.data.message);

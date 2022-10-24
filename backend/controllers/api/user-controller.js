@@ -68,7 +68,6 @@ class UserController {
   }
   async uploadImage(req, res) {
     const user = await User.findById(req.body._id);
-    console.log(req.file);
     try {
       return res.status(200).json({ file: req.file, user });
     } catch (e) {
@@ -78,7 +77,10 @@ class UserController {
   async saveImage(req, res) {
     const user = await User.findById(req.body._id);
     if (req.body?.userImage) {
-      fs.unlinkSync("../frontend/public/uploads/" + req.body.userImage);
+      console.log(user.image);
+      if (req.body.userImage !== "avatar.png") {
+        fs.unlinkSync("../frontend/public/uploads/" + req.body.userImage);
+      }
     }
     user.image = req.body.image.split("/")[2];
     await user.save();
@@ -86,6 +88,7 @@ class UserController {
   }
   async cancelUpload(req, res) {
     const user = await User.findById(req.body._id);
+    console.log(user, req.body);
     if (user.image === req.body.pathImage.split("/")[2]) {
       return;
     }
