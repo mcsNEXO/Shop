@@ -1,6 +1,6 @@
 import "./Menu.css";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import Collection from "../Collection/Collection";
 import Option from "./Option/Option";
 import OftenChosen from "./OftenChosen/OftenChosen";
@@ -39,6 +39,9 @@ export default function Menu(props) {
           </form>
         </div>
       </div>
+      <Routes>
+        <Route path="men/lifestyle" element={<div>lifestyle</div>} />
+      </Routes>
     </main>
   );
 }

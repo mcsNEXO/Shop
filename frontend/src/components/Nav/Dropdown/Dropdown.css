@@ -51,3 +51,12 @@
   justify-content: center;
   align-items: flex-start;
 }
+
+.dropdown-close {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: transform 0.3s ease, opacity 0ms linear 0.1s,
+    visibility 0ms linear 0.1s !important;
+  transform-origin: top center !important;
+  transform: scaleY(0) !important;
+}

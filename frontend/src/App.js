@@ -14,6 +14,9 @@ import Profile from "./pages/Profile/Profile";
 import MyData from "./pages/Profile/MyData/MyData";
 import ProfilePage from "./pages/Profile/ProfilePage/ProfilePage";
 import RequireAuth from "./hoc/RequireAuth";
+import Men from "./pages/Category/Man/Men";
+import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
+import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -21,7 +24,12 @@ function App() {
   const nav = <Nav />;
   const menu = (
     <Routes>
-      <Route path="/" element={<Menu />} />
+      <Route path="/*" element={<Menu />} />
+      <Route path="/men" element={<Men />} />
+      <Route path="/w">
+        <Route path="men-shoes-lifestyle" element={<ShoesLifeStyle />} />
+        <Route path="men-shoes-running" element={<ShoesRunning />} />
+      </Route>
       <Route
         path="profile/*"
         element={
@@ -37,7 +45,6 @@ function App() {
         <Route path="orders" element />
         <Route path="*" element={<div>Not Found</div>} />
       </Route>
-      <Route path="/news" element={<div>News</div>} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </Routes>

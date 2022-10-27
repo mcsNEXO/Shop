@@ -19,9 +19,11 @@
 .pg-img {
   width: 100px;
   height: 100px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 50%;
-  background-color: black;
+}
+.pg-img img {
+  border-radius: 50%;
 }
 
 .pg-img-title {

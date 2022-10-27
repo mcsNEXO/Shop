@@ -13,8 +13,6 @@ export default function Nav(props) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const openAccount = () => {};
-
   return (
     <>
       <nav className={isOpen ? "is-open nav-open" : null}>
@@ -36,7 +34,7 @@ export default function Nav(props) {
                 onPointerLeave={() => setIsOpen(false)}
               >
                 <NavLink to={item.path}>{item.title}</NavLink>
-                <Dropdown item={item.submenu} />
+                <Dropdown path={item.path} item={item.submenu} />
               </div>
             );
           })}
@@ -47,7 +45,7 @@ export default function Nav(props) {
           </div>
 
           <div className="container-icon">
-            <button className="btn-icon" onClick={openAccount}>
+            <button className="btn-icon">
               <div className="i-icon">
                 <i className="bi bi-person"></i>
                 <div className="person-container">

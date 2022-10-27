@@ -1,12 +1,20 @@
 import "./ProfilePage.css";
 import useAuth from "../../../hooks/useAuth";
+import { NavLink } from "react-router-dom";
 
 export default function ProfilePage(props) {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
   return (
     <div className="pg-container">
       <div className="pg-box pg-height">
-        <div className="pg-img">{/* <img></img> */}</div>
+        <div className="pg-img">
+          <NavLink to="my-data">
+            <img
+              src={process.env.PUBLIC_URL + "/uploads/" + auth.image}
+              alt="avatar"
+            />
+          </NavLink>
+        </div>
         <div className="pg-img-title">
           Welcome to your profile <i>{auth.firstName}</i>
         </div>
