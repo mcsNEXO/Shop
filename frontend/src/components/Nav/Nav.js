@@ -76,9 +76,11 @@ export default function Nav(props) {
               <i className="bi bi-heart"></i>
             </button>
           </div>
+          <NavLink to='/cart'>
           <button className="btn-icon">
             <i className="bi bi-bag"></i>
           </button>
+          </NavLink>
         </div>
       </nav>
       <div className={`bg-page ${isOpen ? "is-open" : ""}`}></div>

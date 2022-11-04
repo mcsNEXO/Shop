@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 export default function webPath() {
@@ -10,10 +9,25 @@ export default function webPath() {
       .toString()
       .replaceAll(",", "-");
     return (
-      <NavLink key={indexItem} to={`/w/${x}`}>
-        {item}
-      </NavLink>
+      <div className="key" key={indexItem}>
+        <div className="path-link" key={indexItem}>
+          <NavLink key={indexItem} to={`/w/${x}`}>
+            {item}
+          </NavLink>
+          <span>
+            {`${indexItem < pathArray.length - 1 ? " >" : ""}`}
+            &nbsp;
+          </span>
+        </div>
+      </div>
     );
   });
-  return x;
+  return (
+    <>
+      <div className="currentPathWeb">{x}</div>
+      <div className="current-title">
+        {window.location.pathname.split("/")[2].replaceAll("-", " ")}
+      </div>
+    </>
+  );
 }

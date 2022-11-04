@@ -17,6 +17,7 @@ import RequireAuth from "./hoc/RequireAuth";
 import Men from "./pages/Category/Man/Men";
 import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
 import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
+import Cart from "./pages/Cart/Cart";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -30,6 +31,9 @@ function App() {
         <Route path="men-shoes-lifestyle" element={<ShoesLifeStyle />} />
         <Route path="men-shoes-running" element={<ShoesRunning />} />
       </Route>
+
+    <Route path="cart" element={<Cart/>}/>
+
       <Route
         path="profile/*"
         element={
