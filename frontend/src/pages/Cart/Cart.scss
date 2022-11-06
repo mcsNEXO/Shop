@@ -8,7 +8,7 @@
         margin: 20px 0;
     }
     .box-of-products{
-        margin: auto;
+        margin: 0 auto;
         .box-product{
             display: flex;
             width: 100%;
@@ -39,5 +39,91 @@
             }
            
     }
+    }
+    .to-pay{
+        width: 400px;
+        padding: 1.5rem;
+        .title-pay{
+            font-size: 1.7rem;
+            margin: 0 0 2rem 0;
+            font-weight: 600;
+        }
+        .box-pay{
+            text-align:  center;
+            .style-div{
+                margin: 1rem 0;
+                font-size: 1.2rem;
+                display: flex;
+                justify-content: space-between ;
+            }
+            button.checkout{
+                background-color: black;
+                font-size: 1.1rem;
+                color: white;
+                width: 60%;
+                height: 40px;
+                border-radius: 10px;
+            }
+        }
+        .promo-code{
+            margin: 1rem 0;
+            width: 100%;
+            text-align: center;
+            overflow: hidden;
+            height: auto;
+            span{
+                cursor: pointer;
+                font-size: 1.2rem;
+                .rotate::before{
+                    transform: rotate(180deg) ;
+                }
+                i::before{
+                    transition: all 350ms ease;
+                }
+            }
+           
+            .div-promo{
+                margin: 0.4rem 0;
+                padding: 5px;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 40px;
+                input{
+                    width: 50%;
+                    height: 32px;
+                    font-size: 0.9rem;
+                    margin-top: 1px;
+                    border-radius: 10px;
+                    border: 1px solid rgb(134, 134, 134);
+                    outline: none;
+                    margin-right: 5px;
+                }
+                button{
+                    width: 20%;
+                    border-radius: 10px; 
+                    margin-top: 1px;
+                    background-color: black;
+                    color: white;
+                    font-size: 1.05rem;
+                    height: 100%;
+                    height: 35px;
+               }
+            }
+            .show{
+                visibility: visible;
+                transition: all 350ms ease-in-out;
+                opacity: 1;
+                height: 50px;
+            }
+            .hide{
+                visibility: hidden;
+                transition: all 350ms ease-in-out;
+                opacity: 0;
+                height: 0;
+            }
+            
+        }
     }
 }
