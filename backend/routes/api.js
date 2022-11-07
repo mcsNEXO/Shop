@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/api/user-controller");
 const shoesController = require("../controllers/api/shoes-controller");
+const PromoCodeController = require("../controllers/api/promo-code-controller");
 const path = require("path");
 const multer = require("multer");
 
@@ -26,5 +27,6 @@ router.put("/edit-data", userController.edit);
 router.put("/edit-password", userController.editPassword);
 
 router.get("/get-shoes", shoesController.getShoes);
+router.post("/get-promocode", PromoCodeController.getCode);
 
 module.exports = router;

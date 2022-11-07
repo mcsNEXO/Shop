@@ -21,9 +21,15 @@
             }
             .information{
                 padding: 10px;
+                .name::first-letter{
+                    text-transform: uppercase;
+                }
                 .name{
                     font-size: 1.1rem;
                     margin: 5px 0;
+                }
+                .gender::first-letter{
+                    text-transform: uppercase;
                 }
                 .quantity{
                     margin-left: 10px;
@@ -36,6 +42,21 @@
                 font-size: 1.2rem;
                 align-self: center;
                 text-align: end;
+            }
+            .delete{
+                align-self: center;
+                text-align: end;
+                width: 20%;
+                color: red;
+                font-size: 25px;
+            }
+            .favorite{
+                align-self: center;
+                width: 20%;
+                max-width: 80px;
+                text-align: center;
+                font-size: 25px;
+                color: black;
             }
            
     }
