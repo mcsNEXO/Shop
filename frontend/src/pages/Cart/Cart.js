@@ -1,5 +1,5 @@
 import "./Cart.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "../../axios";
 
 export default function Cart(props) {
@@ -7,6 +7,7 @@ export default function Cart(props) {
   const [cart, setCart] = useState(s);
   const [code, setCode] = useState("");
   const [discount, setDiscount] = useState(0);
+
   const price = () => {
     let price = 0;
     for (let i = 0; i < s?.length; i++) {
@@ -37,7 +38,6 @@ export default function Cart(props) {
   return (
     <div className="cart-container">
       <div>
-        <button onClick={() => console.log(cart)}>dsds</button>
         <div className="title-cart">Cart</div>
         <hr></hr>
         <div style={{ display: "flex" }}>
@@ -58,7 +58,7 @@ export default function Cart(props) {
                       <div className="color">{`Color: ${item.colors}`}</div>
                       <div style={{ display: "flex" }}>
                         <div className="size">{`Size: ${item.size} `}</div>
-                        <div className="quantity">Quantity {0}</div>
+                        <div className="quantity">Quantity {item.quantity}</div>
                       </div>
                     </div>
                     <div className="price">${item.price}</div>

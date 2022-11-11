@@ -5,6 +5,7 @@ import axios from "../../../../../axios";
 import style from "./ShoesLifeStyle.module.css";
 
 export default function MenShoesLifeStyle(props) {
+  const storageData = JSON.parse(localStorage.getItem("cart"));
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
   useEffect(() => {
@@ -23,16 +24,31 @@ export default function MenShoesLifeStyle(props) {
     setShoes(res.data.shoes);
   };
 
-  const addToCart = (item) => {
+  const addToCart = async (product) => {
     // createCookieInHour('cart', JSON.stringify(item), 5);
-    const items = (() => {
-      const fieldValue = localStorage.getItem("cart");
-      return fieldValue === null ? [] : JSON.parse(fieldValue);
-    })();
-    items.push(item);
-    localStorage.setItem("cart", JSON.stringify(items));
+    if (storageData === null) {
+      await localStorage.setItem("cart", JSON.stringify([]));
+    }
+    console.log("storage", storageData);
+    console.log("item", product);
+    const exist = storageData.find((x) => x._id === product._id);
+    console.log("exist", exist);
+    if (exist) {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(
+          storageData.map((x) =>
+            x._id === product._id
+              ? { ...exist, quantity: (exist.quantity += 1) }
+              : x
+          )
+        )
+      );
+    } else {
+      const items = [...storageData, { ...product, quantity: 1 }];
+      localStorage.setItem("cart", JSON.stringify(items));
+    }
   };
-
   return (
     <div className={style.conLifestyle}>
       <div className={style.header}>
@@ -47,9 +63,7 @@ export default function MenShoesLifeStyle(props) {
         </div>
       </div>
       <div className={style.conContent}>
-        <div className={style.filterBar} onClick={getProducts}>
-          filter
-        </div>
+        <div className={style.filterBar}>filter</div>
         <div className={style.content}>
           {shoes?.map((item, index) => {
             return (
