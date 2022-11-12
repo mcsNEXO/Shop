@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "arial";
+  max-width: 1920px;
+  margin: auto;
+}
+
+.is-open {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+a.black:visited,
+a.black:link {
+  text-decoration: none;
+  color: black;
+}
+
+.path-link {
+  color: black;
+  text-transform: uppercase;
+  font-family: "Kanit", sans-serif;
+  font-size: 0.8rem;
+}
+.path-link a:visited,
+.path-link a:link {
+  color: black;
+  text-decoration: none;
+}
+.path-link span {
+  font-size: 0.96rem;
+}
+.currentPathWeb {
+  letter-spacing: 0.5px;
+  width: 100%;
+  display: flex;
+  text-transform: capitalize;
+}
+.currentPathWeb a {
+  color: black;
+  font-family: "Kanit", sans-serif;
+}
+
+.current-title {
+  text-transform: capitalize;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.container-errorModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  .content{
+    position: fixed;
+    top: 30%;
+    left: 36%;
+    display: flex;
+    z-index: 101;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    background-color: white;
+    border-radius: 20px;
+    width: 500px;
+    height: 300px;
+    border: 1px solid black;
+    // position: relative;
+    i::before{
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.6rem;
+    }
+    .e-title{
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 0 16px 0;
+    }
+    .box{
+      border-bottom: 2px solid black;
+      border-top: 2px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      height: 100px;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+  }
+
+

@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import React, { useReducer } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
@@ -32,7 +32,7 @@ function App() {
         <Route path="men-shoes-running" element={<ShoesRunning />} />
       </Route>
 
-    <Route path="cart" element={<Cart/>}/>
+      <Route path="cart" element={<Cart />} />
 
       <Route
         path="profile/*"

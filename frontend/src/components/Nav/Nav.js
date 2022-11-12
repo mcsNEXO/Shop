@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Nav.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { navItems } from "./NavItems";
@@ -76,10 +76,14 @@ export default function Nav(props) {
               <i className="bi bi-heart"></i>
             </button>
           </div>
-          <NavLink to='/cart'>
-          <button className="btn-icon">
-            <i className="bi bi-bag"></i>
-          </button>
+          <NavLink to="/cart">
+            <button className="btn-icon">
+              <i className="bi bi-bag">
+                <span className="amount">
+                  {JSON.parse(localStorage.getItem("cart")).length}
+                </span>
+              </i>
+            </button>
           </NavLink>
         </div>
       </nav>
