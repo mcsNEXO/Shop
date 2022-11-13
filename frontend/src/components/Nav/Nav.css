@@ -136,12 +136,13 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 2px;
+  /* padding-top: 2px; */
+  padding: 2px 2px 0px 3px;
   font-weight: 600;
   font-style: normal !important;
   width: 18px;
   height: 18px;
-  font-size: 14px;
+  font-size: 13.5px;
   border: 1px solid black;
   background-color: rgb(252, 252, 252);
   border-radius: 50%;

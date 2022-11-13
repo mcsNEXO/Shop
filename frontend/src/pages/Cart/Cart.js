@@ -2,9 +2,10 @@ import "./Cart.scss";
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
+import useCart from "../../hooks/useCart";
 
 export default function Cart(props) {
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
+  const [cart, setCart] = useCart();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -36,17 +37,13 @@ export default function Cart(props) {
 
   const updateQuantity = (value, item) => {
     const product = cart.find((x) => x._id === item._id);
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(
-        cart.map((x) =>
-          x._id === product._id
-            ? { ...product, quantity: (product.quantity = Number(value)) }
-            : x
-        )
+    setCart(
+      cart.map((x) =>
+        x._id === product._id
+          ? { ...product, quantity: (product.quantity = Number(value)) }
+          : x
       )
     );
-    setCart(JSON.parse(localStorage.getItem("cart")));
   };
 
   return (
@@ -60,7 +57,7 @@ export default function Cart(props) {
             <div className="box-of-products">
               {cart?.length > 0 ? (
                 cart?.map((item, index) => (
-                  <div key={index}>
+                  <div className="keyDiv" key={index}>
                     <div className="box-product">
                       <img
                         src={
@@ -106,7 +103,6 @@ export default function Cart(props) {
                             (el) => JSON.stringify(el) !== JSON.stringify(item)
                           );
                           setCart(arr);
-                          localStorage.setItem("cart", JSON.stringify(arr));
                         }}
                       >
                         <i className="bi bi-trash3"></i>
@@ -133,6 +129,22 @@ export default function Cart(props) {
                   <div className="delivery">Cost of delivery </div>
                   <span>$0</span>
                 </div>
+                {discount ? (
+                  <>
+                    <div className="style-div">
+                      <div className="discount">Total discount: </div>
+                      <span>${(price().price * discount) / 100}</span>
+                    </div>
+                    <div className="style-div">
+                      <div className="code-discount">
+                        "{code}" -{discount}% off{" "}
+                      </div>
+                      <span onClick={() => setDiscount("")}>
+                        <i className="bi bi-x-lg"></i>
+                      </span>
+                    </div>
+                  </>
+                ) : null}
                 <hr></hr>
                 <div className="style-div">
                   <div className="sum">Sum</div>

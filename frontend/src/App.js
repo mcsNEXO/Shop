@@ -18,6 +18,7 @@ import Men from "./pages/Category/Man/Men";
 import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
 import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
 import Cart from "./pages/Cart/Cart";
+import CartContext from "./context/cartContext";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -56,15 +57,22 @@ function App() {
   const footer = <Footer />;
   return (
     <Router>
-      <AuthContext.Provider
+      <CartContext.Provider
         value={{
-          user: state.user,
-          login: (user) => dispatch({ type: "login", user }),
-          logout: () => dispatch({ type: "logout" }),
+          item: state.cart,
+          login: (item) => dispatch({ type: "cart", item }),
         }}
       >
-        <Layout header={header} nav={nav} menu={menu} footer={footer} />
-      </AuthContext.Provider>
+        <AuthContext.Provider
+          value={{
+            user: state.user,
+            login: (user) => dispatch({ type: "login", user }),
+            logout: () => dispatch({ type: "logout" }),
+          }}
+        >
+          <Layout header={header} nav={nav} menu={menu} footer={footer} />
+        </AuthContext.Provider>
+      </CartContext.Provider>
     </Router>
   );
 }

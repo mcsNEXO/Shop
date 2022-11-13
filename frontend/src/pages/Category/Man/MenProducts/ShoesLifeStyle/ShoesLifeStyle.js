@@ -4,11 +4,13 @@ import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
 import style from "./ShoesLifeStyle.module.css";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
+import useCart from "../../../../../hooks/useCart";
 
 export default function MenShoesLifeStyle(props) {
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
   const [error, setError] = useState();
+  const [cart, setCart] = useCart();
   useEffect(() => {
     setWebLink(webPath());
     getProducts();
@@ -26,35 +28,28 @@ export default function MenShoesLifeStyle(props) {
   };
 
   const addToCart = async (product) => {
-    const storageData = JSON.parse(localStorage.getItem("cart"));
     // createCookieInHour('cart', JSON.stringify(item), 5);
-    if (storageData !== null) {
-      const exist = storageData.find((x) => x._id === product._id);
+    if (cart !== null) {
+      const exist = cart.find((x) => x._id === product._id);
       if (exist?.quantity === 10) {
         return setError("The quantity of this product is maximum!");
       } else {
         setError(false);
       }
       if (exist) {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify(
-            storageData.map((x) =>
-              x._id === product._id
-                ? { ...exist, quantity: (exist.quantity += 1) }
-                : x
-            )
+        setCart(
+          cart.map((x) =>
+            x._id === product._id
+              ? { ...exist, quantity: (exist.quantity += 1) }
+              : x
           )
         );
       } else {
-        const items = [...storageData, { ...product, quantity: 1 }];
-        localStorage.setItem("cart", JSON.stringify(items));
+        const items = [...cart, { ...product, quantity: 1 }];
+        setCart(items);
       }
     } else {
-      localStorage.setItem(
-        "cart",
-        JSON.stringify([{ ...product, quantity: 1 }])
-      );
+      setCart([{ ...product, quantity: 1 }]);
     }
   };
   return (

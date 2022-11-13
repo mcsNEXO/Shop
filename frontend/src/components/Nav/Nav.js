@@ -6,12 +6,23 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Serachbar from "../UI/Searchbar.js/Serachbar";
 import Dropdown from "./Dropdown/Dropdown";
 import useAuth from "../../hooks/useAuth";
+import useCart from "../../hooks/useCart";
 
 export default function Nav(props) {
   const logo = process.env.PUBLIC_URL + "/img/svg/logo.svg";
   const [auth, setAuth] = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const [cart] = useCart();
+  const [amount, setAmount] = useState();
+
+  useEffect(() => {
+    let amountItems = 0;
+    for (let i = 0; i < cart.length; i++) {
+      amountItems += cart[i].quantity;
+    }
+    amountItems >= 9 ? setAmount("9+") : setAmount(amountItems);
+  }, [cart]);
 
   return (
     <>
@@ -25,7 +36,7 @@ export default function Nav(props) {
           <img src={logo} alt="logo" />
         </div>
         <div className="main-panel-menu">
-          {navItems.map((item, index) => {
+          {navItems.map((item) => {
             return (
               <div
                 key={item.id}
@@ -79,9 +90,7 @@ export default function Nav(props) {
           <NavLink to="/cart">
             <button className="btn-icon">
               <i className="bi bi-bag">
-                <span className="amount">
-                  {JSON.parse(localStorage.getItem("cart")).length}
-                </span>
+                {amount > 0 ? <span className="amount">{amount}</span> : null}
               </i>
             </button>
           </NavLink>
