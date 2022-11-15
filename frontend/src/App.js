@@ -18,6 +18,7 @@ import Men from "./pages/Category/Man/Men";
 import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
 import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
 import Cart from "./pages/Cart/Cart";
+import Shoe from "./pages/Category/Man/MenProducts/ShoesLifeStyle/Shoe/Shoe";
 import CartContext from "./context/cartContext";
 
 function App() {
@@ -26,13 +27,13 @@ function App() {
   const nav = <Nav />;
   const menu = (
     <Routes>
-      <Route path="/*" element={<Menu />} />
+      <Route path="/" element={<Menu />} />
       <Route path="/men" element={<Men />} />
       <Route path="/w">
         <Route path="men-shoes-lifestyle" element={<ShoesLifeStyle />} />
         <Route path="men-shoes-running" element={<ShoesRunning />} />
       </Route>
-
+      <Route path="/:id" element={<Shoe />} />
       <Route path="cart" element={<Cart />} />
 
       <Route

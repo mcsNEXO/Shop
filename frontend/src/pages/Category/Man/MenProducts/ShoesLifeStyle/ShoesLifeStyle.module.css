@@ -24,8 +24,7 @@
   border-radius: 8px;
   background-color: white;
 }
-.filterBar i {
-}
+
 .content {
   width: 100%;
   margin-top: 2rem;
@@ -39,8 +38,6 @@
 .currentPathWeb a {
   color: black;
   font-family: "Kanit", sans-serif;
-}
-.seperator {
 }
 
 .conContent {
@@ -70,5 +67,34 @@
   font-size: 0.95rem;
 }
 .description {
-  padding: 10px;
+  padding: 10px 2px;
+}
+.colors {
+  color: rgb(101, 96, 96);
+}
+
+a:visited,
+a:link {
+  color: black;
+  text-decoration: none;
+}
+
+.conImg {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+.show {
+  transition: all 400ms ease;
+  opacity: 1;
+  height: auto;
+}
+.hide {
+  transition: all 400ms ease;
+  opacity: 0;
+  height: 0px;
+}
+.boxImg img {
+  width: 50px !important;
+  height: 50px !important;
 }

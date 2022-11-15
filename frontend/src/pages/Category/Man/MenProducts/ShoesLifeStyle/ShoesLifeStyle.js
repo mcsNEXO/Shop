@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
 import style from "./ShoesLifeStyle.module.css";
@@ -9,8 +9,27 @@ import useCart from "../../../../../hooks/useCart";
 export default function MenShoesLifeStyle(props) {
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
+  const [showModels, setShowModels] = useState(false);
   const [error, setError] = useState();
   const [cart, setCart] = useCart();
+  const arr = ["black", "white"];
+  // const setEdit = (editVal) => {
+  //   if (this.state.edit === editVal) {
+  //     this.setState({
+  //       edit: null,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       edit: editVal,
+  //     });
+  //   }
+  // };
+  const [edit, setEdit] = useState(null);
+
+  const currentCard = (index) => {
+    setEdit(() => (edit === index ? null : index));
+  };
+
   useEffect(() => {
     setWebLink(webPath());
     getProducts();
@@ -52,6 +71,9 @@ export default function MenShoesLifeStyle(props) {
       setCart([{ ...product, quantity: 1 }]);
     }
   };
+
+  const showMoreModels = () => {};
+
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
@@ -72,27 +94,74 @@ export default function MenShoesLifeStyle(props) {
           <div className={style.content}>
             {shoes?.map((item, index) => {
               return (
-                <div
-                  className={style.boxProduct}
-                  key={index}
-                  onClick={() => addToCart(item)}
+                <NavLink
+                  to={`/${item._id}`}
+                  key={item._id}
+                  onPointerLeave={() => currentCard(null)}
+                  onMouseEnter={() => currentCard(index)}
                 >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/img/jpg/shoes/" + item?.image
-                    }
-                    alt="image"
-                  />
-                  <div className={style.description}>
-                    <div className={style.genderProduct}>
-                      {item?.gender === "man"
-                        ? `${item?.gender}'s shoes`
-                        : `${item?.gender}'s shoes`}
+                  <div
+                    onClick={() => {}}
+                    className={style.boxProduct}
+                    key={index}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/img/jpg/shoes/" + item?.image
+                      }
+                      alt="shoe"
+                    />
+                    <div
+                      className={`${edit === index ? style.show : style.hide}`}
+                    >
+                      {edit === index && (
+                        <div className={style.conImg}>
+                          {item.colors
+                            .filter(
+                              (x) =>
+                                x !==
+                                item.image
+                                  .split("-")
+                                  .splice(-1, 1)
+                                  .toString()
+                                  .split(".")[0]
+                            )
+                            .map((img, index) => (
+                              <div className={style.boxImg} key={index}>
+                                <img
+                                  src={
+                                    process.env.PUBLIC_URL +
+                                    "/img/jpg/shoes/" +
+                                    item.type +
+                                    "-" +
+                                    item.name.replaceAll(" ", "-") +
+                                    "-" +
+                                    img +
+                                    ".png"
+                                  }
+                                  alt="shoe"
+                                />
+                              </div>
+                            ))}
+                        </div>
+                      )}
                     </div>
-                    <div className={style.nameProduct}>{item?.name}</div>
-                    <div className={style.priceProduct}>${item?.price}</div>
+                    <div className={style.description}>
+                      <div className={style.genderProduct}>
+                        {item?.gender === "man"
+                          ? `${item?.gender}'s shoes`
+                          : `${item?.gender}'s shoes`}
+                      </div>
+                      <div className={style.nameProduct}>{item?.name}</div>
+                      <div className={style.priceProduct}>${item?.price}</div>
+                      <div className={style.colors}>
+                        {item.colors.length > 1
+                          ? `${item.colors.length} colors`
+                          : `1 color`}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </NavLink>
               );
             })}
           </div>

@@ -13,6 +13,9 @@ nav {
   align-items: center;
   background-color: rgb(247, 247, 247);
   z-index: 99;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 .nav-open {
