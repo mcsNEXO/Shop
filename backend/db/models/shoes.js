@@ -9,7 +9,7 @@ const shoesSchema = new Schema({
     type: String,
   },
   colors: {
-    type: Array,
+    type: String,
   },
   size: {
     type: Number,

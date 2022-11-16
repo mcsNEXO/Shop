@@ -9,21 +9,9 @@ import useCart from "../../../../../hooks/useCart";
 export default function MenShoesLifeStyle(props) {
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
-  const [showModels, setShowModels] = useState(false);
+  const [shoe, setShoe] = useState();
   const [error, setError] = useState();
   const [cart, setCart] = useCart();
-  const arr = ["black", "white"];
-  // const setEdit = (editVal) => {
-  //   if (this.state.edit === editVal) {
-  //     this.setState({
-  //       edit: null,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       edit: editVal,
-  //     });
-  //   }
-  // };
   const [edit, setEdit] = useState(null);
 
   const currentCard = (index) => {
@@ -71,9 +59,16 @@ export default function MenShoesLifeStyle(props) {
       setCart([{ ...product, quantity: 1 }]);
     }
   };
+  const findAllProducts = (item) => {
+    const products = shoes.filter((x) => x.name === item.name);
+    return products;
+  };
 
-  const showMoreModels = () => {};
-
+  const setNewImage = (item, img) => {
+    const sth = shoes.map((x) =>
+      x.name === item.name ? { ...item, image: img.image } : x
+    );
+  };
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
@@ -92,30 +87,67 @@ export default function MenShoesLifeStyle(props) {
         <div className={style.conContent}>
           <div className={style.filterBar}>filter</div>
           <div className={style.content}>
-            {shoes?.map((item, index) => {
-              return (
-                <NavLink
-                  to={`/${item._id}`}
-                  key={item._id}
-                  onPointerLeave={() => currentCard(null)}
-                  onMouseEnter={() => currentCard(index)}
-                >
-                  <div
-                    onClick={() => {}}
-                    className={style.boxProduct}
-                    key={index}
+            {shoes
+              ?.filter(
+                (value, index, self) =>
+                  index ===
+                  self.findIndex((product) => product.name === value.name)
+              )
+              .map((item, index) => {
+                return (
+                  <NavLink
+                    to={`/${item._id}`}
+                    key={item._id}
+                    onPointerLeave={() => currentCard(null)}
+                    onPointerEnter={() => currentCard(index)}
+                    // onPointerEnter={() => findAllProducts(item)}
                   >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/img/jpg/shoes/" + item?.image
-                      }
-                      alt="shoe"
-                    />
                     <div
-                      className={`${edit === index ? style.show : style.hide}`}
+                      onClick={() => {}}
+                      className={style.boxProduct}
+                      key={index}
                     >
-                      {edit === index && (
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/img/jpg/shoes/" +
+                          item?.image
+                        }
+                        alt="shoe"
+                      />
+                      <div
+                        className={`${
+                          edit === index ? style.show : style.hide
+                        }`}
+                      >
+                        {edit === index ? (
+                          <div className={style.conImg}>
+                            {findAllProducts(item).map((img, index) => (
+                              <div
+                                className={style.boxImg}
+                                key={index}
+                                onPointerEnter={() => setNewImage(item, img)}
+                              >
+                                <img
+                                  src={
+                                    process.env.PUBLIC_URL +
+                                    "/img/jpg/shoes/" +
+                                    img.type +
+                                    "-" +
+                                    img.name.replaceAll(" ", "-") +
+                                    "-" +
+                                    img.colors +
+                                    ".png"
+                                  }
+                                  alt="shoe"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        ) : null}
+                        {/* {edit === index && (
                         <div className={style.conImg}>
+                          {findAllProducts}
                           {item.colors
                             .filter(
                               (x) =>
@@ -144,26 +176,26 @@ export default function MenShoesLifeStyle(props) {
                               </div>
                             ))}
                         </div>
-                      )}
-                    </div>
-                    <div className={style.description}>
-                      <div className={style.genderProduct}>
-                        {item?.gender === "man"
-                          ? `${item?.gender}'s shoes`
-                          : `${item?.gender}'s shoes`}
+                      )} */}
                       </div>
-                      <div className={style.nameProduct}>{item?.name}</div>
-                      <div className={style.priceProduct}>${item?.price}</div>
-                      <div className={style.colors}>
-                        {item.colors.length > 1
-                          ? `${item.colors.length} colors`
-                          : `1 color`}
+                      <div className={style.description}>
+                        <div className={style.genderProduct}>
+                          {item?.gender === "man"
+                            ? `${item?.gender}'s shoes`
+                            : `${item?.gender}'s shoes`}
+                        </div>
+                        <div className={style.nameProduct}>{item?.name}</div>
+                        <div className={style.priceProduct}>${item?.price}</div>
+                        <div className={style.colors}>
+                          {findAllProducts(item).length > 1
+                            ? `${findAllProducts(item).length} colors`
+                            : `1 color`}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </NavLink>
-              );
-            })}
+                  </NavLink>
+                );
+              })}
           </div>
         </div>
       </div>
