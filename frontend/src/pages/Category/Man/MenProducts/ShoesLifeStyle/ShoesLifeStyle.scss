@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+.conLifestyle {
+  width: 100%;
+  padding: 1rem 3rem;
+  .header {
+  display: flex;
+  justify-content: space-between;
+    .buttons {
+    display: flex;
+    align-self: flex-end;
+    gap: 10px;
+    height: fit-content;
+    
+    .filter-btn {
+      border: 2px solid black;
+      border-radius: 8px;
+      background-color: white;
+    }
+    }
+  }
+  .con-content {
+    display: flex;
+    .filter-bar {
+      width: 500px;
+      padding: 1rem;
+      .filter-line{
+        background-color: black;
+      }
+      .title-filter{
+        font-size: 1.4rem;
+        font-family: 'Kanit';
+      }
+      .title-option{
+        font-size: 1.2rem;
+        font-family: 'Kanit';
+      }
+      .options{
+        padding: 5px;
+      .price{
+        width: 100%;
+        .option{
+          text-align: center;
+          position: relative;
+          .input-price{
+            width: 100%;
+            border-radius:4px;
+            top: 30px;
+            left: 0;
+            z-index: 0;
+            position: absolute;
+          }
+        }
+      
+      }
+    }
+    }
+    .contents{
+      width: 100%;
+      margin-top: 2rem;
+      display: flex;
+      height: auto;
+      gap: 20px;
+      flex-wrap: wrap;
+      .box-product{
+        flex: 1;
+        max-width: 33.3%;
+        width: 100%;
+        min-width: 28%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 20px;
+        box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
+      
+        .main-img-product{
+          width: 100%;
+          img{
+            border-radius: 20px;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+.currentPathWeb a {
+  color: black;
+  font-family: "Kanit", sans-serif;
+}
+
+
+.box-product:hover{
+  transform: scale(1.02);
+  transition: all 100ms ease-in;
+  box-shadow: 0 5px 10px -1px rgb(130, 130, 130);
+}
+
+.gender-product {
+  font-size: 0.95rem;
+  color: rgb(101, 96, 96);
+  text-transform: capitalize;
+  font-family: 'Kanit';
+}
+.name-product {
+  text-transform: capitalize;
+  font-family: 'Rubik', sans-serif;
+
+}
+.price-product {
+  font-size: 1.1rem;
+  font-family: 'Rubik';
+}
+.description {
+  padding: 15px 20px;
+  font-size: 120%;
+}
+.colors {
+  color: rgb(101, 96, 96);
+  font-family: 'Kanit';
+}
+
+a:visited,
+a:link {
+  color: black;
+  text-decoration: none;
+}
+
+.con-imgs {
+  width: 100%;
+  display: flex;
+  padding: 5px;
+  cursor: pointer;
+  .active{
+    border: 2px solid rgb(0, 0, 0);
+  }
+}
+.show {
+  transition: all 400ms ease;
+  opacity: 1;
+  height: auto;
+}
+.hide {
+  transition: all 400ms ease;
+  opacity: 0;
+  height: 0;
+}
+.box-img{
+  width: 50px;
+  height: 50px;
+  display: flex;
+  border: 1px solid rgb(160, 156, 156);
+  margin: 2px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.box-img img {
+  width: 100%;
+  height: 100%;
+}
+}
+
+@media only screen and (max-width: 1050px) {
+  .conLifestyle{
+    .con-content{
+      .filter-bar{
+        width: 0;
+      }
+      .contents{
+        .box-product{
+          max-width: 50%;
+          width: 100%;
+          min-width: 45%;
+        }
+      }
+    }
+  }
+}

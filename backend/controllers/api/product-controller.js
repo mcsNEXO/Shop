@@ -2,8 +2,9 @@ const Shoe = require("../../db/models/shoes");
 
 class ProductController {
   async fetchProduct(req, res) {
+    console.log(req);
     try {
-      const product = await Shoe.findOne({ _id: req.body.id });
+      const product = await Shoe.findOne({ _id: req.body.idProduct });
       console.log("product", product);
       return res.status(200).json({ product });
     } catch (e) {

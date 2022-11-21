@@ -18,7 +18,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     let amountItems = 0;
-    for (let i = 0; i < cart.length; i++) {
+    for (let i = 0; i < cart?.length; i++) {
       amountItems += cart[i].quantity;
     }
     amountItems >= 9 ? setAmount("9+") : setAmount(amountItems);
