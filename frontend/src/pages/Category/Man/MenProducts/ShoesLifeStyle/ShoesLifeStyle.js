@@ -1,61 +1,47 @@
-import { useEffect, useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
 import "./ShoesLifeStyle.scss";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
-import useCart from "../../../../../hooks/useCart";
 
 export default function MenShoesLifeStyle(props) {
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState();
-  const [cart, setCart] = useCart();
-  const [value, setValue] = useState();
-  const [value2, setValue2] = useState();
+  const [search, setSearch] = useSearchParams();
+  const [value, setValue] = useState(0);
+  const [value2, setValue2] = useState(3000);
+  const [dataColors, setDataColors] = useState([
+    { color: "black", active: false },
+    { color: "gray", active: false },
+    { color: "white", active: false },
+    { color: "brown", active: false },
+    { color: "red", active: false },
+    { color: "green", active: false },
+    { color: "pink", active: false },
+  ]);
 
   useEffect(() => {
     setWebLink(webPath());
-    getProducts();
-    console.log("did mount");
-  }, []);
+    const paramsColor = search.get("color");
+    const par = [];
+    dataColors.filter((x) =>
+      paramsColor?.split(",").filter((z) => {
+        if (x.color === z) {
+          par.push(z);
+          x.active = true;
+        }
+      })
+    );
+    getProducts(paramsColor?.split(","));
+  }, [dataColors]);
 
-  const getProducts = async () => {
-    const res = await axios.get("get-shoes");
+  const getProducts = async (colors) => {
+    const res = await axios.post("get-shoes", { colors });
+    console.log(res.data.shoes);
     setShoes(res.data.shoes);
-  };
-
-  const addToCart = async (item) => {
-    const product = {
-      ...item,
-      colors: item.colors[item.index],
-      image: item.image[item.index],
-    };
-    if (cart !== null) {
-      const exist = cart.find(
-        (x) => x._id === product._id && x.colors === product.colors
-      );
-      if (exist?.quantity === 10) {
-        return setError("The quantity of this product is maximum!");
-      } else {
-        setError(false);
-      }
-      if (exist) {
-        setCart(
-          cart.map((x) =>
-            x._id === product._id
-              ? { ...exist, quantity: (exist.quantity += 1) }
-              : x
-          )
-        );
-      } else {
-        const items = [...cart, { ...product, quantity: 1 }];
-        setCart(items);
-      }
-    } else {
-      setCart([{ ...product, quantity: 1 }]);
-    }
   };
 
   const setNewIndex = (item, index) => {
@@ -63,13 +49,24 @@ export default function MenShoesLifeStyle(props) {
       shoes.map((x) => (x.name === item.name ? { ...item, index: index } : x))
     );
   };
-
+  const chooseColor = (e, item) => {
+    const x = dataColors.map((x) =>
+      x.color === item.color ? { ...item, active: !item.active } : x
+    );
+    setDataColors(x);
+    const colors = x
+      .filter((p) => p.active)
+      .map((p) => p.color)
+      .join(",");
+    setSearch({ color: colors });
+    getProducts(colors.split(","));
+  };
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
       <div className="conLifestyle">
         <div className="header">
-          <div>{webLink}</div>
+          <div onClick={() => console.log(dataColors)}>{webLink}</div>
           <div className="buttons">
             <button className="filter-btn">
               Filters <i className="bi bi-filter"></i>
@@ -87,24 +84,49 @@ export default function MenShoesLifeStyle(props) {
               <div className="price">
                 <div className="title-option">Price</div>
                 <div className="option">
-                  <label>
-                    {value} - {value2}
-                  </label>
                   <input
-                    type="range"
-                    min="0"
-                    max="2000"
+                    type="number"
                     onChange={(e) => setValue(e.target.value)}
-                    className="input-price"
+                    value={value}
+                    className="inp-price"
                   />
+                  &nbsp;-&nbsp;
                   <input
-                    type="range"
-                    min="0"
-                    max="2000"
+                    type="number"
                     onChange={(e) => setValue2(e.target.value)}
-                    className="input-price"
+                    value={value2}
+                    className="inp-price"
                   />
                 </div>
+              </div>
+            </div>
+            <hr className="filter-line"></hr>
+            <div className="colors">
+              <div className="title-option">Colors</div>
+              <div className="option">
+                {dataColors.map((item, index) => (
+                  <button
+                    className="color-item"
+                    onClick={(e) => chooseColor(e, item)}
+                    key={index}
+                  >
+                    <div
+                      style={{ backgroundColor: item.color }}
+                      className={`${item.active ? "active" : ""}`}
+                    >
+                      {item.active ? (
+                        <i
+                          className="bi bi-check-lg"
+                          style={
+                            item.color === "white"
+                              ? { color: "black" }
+                              : { color: "white" }
+                          }
+                        ></i>
+                      ) : null}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           </div>

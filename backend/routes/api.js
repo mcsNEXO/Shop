@@ -27,7 +27,7 @@ router.post("/sign-up", userController.register);
 router.put("/edit-data", userController.edit);
 router.put("/edit-password", userController.editPassword);
 
-router.get("/get-shoes", shoesController.getShoes);
+router.post("/get-shoes", shoesController.getShoes);
 router.post("/get-promocode", promoCodeController.getCode);
 
 router.post("/fetch-product", productController.fetchProduct);
