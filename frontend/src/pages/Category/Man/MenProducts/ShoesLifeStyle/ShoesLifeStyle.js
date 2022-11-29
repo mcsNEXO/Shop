@@ -35,13 +35,25 @@ export default function MenShoesLifeStyle(props) {
         }
       })
     );
-    getProducts(paramsColor?.split(","));
+    getProducts();
   }, [dataColors]);
 
-  const getProducts = async (colors) => {
-    const res = await axios.post("get-shoes", { colors });
-    console.log(res.data.shoes);
-    setShoes(res.data.shoes);
+  const getProducts = async (url = window.location.href) => {
+    const res = await axios.post("get-shoes", { url });
+    if (res.data.filters.colors.length !== 0) {
+      const colorss = res.data.filters.colors;
+      const filterdProducts = res.data.shoes.filter((shoe) => {
+        shoe.colors = shoe.colors.filter(
+          (color) => colorss.indexOf(color) >= 0
+        );
+        return (shoe.image = shoe.image.filter((image) =>
+          shoe.colors.some((color) => image.includes(color))
+        ));
+      });
+      setShoes(filterdProducts);
+    } else {
+      setShoes(res.data.shoes);
+    }
   };
 
   const setNewIndex = (item, index) => {
@@ -58,15 +70,37 @@ export default function MenShoesLifeStyle(props) {
       .filter((p) => p.active)
       .map((p) => p.color)
       .join(",");
-    setSearch({ color: colors });
-    getProducts(colors.split(","));
+    colors ? setSearch({ color: colors }) : setSearch({});
+    // getProducts(colors.split(","));
+  };
+  const fun = () => {
+    // if (res.data.filters.colors.length !== 0) {
+    //   console.log(res.data.filters.colors);
+    //   const colorss = res.data.filters.colors;
+    //   res.data.shoes.filter((product) => {
+    //     const newColors = product.colors.filter((color) =>
+    //       colorss.some((x) => x === color)
+    //     );
+    //     return setShoes(
+    //       res.data.shoes.map((x) => {
+    //         x.colors = newColors;
+    //         x.image = x.image.filter((image) =>
+    //           newColors.some((x) => image.includes(x))
+    //         );
+    //         return x;
+    //       })
+    //     );
+    //   });
+    // } else {
+    //   setShoes(res.data.shoes);
+    // }
   };
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
       <div className="conLifestyle">
         <div className="header">
-          <div onClick={() => console.log(dataColors)}>{webLink}</div>
+          <div>{webLink}</div>
           <div className="buttons">
             <button className="filter-btn">
               Filters <i className="bi bi-filter"></i>
