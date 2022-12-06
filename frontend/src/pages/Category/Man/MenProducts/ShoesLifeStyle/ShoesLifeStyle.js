@@ -4,15 +4,17 @@ import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
 import "./ShoesLifeStyle.scss";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
+import Filters from "../../../../../components/Filters/Filters";
 
 export default function MenShoesLifeStyle(props) {
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
   const [edit, setEdit] = useState(false);
+  const filterRef = useRef();
+  const filterSpans = useRef();
   const [error, setError] = useState();
   const [search, setSearch] = useSearchParams();
-  const [value, setValue] = useState(0);
-  const [value2, setValue2] = useState(3000);
+  const [price, setPrice] = useState(false);
   const [dataColors, setDataColors] = useState([
     { color: "black", active: false },
     { color: "gray", active: false },
@@ -31,12 +33,14 @@ export default function MenShoesLifeStyle(props) {
       paramsColor?.split(",").filter((z) => {
         if (x.color === z) {
           par.push(z);
-          x.active = true;
+          return (x.active = true);
+        } else {
+          return null;
         }
       })
     );
     getProducts();
-  }, [dataColors]);
+  }, [dataColors, price]);
 
   const getProducts = async (url = window.location.href) => {
     const res = await axios.post("get-shoes", { url });
@@ -55,7 +59,6 @@ export default function MenShoesLifeStyle(props) {
       setShoes(res.data.shoes);
     }
   };
-
   const setNewIndex = (item, index) => {
     setShoes(
       shoes.map((x) => (x.name === item.name ? { ...item, index: index } : x))
@@ -71,30 +74,15 @@ export default function MenShoesLifeStyle(props) {
       .map((p) => p.color)
       .join(",");
     colors ? setSearch({ color: colors }) : setSearch({});
-    // getProducts(colors.split(","));
   };
-  const fun = () => {
-    // if (res.data.filters.colors.length !== 0) {
-    //   console.log(res.data.filters.colors);
-    //   const colorss = res.data.filters.colors;
-    //   res.data.shoes.filter((product) => {
-    //     const newColors = product.colors.filter((color) =>
-    //       colorss.some((x) => x === color)
-    //     );
-    //     return setShoes(
-    //       res.data.shoes.map((x) => {
-    //         x.colors = newColors;
-    //         x.image = x.image.filter((image) =>
-    //           newColors.some((x) => image.includes(x))
-    //         );
-    //         return x;
-    //       })
-    //     );
-    //   });
-    // } else {
-    //   setShoes(res.data.shoes);
-    // }
+
+  console.log(filterSpans);
+
+  const filterBarHandler = () => {
+    filterRef.current.classList.toggle("open");
+    // setFilterBar(true);
   };
+
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
@@ -105,65 +93,31 @@ export default function MenShoesLifeStyle(props) {
             <button className="filter-btn">
               Filters <i className="bi bi-filter"></i>
             </button>
-            <button className="filter-btn">
-              Sort by <i className="bi bi-sort-alpha-down"></i>
-            </button>
-          </div>
-        </div>
-        <div className="con-content">
-          <div className="filter-bar">
-            <span className="title-filter">Filter</span>
-            <hr className="filter-line" />
-            <div className="options">
-              <div className="price">
-                <div className="title-option">Price</div>
-                <div className="option">
-                  <input
-                    type="number"
-                    onChange={(e) => setValue(e.target.value)}
-                    value={value}
-                    className="inp-price"
-                  />
-                  &nbsp;-&nbsp;
-                  <input
-                    type="number"
-                    onChange={(e) => setValue2(e.target.value)}
-                    value={value2}
-                    className="inp-price"
-                  />
+            <div className="filter-btn">
+              <div
+                className="default-text"
+                ref={filterRef}
+                onClick={filterBarHandler}
+              >
+                Sort by <i className="bi bi-sort-alpha-down"></i>
+              </div>
+              <div className="filter-select">
+                <div className="box-select">
+                  <span ref={filterSpans}>Featured</span>
+                  <span ref={filterSpans}>Newest</span>
+                  <span ref={filterSpans}>Price: High-Low</span>
+                  <span ref={filterSpans}>Price: Low-High</span>
                 </div>
               </div>
             </div>
-            <hr className="filter-line"></hr>
-            <div className="colors">
-              <div className="title-option">Colors</div>
-              <div className="option">
-                {dataColors.map((item, index) => (
-                  <button
-                    className="color-item"
-                    onClick={(e) => chooseColor(e, item)}
-                    key={index}
-                  >
-                    <div
-                      style={{ backgroundColor: item.color }}
-                      className={`${item.active ? "active" : ""}`}
-                    >
-                      {item.active ? (
-                        <i
-                          className="bi bi-check-lg"
-                          style={
-                            item.color === "white"
-                              ? { color: "black" }
-                              : { color: "white" }
-                          }
-                        ></i>
-                      ) : null}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
+        </div>
+        <div className="con-content">
+          <Filters
+            dataColors={dataColors}
+            chooseColor={chooseColor}
+            class="filter open"
+          />
           <div className="contents">
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>
@@ -187,15 +141,17 @@ export default function MenShoesLifeStyle(props) {
                   <div className={` ${edit === index ? "show" : "hide"}`}>
                     {edit === index ? (
                       <div className="con-imgs">
-                        {item.image.map((img, index) => (
+                        {item.image.map((img, imageIndex) => (
                           <div
                             className={`box-img ${
-                              index === item.index ? "active" : ""
+                              imageIndex === item.index ? "active" : ""
                             }`}
-                            key={index}
+                            key={imageIndex}
                           >
                             <img
-                              onPointerEnter={() => setNewIndex(item, index)}
+                              onPointerEnter={() =>
+                                setNewIndex(item, imageIndex)
+                              }
                               src={
                                 process.env.PUBLIC_URL + "/img/jpg/shoes/" + img
                               }

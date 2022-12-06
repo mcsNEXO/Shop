@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 .conLifestyle {
   width: 100%;
@@ -13,12 +14,67 @@
     align-self: flex-end;
     gap: 10px;
     height: fit-content;
-    
+    position: relative;
+    font-size: 1.2rem;
+  
     .filter-btn {
       border: 2px solid black;
+      padding: 2px;
       border-radius: 8px;
       background-color: white;
+      width: 100px;
+      text-align: center;
+      cursor: pointer;
     }
+    .open ~ .filter-select .box-select{
+      transform: translateY(0%) !important;
+      transition: all 150ms ease;
+      background-color: black;
+      visibility: visible !important;
+    }
+    .filter-btn:last-of-type{
+      .filter-select{
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left:0;
+        overflow: hidden;
+        z-index: 2;
+        padding: 1px;
+        border-radius: 12px;
+        .box-select{
+          box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
+          border-radius: 12px;
+          transition: all 250ms ease-in-out ;
+          transform: translateY(-120%);
+          background-color: white;
+          padding: 10px;
+          text-align: right;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 400;
+          visibility: hidden;
+        }
+        .active{
+          background-color: rgb(233, 233, 233);
+        }
+        span{
+          display: block;
+          font-size: 1.2rem;
+          padding: 4px;
+          width: 100%;
+          padding-right: 20px;
+          background-color: transparent;
+          border-radius: 20px;
+          margin: 5px;
+        }
+        span:hover{
+          background-color: rgb(244, 243, 243);
+        }
+     
+    }
+    }
+  
+   
     }
   }
   .con-content {
@@ -64,6 +120,14 @@
             margin: 0;
           }
         }
+        .price-btn{
+          width: 50%;
+          background-color: black;
+          color: white;
+          border-radius: 12px;
+          margin-top: 8px;
+          padding: 2px;
+        }
       }
     }
     .colors{
@@ -105,7 +169,7 @@
       flex-wrap: wrap;
       .box-product{
         flex: 1;
-        max-width: 33.3%;
+        max-width: 32%;
         width: 100%;
         min-width: 28%;
         background-color: rgb(255, 255, 255);
@@ -121,7 +185,7 @@
         .show {
           transition: all 400ms ease;
           opacity: 1;
-          height: auto;
+          // height: auto;
         }
         .hide {
           transition: all 400ms ease;

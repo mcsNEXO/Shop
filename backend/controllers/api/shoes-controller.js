@@ -20,6 +20,7 @@ class ShoesController {
     }
     const filters = {
       colors: colors,
+      // pice: price,
     };
 
     return res.status(200).json({ shoes, filters });

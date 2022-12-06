@@ -9,7 +9,11 @@ body {
   max-width: 1920px;
   margin: auto;
 }
-
+.d-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .is-open {
   visibility: visible !important;
   opacity: 1 !important;
