@@ -24,6 +24,20 @@ export default function MenShoesLifeStyle(props) {
     { color: "green", active: false },
     { color: "pink", active: false },
   ]);
+  const sortingData = [
+    {
+      name: "Featured",
+    },
+    {
+      name: "Newest",
+    },
+    {
+      name: "Price: High-Low",
+    },
+    {
+      name: "Price: Low-High",
+    },
+  ];
 
   useEffect(() => {
     setWebLink(webPath());
@@ -40,13 +54,14 @@ export default function MenShoesLifeStyle(props) {
       })
     );
     getProducts();
-  }, [dataColors, price]);
+  }, [search]);
 
   const getProducts = async (url = window.location.href) => {
     const res = await axios.post("get-shoes", { url });
+    let shoes = res.data.shoes;
     if (res.data.filters.colors.length !== 0) {
       const colorss = res.data.filters.colors;
-      const filterdProducts = res.data.shoes.filter((shoe) => {
+      shoes = res.data.shoes.filter((shoe) => {
         shoe.colors = shoe.colors.filter(
           (color) => colorss.indexOf(color) >= 0
         );
@@ -54,10 +69,32 @@ export default function MenShoesLifeStyle(props) {
           shoe.colors.some((color) => image.includes(color))
         ));
       });
-      setShoes(filterdProducts);
-    } else {
-      setShoes(res.data.shoes);
     }
+    if (res.data.filters?.sort.length !== 0) {
+      switch (res.data.filters.sort) {
+        case "featured":
+          shoes = shoes;
+          break;
+        case "newest":
+          shoes = shoes?.sort(function (a, b) {
+            return new Date(b.date) - new Date(a.date);
+          });
+          break;
+        case "high-low":
+          shoes?.sort(function (a, b) {
+            return b.price - a.price;
+          });
+          break;
+        case "low-high":
+          shoes?.sort(function (a, b) {
+            return a.price - b.price;
+          });
+          break;
+        default:
+          shoes = shoes;
+      }
+    }
+    setShoes(shoes);
   };
   const setNewIndex = (item, index) => {
     setShoes(
@@ -76,13 +113,27 @@ export default function MenShoesLifeStyle(props) {
     colors ? setSearch({ color: colors }) : setSearch({});
   };
 
-  console.log(filterSpans);
-
-  const filterBarHandler = () => {
-    filterRef.current.classList.toggle("open");
-    // setFilterBar(true);
+  const sortHandler = (type, item) => {
+    switch (type) {
+      case "bar":
+        filterRef.current.classList.toggle("open");
+        break;
+      case "item":
+        document.querySelectorAll(".box-select span").forEach((span) => {
+          span.classList.remove("active");
+          console.log(span);
+        });
+        item.classList.add("active");
+        const sortName = item.textContent.includes("Price:")
+          ? item.textContent.split(": ")[1]
+          : item.textContent;
+        setSearch({ sort: sortName.toLowerCase() });
+        filterRef.current.classList.toggle("open");
+        break;
+      default:
+        new Error("This type doesn't exist");
+    }
   };
-
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
@@ -97,16 +148,20 @@ export default function MenShoesLifeStyle(props) {
               <div
                 className="default-text"
                 ref={filterRef}
-                onClick={filterBarHandler}
+                onClick={() => sortHandler("bar")}
               >
                 Sort by <i className="bi bi-sort-alpha-down"></i>
               </div>
               <div className="filter-select">
                 <div className="box-select">
-                  <span ref={filterSpans}>Featured</span>
-                  <span ref={filterSpans}>Newest</span>
-                  <span ref={filterSpans}>Price: High-Low</span>
-                  <span ref={filterSpans}>Price: Low-High</span>
+                  {sortingData.map((z, index) => (
+                    <span
+                      key={index}
+                      onClick={(e) => sortHandler("item", e.target)}
+                    >
+                      {z.name}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

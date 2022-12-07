@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 nav {
   position: relative;
   box-sizing: border-box;
@@ -42,7 +41,7 @@ img {
   flex: 0 0 auto;
   height: 100%;
   align-items: center;
-  font-family: "Lato";
+  font-family: "Poppins";
   font-size: 1.1rem;
 }
 

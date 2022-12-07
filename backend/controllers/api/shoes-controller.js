@@ -5,8 +5,10 @@ class ShoesController {
     let shoes = await Shoes.find();
     const url = req.body.url;
     let colors = [];
-    if (url.includes("?")) {
-      url?.split("?").pop(0);
+    let sort = "";
+
+    if (url.includes("color=")) {
+      url?.split("color=").pop(0);
       if (url.includes("color")) {
         colors = url?.split("=")[1]?.split("%2C");
       }
@@ -18,9 +20,13 @@ class ShoesController {
         })
         .map((product) => product);
     }
+    if (url.includes("sort")) {
+      sort = url?.split("sort=")[1];
+    }
     const filters = {
       colors: colors,
       // pice: price,
+      sort: sort,
     };
 
     return res.status(200).json({ shoes, filters });
