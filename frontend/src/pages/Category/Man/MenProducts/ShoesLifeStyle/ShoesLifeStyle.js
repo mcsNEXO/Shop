@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import React from "react";
 import { useSearchParams } from "react-router-dom";
 import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
@@ -7,14 +8,14 @@ import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
 import Filters from "../../../../../components/Filters/Filters";
 
 export default function MenShoesLifeStyle(props) {
+  const [search, setSearch] = useSearchParams();
   const [webLink, setWebLink] = useState();
   const [shoes, setShoes] = useState();
   const [edit, setEdit] = useState(false);
   const filterRef = useRef();
-  const filterSpans = useRef();
+  const filterBtn = useRef();
+  const [open, setOpen] = useState("open");
   const [error, setError] = useState();
-  const [search, setSearch] = useSearchParams();
-  const [price, setPrice] = useState(false);
   const [dataColors, setDataColors] = useState([
     { color: "black", active: false },
     { color: "gray", active: false },
@@ -41,7 +42,12 @@ export default function MenShoesLifeStyle(props) {
 
   useEffect(() => {
     setWebLink(webPath());
-    const paramsColor = search.get("color");
+    setActiveColors();
+    getProducts();
+  }, [search]);
+
+  const setActiveColors = () => {
+    const paramsColor = search.get("colors");
     const par = [];
     dataColors.filter((x) =>
       paramsColor?.split(",").filter((z) => {
@@ -53,48 +59,13 @@ export default function MenShoesLifeStyle(props) {
         }
       })
     );
-    getProducts();
-  }, [search]);
+  };
 
-  const getProducts = async (url = window.location.href) => {
+  const getProducts = async (
+    url = { colors: search.get("colors"), sort: search.get("sort") }
+  ) => {
     const res = await axios.post("get-shoes", { url });
-    let shoes = res.data.shoes;
-    if (res.data.filters.colors.length !== 0) {
-      const colorss = res.data.filters.colors;
-      shoes = res.data.shoes.filter((shoe) => {
-        shoe.colors = shoe.colors.filter(
-          (color) => colorss.indexOf(color) >= 0
-        );
-        return (shoe.image = shoe.image.filter((image) =>
-          shoe.colors.some((color) => image.includes(color))
-        ));
-      });
-    }
-    if (res.data.filters?.sort.length !== 0) {
-      switch (res.data.filters.sort) {
-        case "featured":
-          shoes = shoes;
-          break;
-        case "newest":
-          shoes = shoes?.sort(function (a, b) {
-            return new Date(b.date) - new Date(a.date);
-          });
-          break;
-        case "high-low":
-          shoes?.sort(function (a, b) {
-            return b.price - a.price;
-          });
-          break;
-        case "low-high":
-          shoes?.sort(function (a, b) {
-            return a.price - b.price;
-          });
-          break;
-        default:
-          shoes = shoes;
-      }
-    }
-    setShoes(shoes);
+    setShoes(res.data.shoes);
   };
   const setNewIndex = (item, index) => {
     setShoes(
@@ -110,7 +81,8 @@ export default function MenShoesLifeStyle(props) {
       .filter((p) => p.active)
       .map((p) => p.color)
       .join(",");
-    colors ? setSearch({ color: colors }) : setSearch({});
+    colors ? search.set("colors", colors) : search.delete("colors");
+    setSearch(search);
   };
 
   const sortHandler = (type, item) => {
@@ -121,19 +93,25 @@ export default function MenShoesLifeStyle(props) {
       case "item":
         document.querySelectorAll(".box-select span").forEach((span) => {
           span.classList.remove("active");
-          console.log(span);
         });
         item.classList.add("active");
         const sortName = item.textContent.includes("Price:")
           ? item.textContent.split(": ")[1]
           : item.textContent;
-        setSearch({ sort: sortName.toLowerCase() });
+        search.set("sort", sortName.toLowerCase());
         filterRef.current.classList.toggle("open");
         break;
       default:
         new Error("This type doesn't exist");
     }
+    setSearch(search);
   };
+
+  const filterHandler = (e) => {
+    setOpen(open === "open" ? "close" : "open");
+    return open;
+  };
+
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
@@ -141,8 +119,13 @@ export default function MenShoesLifeStyle(props) {
         <div className="header">
           <div>{webLink}</div>
           <div className="buttons">
-            <button className="filter-btn">
-              Filters <i className="bi bi-filter"></i>
+            <button
+              className="filter-btn"
+              ref={filterBtn}
+              onClick={(e) => filterHandler(e)}
+            >
+              {open === "open" ? "Hide filters" : "Show filters"}{" "}
+              <i className="bi bi-filter"></i>
             </button>
             <div className="filter-btn">
               <div
@@ -150,7 +133,10 @@ export default function MenShoesLifeStyle(props) {
                 ref={filterRef}
                 onClick={() => sortHandler("bar")}
               >
-                Sort by <i className="bi bi-sort-alpha-down"></i>
+                {search.get("sort")
+                  ? `Sort by: ${search.get("sort")} `
+                  : "Sort by "}
+                <i className="bi bi-sort-alpha-down"></i>
               </div>
               <div className="filter-select">
                 <div className="box-select">
@@ -168,11 +154,9 @@ export default function MenShoesLifeStyle(props) {
           </div>
         </div>
         <div className="con-content">
-          <Filters
-            dataColors={dataColors}
-            chooseColor={chooseColor}
-            class="filter open"
-          />
+          <div className={`filter-bar ${open}`}>
+            <Filters dataColors={dataColors} chooseColor={chooseColor} />
+          </div>
           <div className="contents">
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>
@@ -192,7 +176,6 @@ export default function MenShoesLifeStyle(props) {
                       alt="shoe"
                     />
                   </div>
-
                   <div className={` ${edit === index ? "show" : "hide"}`}>
                     {edit === index ? (
                       <div className="con-imgs">

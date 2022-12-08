@@ -4,7 +4,7 @@ export default function Filters(props) {
   const [value, setValue] = useState(0);
   const [value2, setValue2] = useState(3000);
   return (
-    <div className="filter-bar">
+    <>
       <span className="title-filter">Filter</span>
       <hr className="filter-line" />
       <div className="options">
@@ -64,6 +64,6 @@ export default function Filters(props) {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
