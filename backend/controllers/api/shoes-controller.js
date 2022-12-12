@@ -4,11 +4,9 @@ class ShoesController {
   async getShoes(req, res) {
     let shoes = await Shoes.find();
     const url = req.body.url;
-    let sort = "";
-    let colors = [];
     if (url !== "") {
       if (url.sort) {
-        sort = url.sort;
+        const sort = url.sort;
         switch (sort) {
           case "featured":
             break;
@@ -31,7 +29,7 @@ class ShoesController {
         }
       }
       if (url.colors) {
-        colors = url.colors.split(",");
+        const colors = url.colors.split(",");
         shoes = shoes
           .filter((product) => {
             return product.colors.some((color) =>
@@ -48,12 +46,19 @@ class ShoesController {
           ));
         });
       }
+      if (url.price) {
+        const minAmount = url.price.split("-")[0];
+        const maxAmount = url.price.split("-")[1];
+        shoes = shoes.filter(
+          (shoe) => shoe.price >= minAmount && shoe.price <= maxAmount
+        );
+      }
+      if (url.size) {
+        console.log(url);
+        shoes = shoes.filter((shoe) => shoe.size === Number(url.size));
+      }
     }
-    const filters = {
-      colors: colors,
-      sort: sort,
-    };
-    return res.status(200).json({ shoes, filters });
+    return res.status(200).json({ shoes });
   }
 }
 

@@ -1,14 +1,45 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { shoesSize } from "../../data/sizeShoes";
+import { shoesColors } from "../../data/sizeShoes";
 
 export default function Filters(props) {
-  const [value, setValue] = useState(0);
-  const [value2, setValue2] = useState(3000);
+  const [search, setSearch] = useSearchParams();
+  const [value, setValue] = useState(search.get("price")?.split("-")[0] ?? 0);
+  const [value2, setValue2] = useState(
+    search.get("price")?.split("-")[1] ?? 3000
+  );
+
+  const chooseSize = (size) => {
+    size === Number(search.get("size"))
+      ? search.delete("size")
+      : search.set("size", size);
+    setSearch(search);
+  };
+
+  const chooseColor = (color) => {
+    const colors = search.get("colors");
+    if (!colors) {
+      search.set("colors", color);
+    } else {
+      let x = colors.split(",");
+      colors.includes(color)
+        ? (x = x.filter((z) => z !== color))
+        : x.push(color);
+      search.set("colors", x);
+      search.get("colors") !== ""
+        ? search.set("colors", x)
+        : search.delete("colors");
+    }
+    setSearch(search);
+  };
+
   return (
     <>
       <span className="title-filter">Filter</span>
       <hr className="filter-line" />
       <div className="options">
-        <div className="price">
+        <div className="price responsive">
           <div className="title-option">Price</div>
           <div className="option">
             <input
@@ -36,20 +67,22 @@ export default function Filters(props) {
         </div>
       </div>
       <hr className="filter-line"></hr>
-      <div className="colors">
+      <div className="colors responsive">
         <div className="title-option">Colors</div>
         <div className="option">
-          {props.dataColors.map((item, index) => (
+          {shoesColors.map((item, index) => (
             <button
               className="color-item"
-              onClick={(e) => props.chooseColor(e, item)}
+              onClick={(e) => chooseColor(item.color)}
               key={index}
             >
               <div
                 style={{ backgroundColor: item.color }}
-                className={`${item.active ? "active" : ""}`}
+                className={`${
+                  search.get("colors")?.includes(item.color) ? "active" : ""
+                }`}
               >
-                {item.active ? (
+                {search.get("colors")?.includes(item.color) ? (
                   <i
                     className="bi bi-check-lg"
                     style={
@@ -61,6 +94,23 @@ export default function Filters(props) {
                 ) : null}
               </div>
             </button>
+          ))}
+        </div>
+      </div>
+      <hr className="filter-line"></hr>
+      <div className="size responsive">
+        <div className="title-option">Size</div>
+        <div className="option">
+          {shoesSize.map((size, index) => (
+            <div
+              key={index}
+              className={`number ${
+                Number(search.get("size")) === size.size ? "active" : ""
+              }`}
+              onClick={() => chooseSize(size.size)}
+            >
+              {size.size}
+            </div>
           ))}
         </div>
       </div>

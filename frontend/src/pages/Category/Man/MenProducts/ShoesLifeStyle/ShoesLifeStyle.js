@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import webPath from "../../../../../components/helpers/path";
@@ -6,6 +6,7 @@ import axios from "../../../../../axios";
 import "./ShoesLifeStyle.scss";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
 import Filters from "../../../../../components/Filters/Filters";
+import { sortingData } from "../../../../../data/sizeShoes";
 
 export default function MenShoesLifeStyle(props) {
   const [search, setSearch] = useSearchParams();
@@ -16,73 +17,27 @@ export default function MenShoesLifeStyle(props) {
   const filterBtn = useRef();
   const [open, setOpen] = useState("open");
   const [error, setError] = useState();
-  const [dataColors, setDataColors] = useState([
-    { color: "black", active: false },
-    { color: "gray", active: false },
-    { color: "white", active: false },
-    { color: "brown", active: false },
-    { color: "red", active: false },
-    { color: "green", active: false },
-    { color: "pink", active: false },
-  ]);
-  const sortingData = [
-    {
-      name: "Featured",
-    },
-    {
-      name: "Newest",
-    },
-    {
-      name: "Price: High-Low",
-    },
-    {
-      name: "Price: Low-High",
-    },
-  ];
 
   useEffect(() => {
     setWebLink(webPath());
-    setActiveColors();
     getProducts();
   }, [search]);
 
-  const setActiveColors = () => {
-    const paramsColor = search.get("colors");
-    const par = [];
-    dataColors.filter((x) =>
-      paramsColor?.split(",").filter((z) => {
-        if (x.color === z) {
-          par.push(z);
-          return (x.active = true);
-        } else {
-          return null;
-        }
-      })
-    );
-  };
-
   const getProducts = async (
-    url = { colors: search.get("colors"), sort: search.get("sort") }
+    url = {
+      colors: search.get("colors"),
+      sort: search.get("sort"),
+      price: search.get("price"),
+      size: search.get("size"),
+    }
   ) => {
     const res = await axios.post("get-shoes", { url });
-    setShoes(res.data.shoes);
+    return setShoes(res.data.shoes);
   };
   const setNewIndex = (item, index) => {
-    setShoes(
+    return setShoes(
       shoes.map((x) => (x.name === item.name ? { ...item, index: index } : x))
     );
-  };
-  const chooseColor = (e, item) => {
-    const x = dataColors.map((x) =>
-      x.color === item.color ? { ...item, active: !item.active } : x
-    );
-    setDataColors(x);
-    const colors = x
-      .filter((p) => p.active)
-      .map((p) => p.color)
-      .join(",");
-    colors ? search.set("colors", colors) : search.delete("colors");
-    setSearch(search);
   };
 
   const sortHandler = (type, item) => {
@@ -91,24 +46,32 @@ export default function MenShoesLifeStyle(props) {
         filterRef.current.classList.toggle("open");
         break;
       case "item":
-        document.querySelectorAll(".box-select span").forEach((span) => {
-          span.classList.remove("active");
-        });
-        item.classList.add("active");
         const sortName = item.textContent.includes("Price:")
           ? item.textContent.split(": ")[1]
           : item.textContent;
-        search.set("sort", sortName.toLowerCase());
+        search.get("sort") === sortName.toLowerCase()
+          ? search.delete("sort")
+          : search.set("sort", sortName.toLowerCase());
         filterRef.current.classList.toggle("open");
         break;
       default:
         new Error("This type doesn't exist");
     }
-    setSearch(search);
+    return setSearch(search);
+  };
+
+  window.addEventListener("resize", () => {
+    window.innerWidth <= 950 ? setOpen("close") : console.log();
+  });
+
+  const priceHandler = (x, y) => {
+    search.set("price", `${x}-${y}`);
+    return setSearch(search);
   };
 
   const filterHandler = (e) => {
     setOpen(open === "open" ? "close" : "open");
+    console.log(e.target);
     return open;
   };
 
@@ -142,6 +105,11 @@ export default function MenShoesLifeStyle(props) {
                 <div className="box-select">
                   {sortingData.map((z, index) => (
                     <span
+                      className={`${
+                        z.name.toLowerCase().includes(search.get("sort"))
+                          ? "active"
+                          : ""
+                      }`}
                       key={index}
                       onClick={(e) => sortHandler("item", e.target)}
                     >
@@ -154,8 +122,11 @@ export default function MenShoesLifeStyle(props) {
           </div>
         </div>
         <div className="con-content">
-          <div className={`filter-bar ${open}`}>
-            <Filters dataColors={dataColors} chooseColor={chooseColor} />
+          <div className={`con-filter-bar ${open}`}>
+            <div className={`filter-bar ${open}`}>
+              <i className="bi bi-x-circle closer" onClick={filterHandler}></i>
+              <Filters priceHandler={priceHandler} />
+            </div>
           </div>
           <div className="contents">
             {shoes?.map((item, index) => (
