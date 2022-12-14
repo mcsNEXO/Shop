@@ -60,10 +60,6 @@ export default function MenShoesLifeStyle(props) {
     return setSearch(search);
   };
 
-  window.addEventListener("resize", () => {
-    window.innerWidth <= 950 ? setOpen("close") : console.log();
-  });
-
   const priceHandler = (x, y) => {
     search.set("price", `${x}-${y}`);
     return setSearch(search);

@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
-nav {
+nav.main {
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -37,24 +37,29 @@ img {
 
 .main-panel-menu {
   display: flex;
-  /* position: relative; */
-  flex: 0 0 auto;
+  position: absolute;
+  left: 0;
+  /* flex: 0 0 auto; */
   height: 100%;
+  width: 100%;
   align-items: center;
   font-family: "Poppins";
   font-size: 1.1rem;
+  justify-content: center;
 }
 
 .option-panel {
   padding: 0 10px;
   height: 100%;
   display: flex;
-  width: 100%;
   height: 62px;
   align-items: center;
   color: black;
 }
-
+.icon-hamburger {
+  display: none;
+  font-size: 1.8rem;
+}
 .option-panel:hover {
   margin-top: 2px;
   border-bottom: 3px #000000 solid;
@@ -70,6 +75,7 @@ img {
   display: flex;
   justify-content: flex-end;
   min-width: 124px;
+  width: 200px;
   align-items: center;
   font-size: 24px;
   height: 100%;
@@ -109,9 +115,6 @@ img {
   outline: none;
   border: none;
 }
-.btn-icon:hover {
-}
-
 .option-panel:hover > .dropdown {
   opacity: 1;
   transform: scaleY(1);
@@ -119,6 +122,7 @@ img {
 }
 
 .bg-page {
+  width: 100%;
   display: block;
   opacity: 0;
   z-index: 3;
@@ -152,26 +156,12 @@ img {
 .bi-bag {
   position: relative;
 }
-/* .panel{
-    display: flex;
-    padding-left: 40px;
-    flex: 1;
-}
-@media (min-width: 1280px){
-    .panel{
-        padding-left: 0;
-        position: relative;
-        flex: 0 0 auto;
-    }
-}
-*/
+
 .i-icon {
   cursor: pointer;
   height: 100%;
   display: flex;
   align-items: center;
-}
-.i-icon:hover {
 }
 .container-icon button .i-icon:hover > .person-container {
   opacity: 1;
@@ -220,4 +210,95 @@ img {
 .right-side-menu .person-option a:link {
   color: black;
   text-decoration: none;
+}
+
+
+@media only screen and (max-width: 1250px) {
+  .main-panel-menu {
+    position: inherit;
+    justify-content: start;
+  }
+}
+@media (max-width: 1000px) {
+  nav.main {
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .main-panel-menu .option-panel {
+    display: none;
+  }
+  .main-panel-menu {
+    order: 1;
+    flex: 1;
+  }
+  .left-side-menu {
+    order: 2;
+    flex: 1;
+    height: 50%;
+  }
+  .right-side-menu {
+    order: 3;
+    flex: 1;
+  }
+  .container-icon:has(.bi-heart) {
+    display: none;
+  }
+  .container-icon button i {
+    width: fit-content;
+    padding: 5px;
+  }
+  .icon-hamburger {
+    display: flex;
+  }
+  .searchbar {
+    width: fit-content !important;
+    padding: 5px;
+  }
+  nav.hamburger.open {
+    transform: translate(0);
+    visibility: visible;
+    opacity: 1;
+  }
+  .bg-page{
+    z-index: 99;
+    height: 100vh;
+    top: 0;
+  }
+}
+@media only screen and (min-width:1000px) {
+  nav.hamburger{
+    transform: translate(-100%);
+  }
+}
+
+nav.hamburger {
+  width: 80%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  visibility: hidden;
+  transform: translate(-100%);
+  transition: all 450ms ease-in-out;
+  left: 0;
+  z-index: 100;
+  background-color: white;
+  padding: 1rem;
+  .logo{
+    width: 100%;
+    height: 40px;
+  }
+  .line-list{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 1px;
+    margin: 15px 0;
+    background-color: #000000 ;
+  }
+  .close-icon{
+    position: absolute;
+    right: .9rem;
+    top: 10px;
+    font-size: 2rem;
+  }
 }

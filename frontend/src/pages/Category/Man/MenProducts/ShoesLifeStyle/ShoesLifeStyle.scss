@@ -23,8 +23,12 @@
       border-radius: 8px;
       background-color: white;
       width: 100px;
+      padding: 3px;
       text-align: center;
       cursor: pointer;
+      div{
+        text-transform: capitalize;
+      }
     }
     .open ~ .filter-select .box-select{
       transform: translateY(0%) !important;
@@ -45,6 +49,7 @@
         z-index: 2;
         padding: 1px;
         border-radius: 12px;
+      
         .box-select{
           box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
           border-radius: 12px;
@@ -79,13 +84,22 @@
   }
   .con-content {
     display: flex;
-    .filter-bar.open{
+    .closer{
+      visibility: hidden;
+      display: none;
+    }
+    .con-filter-bar{
+      max-width: 300px;
+      padding: 1rem 1.5rem 1rem 0.5rem;
+      overflow: hidden;
+    }
+    .con-filter-bar.open{
       visibility: visible;
       transform: translate(0);
       transition: all 250ms ease;
       opacity: 1;
     }
-    .filter-bar.close{
+    .con-filter-bar.close{
       position: absolute;
       transform: translateX(-200%);
       visibility: hidden;
@@ -150,6 +164,9 @@
         display: flex;
         gap: 20px;
         flex-wrap: wrap;
+        .color-item:hover{
+          transform: scale(1.05);
+        }
         .color-item{
           width: 40px;
           height: 40px;
@@ -171,6 +188,38 @@
           }
         }
     }
+    }
+    .size{
+      flex-wrap: wrap;
+      .option{
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        flex-wrap: wrap;
+        gap: 20px;
+        
+      }
+      .active{
+        background-color: rgb(243, 241, 241);
+        border: 2px solid black !important;
+        transform: scale(1.05);
+      }
+      .number:hover{
+        transform: scale(1.05);
+        background-color: rgb(243, 241, 241);
+      }
+      .number{
+        width: 40px;
+        cursor: pointer;
+        border: 1px solid gray;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        height: 40px;
+        background-color: rgb(248, 247, 247);
+        padding: 5px;
+        border-radius: 10px;
+      }
     }
     }
     .contents{
@@ -255,10 +304,6 @@
       }
     }
   }
-// .currentPathWeb a {
-//   color: black;
-//   font-family: "Kanit", sans-serif;
-// }
 
 a:visited,
 a:link {
@@ -272,14 +317,80 @@ a:link {
 }
 
 }
-
-@media only screen and (max-width: 1050px) {
+@media only screen and (max-width: 650px) {
+  .responsive{
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 950px) {
+  body:has(.con-filter-bar.open){
+    overflow-y: hidden;
+  }
+  .buttons{
+    button{
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+    }
+  }
+  .buttons:nth-child(2){
+    font-size: 0.8rem !important;
+    font-weight: 600;
+  }
   .conLifestyle{
     .con-content{
-      .filter-bar{
-        width: 0px !important;
-        visibility: hidden;
+      display: block;
+      .con-filter-bar.open{
+        visibility: visible;
+        transform: translate(0);
+        transition: all 350ms ease;
+        opacity: 1;
       }
+      .con-filter-bar.close{
+        position: absolute;
+        transform: translateY(200%);
+        visibility: hidden;
+        transition: all 350ms ease;
+        opacity: 0;
+      }
+      .con-filter-bar{
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        max-width: inherit;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 101;
+        padding: 0;
+        .closer{
+          display: flex;
+          visibility: visible;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        cursor: pointer;
+        }
+        .filter-bar{
+          width: 100%;
+          overflow: scroll;
+          padding: 20px;
+          max-width: inherit;
+          .price{
+            input,button{
+              max-width: 130px;
+          }
+          .d-center{
+            text-align: ce;
+            display: block;
+          }
+          }
+        }
+      }
+    
       .contents{
         .box-product{
           max-width: 50%;
@@ -290,3 +401,4 @@ a:link {
     }
   }
 }
+

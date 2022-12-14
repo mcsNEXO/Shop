@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import "./Nav.css";
+import React, { useEffect, useRef, useState } from "react";
+import "./Nav.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { navItems } from "./NavItems";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ export default function Nav(props) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const [cart] = useCart();
+  const hamburger = useRef();
+  const bgPage = useRef();
   const [amount, setAmount] = useState();
 
   useEffect(() => {
@@ -24,9 +26,14 @@ export default function Nav(props) {
     amountItems >= 9 ? setAmount("9+") : setAmount(amountItems);
   }, [cart]);
 
+  const handleHamburger = () => {
+    hamburger.current.classList.toggle("open");
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <>
-      <nav className={isOpen ? "is-open nav-open" : null}>
+      <nav className={`main ${isOpen ? "is-open nav-open" : ""}`}>
         <div
           className="left-side-menu"
           onClick={() => {
@@ -36,11 +43,15 @@ export default function Nav(props) {
           <img src={logo} alt="logo" />
         </div>
         <div className="main-panel-menu">
+          <div className="icon-hamburger">
+            <i className="bi bi-list" onClick={handleHamburger}></i>
+          </div>
           {navItems.map((item) => {
             return (
               <div
                 key={item.id}
                 className="option-panel"
+                data-name={item.path}
                 onPointerEnter={() => setIsOpen(true)}
                 onPointerLeave={() => setIsOpen(false)}
               >
@@ -82,12 +93,14 @@ export default function Nav(props) {
               </div>
             </button>
           </div>
-          <div className="container-icon">
+          {/* <div className="container-icon"> */}
+          <NavLink to="favorite" className="container-icon">
             <button className="btn-icon">
               <i className="bi bi-heart"></i>
             </button>
-          </div>
-          <NavLink to="/cart">
+          </NavLink>
+          {/* </div> */}
+          <NavLink to="/cart" className="container-icon">
             <button className="btn-icon">
               <i className="bi bi-bag">
                 {amount > 0 ? <span className="amount">{amount}</span> : null}
@@ -96,7 +109,16 @@ export default function Nav(props) {
           </NavLink>
         </div>
       </nav>
-      <div className={`bg-page ${isOpen ? "is-open" : ""}`}></div>
+      <nav className={`hamburger close`} ref={hamburger}>
+        <div className="close-icon" onClick={handleHamburger}>
+          <i className="bi bi-x-circle"></i>
+        </div>
+        <div className="logo">
+          <img src={process.env.PUBLIC_URL + "/img/svg/logo.svg"} alt="logo" />
+        </div>
+        <div className="line-list"></div>
+      </nav>
+      <div className={`bg-page ${isOpen ? "is-open" : ""}`} ref={bgPage}></div>
     </>
   );
 }
