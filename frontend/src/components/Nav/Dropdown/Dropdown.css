@@ -1,13 +1,14 @@
-.dropdown {
+nav.main .dropdown {
   max-width: 100%;
+  left: 0;
   max-height: 90vh;
-  height: fit-content;
+  min-width: calc(99vw);
+  height: auto;
+  padding: 20px;
   display: flex;
   justify-content: center;
   position: absolute;
   top: 65px;
-  left: 0;
-  right: 0;
   background-color: rgb(247, 247, 247);
   overflow: auto;
   white-space: nowrap;
@@ -59,4 +60,9 @@
     visibility 0ms linear 0.1s !important;
   transform-origin: top center !important;
   transform: scaleY(0) !important;
+}
+@media only screen and (max-width: 1250px) {
+  nav.main .dropdown {
+    left: -100px;
+  }
 }

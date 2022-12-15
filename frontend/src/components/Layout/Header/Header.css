@@ -1,36 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@700&display=swap");
 .first-div {
+  width: 100%;
+  min-height: 24px;
   display: flex;
   justify-content: right;
   align-items: center;
-  background-color: rgb(209, 206, 206);
-  min-height: 24px;
-  width: 100%;
+  background-color: rgb(235, 235, 235);
 }
 .blank-div {
+  width: 300px;
+  min-width: fit-content;
+  height: 100%;
   display: flex;
   justify-content: left;
   align-items: center;
-  min-width: fit-content;
-  width: 300px;
-  height: 100%;
 }
 .actually-news {
+  width: 100%;
+  min-width: 60%;
   display: flex;
   justify-content: center;
   font-size: 0.9rem;
+  font-family: "Kanit";
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   color: black;
-  font-family: "Franklin Gothic Medium";
-  max-width: 100%;
-  width: 100%;
-  min-width: 60%;
 }
 
 .options {
-  display: flex;
-  min-width: fit-content;
   width: 300px;
+  min-width: fit-content;
+  display: flex;
   justify-content: right;
 }
 
@@ -42,4 +43,18 @@
 .option a:visited,
 .option a:link {
   color: black;
+}
+
+@media only screen and (max-width: 400px) {
+  .blank-div {
+    display: none;
+  }
+}
+@media only screen and (max-width: 260px) {
+  .actually-news {
+    display: none;
+  }
+  .options {
+    justify-content: space-between;
+  }
 }

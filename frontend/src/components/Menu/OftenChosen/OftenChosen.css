@@ -1,40 +1,40 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 
-.often-chosen{
-    width: 90%;
-    margin: 50px auto;
-    position: relative;
+.often-chosen {
+  width: 90%;
+  margin: 50px auto;
+  position: relative;
 }
 
-.title-slider{
-    margin: 40px 0 20px 0;
-    font-size: larger;
+.title-slider {
+  margin: 40px 0 20px 0;
+  font-size: larger;
 }
 
-.slider-chosen{
-    max-width: 100%;
-    min-width: 100%;
-    overflow: hidden;
-    display: flex;
-    min-height: 230px;
-    /* border: 1px solid black;  */
-    scroll-behavior: smooth;
+.slider-chosen {
+  max-width: 100%;
+  min-width: 100%;
+  overflow: hidden;
+  display: flex;
+  min-height: 230px;
+  /* border: 1px solid black;  */
+  scroll-behavior: smooth;
 }
-.slider-arrows{
-    position: absolute;
-    transform: translate(0%,300%);
-    /* background-color: yellow; */
-    width: 100%;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
+.slider-arrows {
+  position: absolute;
+  transform: translate(0%, 300%);
+  /* background-color: yellow; */
+  width: 100%;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-.slider-arrows i{
-    background-color: rgba(0, 0, 0, 0.384);
-    border-radius: 25px;
-    font-size: 25px;
-    padding: 10px;
-    cursor: pointer;
+.slider-arrows i {
+  background-color: rgba(0, 0, 0, 0.384);
+  border-radius: 25px;
+  font-size: 25px;
+  padding: 10px;
+  cursor: pointer;
 }

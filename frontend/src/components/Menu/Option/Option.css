@@ -31,7 +31,11 @@
   max-width: 550px;
   margin: auto;
 }
-
+@media only screen and (max-width: 500px) {
+  .option-choose {
+    min-width: 100%;
+  }
+}
 .btn-choose {
   width: 100%;
   height: auto;

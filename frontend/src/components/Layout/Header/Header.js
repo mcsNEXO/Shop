@@ -5,14 +5,12 @@ import useAuth from "../../../hooks/useAuth";
 export default function Header(props) {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
-  const login = (e) => {
-    e.preventDefault();
+  const login = () => {
     navigate("login");
   };
-  const logout = (e) => {
+  const logout = () => {
     setAuth(false);
     navigate("/");
-    e.preventDefault();
   };
   return (
     <div className="first-div">

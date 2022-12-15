@@ -1,5 +1,4 @@
 const Shoes = require("../../db/models/shoes");
-
 class ShoesController {
   async getShoes(req, res) {
     let shoes = await Shoes.find();
@@ -54,7 +53,6 @@ class ShoesController {
         );
       }
       if (url.size) {
-        console.log(url);
         shoes = shoes.filter((shoe) => shoe.size === Number(url.size));
       }
     }

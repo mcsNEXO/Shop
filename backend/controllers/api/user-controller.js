@@ -29,7 +29,6 @@ class UserController {
       if (!isValidPassword) {
         return res.status(401).send({ message: "Invalid Email or Password" });
       }
-
       const token = user.generateAuthToken(user._id);
 
       return res.status(200).json({ user: user, token });
@@ -37,6 +36,7 @@ class UserController {
       return res.status(401).json({ message: [e.message] });
     }
   }
+
   async edit(req, res) {
     const user = await User.findById(req.body._id);
     user.email = req.body.email;
@@ -48,6 +48,7 @@ class UserController {
       return res.status(402).json({ message: [e.message] });
     }
   }
+
   async editPassword(req, res) {
     const user = await User.findById(req.body._id);
     if (user.comparePassword(req.body.currentPassword)) {
@@ -77,7 +78,6 @@ class UserController {
   async saveImage(req, res) {
     const user = await User.findById(req.body._id);
     if (req.body?.userImage) {
-      console.log(user.image);
       if (req.body.userImage !== "avatar.png") {
         fs.unlinkSync("../frontend/public/uploads/" + req.body.userImage);
       }
@@ -88,7 +88,6 @@ class UserController {
   }
   async cancelUpload(req, res) {
     const user = await User.findById(req.body._id);
-    console.log(user, req.body);
     if (user.image === req.body.pathImage.split("/")[2]) {
       return;
     }

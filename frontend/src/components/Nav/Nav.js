@@ -15,6 +15,7 @@ export default function Nav(props) {
   const navigate = useNavigate();
   const [cart] = useCart();
   const hamburger = useRef();
+  const mainNav = useRef();
   const bgPage = useRef();
   const [amount, setAmount] = useState();
 
@@ -31,9 +32,24 @@ export default function Nav(props) {
     setIsOpen((prev) => !prev);
   };
 
+  const closeDdMenu = () => {
+    mainNav.current.classList.remove("nav-open");
+    mainNav.current.classList.remove("is-open");
+    document
+      .querySelectorAll(".option-panel")
+      .forEach((item) => item.classList.remove("open"));
+    setIsOpen(false);
+  };
+  const handleDropDown = (e) => {
+    mainNav.current.classList.add("is-open");
+    mainNav.current.classList.add("nav-open");
+    setIsOpen(true);
+    e.target.classList.add("open");
+  };
+
   return (
     <>
-      <nav className={`main ${isOpen ? "is-open nav-open" : ""}`}>
+      <nav className={`main`} ref={mainNav}>
         <div
           className="left-side-menu"
           onClick={() => {
@@ -50,12 +66,14 @@ export default function Nav(props) {
             return (
               <div
                 key={item.id}
-                className="option-panel"
+                className={`option-panel`}
                 data-name={item.path}
-                onPointerEnter={() => setIsOpen(true)}
-                onPointerLeave={() => setIsOpen(false)}
+                onPointerEnter={(e) => handleDropDown(e)}
+                onPointerLeave={closeDdMenu}
               >
-                <NavLink to={item.path}>{item.title}</NavLink>
+                <NavLink to={item.path} onClick={closeDdMenu}>
+                  {item.title}
+                </NavLink>
                 <Dropdown path={item.path} item={item.submenu} />
               </div>
             );
@@ -93,13 +111,11 @@ export default function Nav(props) {
               </div>
             </button>
           </div>
-          {/* <div className="container-icon"> */}
           <NavLink to="favorite" className="container-icon">
             <button className="btn-icon">
               <i className="bi bi-heart"></i>
             </button>
           </NavLink>
-          {/* </div> */}
           <NavLink to="/cart" className="container-icon">
             <button className="btn-icon">
               <i className="bi bi-bag">

@@ -1,20 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
 nav.main {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  height: 65px;
-  margin: 0 auto;
   width: 100%;
   max-width: none;
-  padding: 0 20px;
+  height: 65px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(247, 247, 247);
-  z-index: 99;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 0;
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: rgb(247, 247, 247);
+  z-index: 99;
+  box-sizing: border-box;
 }
 
 .nav-open {
@@ -27,6 +28,7 @@ nav.main {
   display: flex;
   width: 100px;
   height: 50px;
+  z-index: 99;
   align-items: center;
   cursor: pointer;
 }
@@ -95,7 +97,11 @@ img {
   justify-content: center;
   align-content: center;
 }
-
+nav.main.is-open .option-panel.open .dropdown{
+  opacity: 1;
+  transform: scaleY(1);
+  visibility: visible;
+}
 .right-side-menu i {
   cursor: pointer;
   font-size: 1.4rem;
@@ -115,12 +121,6 @@ img {
   outline: none;
   border: none;
 }
-.option-panel:hover > .dropdown {
-  opacity: 1;
-  transform: scaleY(1);
-  visibility: visible;
-}
-
 .bg-page {
   width: 100%;
   display: block;
@@ -159,7 +159,6 @@ img {
 
 .i-icon {
   cursor: pointer;
-  height: 100%;
   display: flex;
   align-items: center;
 }
@@ -243,16 +242,8 @@ img {
   .container-icon:has(.bi-heart) {
     display: none;
   }
-  .container-icon button i {
-    width: fit-content;
-    padding: 5px;
-  }
   .icon-hamburger {
     display: flex;
-  }
-  .searchbar {
-    width: fit-content !important;
-    padding: 5px;
   }
   nav.hamburger.open {
     transform: translate(0);

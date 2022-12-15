@@ -119,7 +119,7 @@ export default function MenShoesLifeStyle(props) {
         </div>
         <div className="con-content">
           <div className={`con-filter-bar ${open}`}>
-            <div className={`filter-bar ${open}`}>
+            <div className={`filter-bar`}>
               <i className="bi bi-x-circle closer" onClick={filterHandler}></i>
               <Filters priceHandler={priceHandler} />
             </div>
