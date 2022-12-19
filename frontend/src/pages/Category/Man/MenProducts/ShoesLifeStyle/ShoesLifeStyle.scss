@@ -9,6 +9,8 @@
   .header {
   display: flex;
   justify-content: space-between;
+  .web-title{
+  }
     .buttons {
     display: flex;
     align-self: flex-end;
@@ -321,6 +323,15 @@ a:link {
   .responsive{
     width: 60%;
   }
+  .header{
+    display: block !important;
+    width: 100%;
+    height: auto;
+  }
+  .buttons{
+    justify-content: center;
+    margin-top: 10px;
+  }
 }
 @media only screen and (max-width: 950px) {
   body:has(.con-filter-bar.open){
@@ -399,6 +410,19 @@ a:link {
         }
       }
     }
+  }
+}
+
+@media only screen and (max-width:700px) {
+  .container-icon,.searchbar{
+    width: 45px;
+  }
+  .btn-icon{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 

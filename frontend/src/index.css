@@ -6,3 +6,6 @@ body {
   height: 100%;
   overflow-x: hidden;
 }
+html {
+  overflow-y: hidden;
+}

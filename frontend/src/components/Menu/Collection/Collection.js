@@ -1,3 +1,4 @@
+import "./Collection.css";
 import { NavLink } from "react-router-dom";
 export default function Collection(props) {
   const panorama = process.env.PUBLIC_URL + "/img/jpg/picture4.jpg";

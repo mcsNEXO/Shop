@@ -16,21 +16,21 @@ export default function ProfilePage(props) {
           </NavLink>
         </div>
         <div className="pg-img-title">
-          Welcome to your profile <i>{auth.firstName}</i>
+          <span>
+            Welcome to your profile <i>{auth.firstName}</i>
+          </span>
         </div>
       </div>
-      <div className="pg-box">
-        <div className="pg-things">
-          <div className="pg-products-title">Recently viewed products</div>
-          <div className="pg-last-products">
-            <div className="pg-product"></div>
-            <div className="pg-product"></div>
-            <div className="pg-product"></div>
-          </div>
+      <div className="pg-box-product">
+        {/* <div className="pg-products-title">Recently viewed products</div> */}
+        <div className="pg-last-products">
+          <div className="pg-product"></div>
+          <div className="pg-product"></div>
+          <div className="pg-product"></div>
         </div>
       </div>
 
-      <div className="pg-box">
+      <div className="pg-box-product">
         <div className="pg-promotions">
           <div className="pg-promotion-title">
             See promotions we have for you
@@ -51,7 +51,7 @@ export default function ProfilePage(props) {
           </div>
         </div>
       </div>
-      <div className="pg-box">
+      <div className="pg-box-product">
         <div className="pg-favorites">
           <div className="pg-favorite-title">Favorite</div>
           <div className="pg-favorite"></div>

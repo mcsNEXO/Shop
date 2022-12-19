@@ -46,7 +46,6 @@ export default function Nav(props) {
     setIsOpen(true);
     e.target.classList.add("open");
   };
-
   return (
     <>
       <nav className={`main`} ref={mainNav}>
@@ -74,7 +73,11 @@ export default function Nav(props) {
                 <NavLink to={item.path} onClick={closeDdMenu}>
                   {item.title}
                 </NavLink>
-                <Dropdown path={item.path} item={item.submenu} />
+                <Dropdown
+                  path={item.path}
+                  item={item.submenu}
+                  closeMenu={closeDdMenu}
+                />
               </div>
             );
           })}

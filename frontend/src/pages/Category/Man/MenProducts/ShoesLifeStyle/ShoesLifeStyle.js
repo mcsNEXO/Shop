@@ -76,7 +76,7 @@ export default function MenShoesLifeStyle(props) {
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}
       <div className="conLifestyle">
         <div className="header">
-          <div>{webLink}</div>
+          <div className="web-title">{webLink}</div>
           <div className="buttons">
             <button
               className="filter-btn"

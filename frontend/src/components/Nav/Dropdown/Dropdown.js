@@ -11,6 +11,7 @@ export default function Dropdown(props) {
             <div key={index} className="dd-column">
               <div className="dd-title">
                 <NavLink
+                  onClick={props.closeMenu}
                   to={`w/${props.path}-${item.title
                     .replaceAll(" ", "-")
                     .toLowerCase()}`}
@@ -25,6 +26,7 @@ export default function Dropdown(props) {
                       to={`w/${props.path}-${title}-${item.title
                         .replaceAll(" ", "-")
                         .toLowerCase()}`}
+                      onClick={props.closeMenu}
                     >
                       {item.title}
                     </NavLink>

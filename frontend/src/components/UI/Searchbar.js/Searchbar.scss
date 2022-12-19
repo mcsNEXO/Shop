@@ -178,17 +178,18 @@ input.search-input:hover {
   }
   .search-icon {
     position: initial;
-    width: 100%;
+    width: 42px;
   }
   .search-icon i {
-    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px !important;
     height: 42px;
     border-radius: 100%;
   }
   .search-icon i:hover {
     background-color: rgb(216, 215, 215);
-    display: flex;
-    justify-content: center;
   }
   .search-icon:hover {
     background-color: transparent;

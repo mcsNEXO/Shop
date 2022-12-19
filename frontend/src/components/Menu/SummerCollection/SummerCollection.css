@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap");
 .container-summer {
   width: 100%;
   height: auto;
   margin-top: 5rem;
+  padding: 10px;
 }
 
 .title-summer {
@@ -31,7 +33,7 @@
   position: absolute;
   width: auto;
   top: 50%;
-  left: 60vw;
+  right: 10px;
 }
 
 .block-summer-desc {
@@ -41,7 +43,6 @@
   text-align: center;
   color: rgb(160, 151, 151);
   text-transform: uppercase;
-  /* background-color: rgba(0, 0, 0, 0.24); */
   font-family: "Ubuntu", sans-serif;
 }
 
@@ -57,5 +58,16 @@
   font-size: 1.4rem;
   text-transform: uppercase;
   color: black;
-  text-shadow: 1px 1px blue;
+  font-family: "Unbounded", cursive;
+  color: aliceblue;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
+}
+
+@media only screen and (max-width: 1000px) {
+  .img-summer img {
+    object-fit: cover;
+  }
+  .block-summer{
+    left: 40vw;
+  }
 }

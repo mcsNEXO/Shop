@@ -5,8 +5,12 @@ import { useRef } from "react";
 export default function Serachbar(props) {
   const conResponsiveSearch = useRef();
   const handleSearch = () => {
+    const classes = [...conResponsiveSearch.current.classList];
     window.innerWidth <= 1000
       ? conResponsiveSearch.current.classList.toggle("open")
+      : console.log();
+    classes.includes("open") && window.innerWidth > 1000
+      ? conResponsiveSearch.current.classList.remove("open")
       : console.log();
   };
   return (
