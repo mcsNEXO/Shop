@@ -50,10 +50,10 @@ export default function Cart(props) {
     <>
       {error ? <ErrorModal text={error} /> : null}
       <div className="cart-container">
-        <div>
+        <div style={{ width: "100%" }}>
           <div className="title-cart">Cart</div>
           <hr></hr>
-          <div style={{ display: "flex" }}>
+          <div className="box">
             <div className="box-of-products">
               {cart?.length > 0 ? (
                 cart?.map((item, index) => (

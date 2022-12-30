@@ -320,6 +320,7 @@ a:link {
 
 }
 @media only screen and (max-width: 650px) {
+  .conLifestyle{
   .responsive{
     width: 60%;
   }
@@ -333,11 +334,13 @@ a:link {
     margin-top: 10px;
   }
 }
+}
 @media only screen and (max-width: 950px) {
   body:has(.con-filter-bar.open){
     overflow-y: hidden;
   }
-  .buttons{
+  .conLifestyle{
+      .buttons{
     button{
       font-size: 0.8rem !important;
       font-weight: 600 !important;
@@ -347,7 +350,6 @@ a:link {
     font-size: 0.8rem !important;
     font-weight: 600;
   }
-  .conLifestyle{
     .con-content{
       display: block;
       .con-filter-bar.open{
@@ -414,6 +416,7 @@ a:link {
 }
 
 @media only screen and (max-width:700px) {
+  .conLifestyle{
   .container-icon,.searchbar{
     width: 45px;
   }
@@ -423,6 +426,5 @@ a:link {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-}
+}}}
 

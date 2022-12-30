@@ -12,7 +12,7 @@ const shoesSchema = new Schema({
     type: Array,
   },
   size: {
-    type: Number,
+    type: Array,
   },
   image: {
     type: Array,

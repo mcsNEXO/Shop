@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import webPath from "../../../../../components/helpers/path";
 import axios from "../../../../../axios";
 import "./ShoesLifeStyle.scss";
@@ -127,7 +127,7 @@ export default function MenShoesLifeStyle(props) {
           <div className="contents">
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>
-                <div
+                <NavLink
                   to={`/${item._id}-${item.colors[item.index]}`}
                   key={`${item._id}-${index}`}
                   onPointerLeave={() => setEdit(false)}
@@ -181,7 +181,7 @@ export default function MenShoesLifeStyle(props) {
                         : `1 color`}
                     </div>
                   </div>
-                </div>
+                </NavLink>
               </div>
             ))}
           </div>
