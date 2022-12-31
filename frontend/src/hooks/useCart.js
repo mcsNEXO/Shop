@@ -14,6 +14,7 @@ export default function useCart() {
   };
 
   const addProduct = async (item, color) => {
+    console.log(item);
     const product = {
       ...item,
       colors: item.colors.filter((x) => x === color).toString(),
@@ -23,7 +24,10 @@ export default function useCart() {
     };
     if (cart !== null) {
       const exist = cart.find(
-        (x) => x._id === product._id && x.colors === product.colors
+        (x) =>
+          x._id === product._id &&
+          x.colors === product.colors &&
+          x.size === product.size
       );
       if (exist?.quantity === 10) {
         // return setError("The quantity of this product is maximum!");

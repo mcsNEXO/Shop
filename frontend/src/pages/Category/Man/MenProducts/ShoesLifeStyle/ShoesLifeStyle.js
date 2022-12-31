@@ -128,7 +128,7 @@ export default function MenShoesLifeStyle(props) {
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>
                 <NavLink
-                  to={`/${item._id}-${item.colors[item.index]}`}
+                  to={`/product/${item._id}-${item.colors[item.index]}`}
                   key={`${item._id}-${index}`}
                   onPointerLeave={() => setEdit(false)}
                   onPointerEnter={() => setEdit(index)}

@@ -67,51 +67,56 @@ export default function Cart(props) {
                         }
                         alt="product"
                       ></img>
-                      <div className="information">
-                        <div className="name">{item.name}</div>
-                        <div className="gender">{`${item.gender}'s ${item.type}`}</div>
-                        <div className="color">{`Color: ${item.colors}`}</div>
-                        <div style={{ display: "flex" }}>
-                          <div className="size">{`Size: ${item.size} `}</div>
-                          <div className="quantity">
-                            Quantity:
-                            <select
-                              value={item?.quantity}
-                              onChange={(e) =>
-                                updateQuantity(e.target.value, item)
-                              }
-                            >
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                              <option>6</option>
-                              <option>7</option>
-                              <option>8</option>
-                              <option>9</option>
-                              <option>10</option>
-                            </select>
+                      <div className="right-side">
+                        <div className="information">
+                          <div className="name">{item.name}</div>
+                          <div className="gender">{`${item.gender}'s ${item.type}`}</div>
+                          <div className="color">{`Color: ${item.colors}`}</div>
+                          <div style={{ display: "flex" }}>
+                            <div className="size">{`Size: ${item.size} `}</div>
+                            <div className="quantity">
+                              Quantity:
+                              <select
+                                value={item?.quantity}
+                                onChange={(e) =>
+                                  updateQuantity(e.target.value, item)
+                                }
+                              >
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                              </select>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="price">${item.price}</div>
-                      <div
-                        className="delete"
-                        onClick={() => {
-                          const arr = cart.filter(
-                            (el) => JSON.stringify(el) !== JSON.stringify(item)
-                          );
-                          setCart(arr);
-                        }}
-                      >
-                        <i className="bi bi-trash3"></i>
-                      </div>
-                      <div className="favorite ">
-                        <i className="bi bi-heart"></i>
+                        <div className="other-information">
+                          <div className="price">${item.price}</div>
+                          <div
+                            className="delete"
+                            onClick={() => {
+                              const arr = cart.filter(
+                                (el) =>
+                                  JSON.stringify(el) !== JSON.stringify(item)
+                              );
+                              setCart(arr);
+                            }}
+                          >
+                            <i className="bi bi-trash3"></i>
+                          </div>
+                          <div className="favorite ">
+                            <i className="bi bi-heart"></i>
+                          </div>
+                        </div>
+                        <hr></hr>
                       </div>
                     </div>
-                    <hr></hr>
                   </div>
                 ))
               ) : (

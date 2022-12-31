@@ -1,6 +1,7 @@
 export const initialState = {
   user: JSON.parse(window.localStorage.getItem("token-data")) ?? null,
   cart: JSON.parse(window.localStorage.getItem("cart")) ?? null,
+  error: JSON.parse(window.localStorage.getItem("error") ?? null),
 };
 
 export const reducer = (state, action) => {
@@ -13,6 +14,8 @@ export const reducer = (state, action) => {
       return {};
     case "cart":
       return { ...state, cart: action.item };
+    case "error":
+      return { ...state, error: action.error };
     default:
       throw new Error("This action does not exist: ".action.type);
   }

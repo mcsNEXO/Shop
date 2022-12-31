@@ -20,6 +20,7 @@ import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRun
 import Cart from "./pages/Cart/Cart";
 import Shoe from "./pages/Category/Man/MenProducts/ShoesLifeStyle/Shoe/Shoe";
 import CartContext from "./context/cartContext";
+import ErrorContext from "./context/errorContext";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -30,11 +31,11 @@ function App() {
       <Route path="/" element={<Menu />} />
       <Route path="/men" element={<Men />} />
       <Route path="/w">
-        <Route path="men-shoes-lifestyle" element={<ShoesLifeStyle />} />
+        <Route path="men-shoes-lifestyle/" element={<ShoesLifeStyle />}></Route>
         <Route path="men-shoes-running" element={<ShoesRunning />} />
       </Route>
-      <Route path="/:id" element={<Shoe />} />
       <Route path="cart" element={<Cart />} />
+      <Route path="/product/:id" element={<Shoe />} />
 
       <Route
         path="profile/*"
@@ -47,7 +48,7 @@ function App() {
         <Route path="" element={<ProfilePage />} />
         <Route path="my-data" element={<MyData />} />
         <Route path="cart" element />
-        <Route path="favorite" element />
+        <Route path="favorite" element={<div>WHAT</div>} />
         <Route path="orders" element />
         <Route path="*" element={<div>Not Found</div>} />
       </Route>
@@ -58,22 +59,29 @@ function App() {
   const footer = <Footer />;
   return (
     <Router>
-      <CartContext.Provider
+      <ErrorContext.Provider
         value={{
-          item: state.cart,
-          login: (item) => dispatch({ type: "cart", item }),
+          error: state.error,
+          setError: (error) => dispatch({ type: "error", error }),
         }}
       >
-        <AuthContext.Provider
+        <CartContext.Provider
           value={{
-            user: state.user,
-            login: (user) => dispatch({ type: "login", user }),
-            logout: () => dispatch({ type: "logout" }),
+            item: state.cart,
+            login: (item) => dispatch({ type: "cart", item }),
           }}
         >
-          <Layout header={header} nav={nav} menu={menu} footer={footer} />
-        </AuthContext.Provider>
-      </CartContext.Provider>
+          <AuthContext.Provider
+            value={{
+              user: state.user,
+              login: (user) => dispatch({ type: "login", user }),
+              logout: () => dispatch({ type: "logout" }),
+            }}
+          >
+            <Layout header={header} nav={nav} menu={menu} footer={footer} />
+          </AuthContext.Provider>
+        </CartContext.Provider>
+      </ErrorContext.Provider>
     </Router>
   );
 }

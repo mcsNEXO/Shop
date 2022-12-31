@@ -25,6 +25,16 @@
                 width: 150px;
                 height: 150px;
             }
+            .right-side{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .other-information{
+                display: flex;
+                width: calc(100% - 200px);
+                justify-content: space-around;
+            }
             .information{
                 padding: 10px;
                 .name::first-letter{
@@ -52,8 +62,6 @@
                 }
             }
             .price{
-                max-width: 100%;
-                width: 20%;
                 font-weight: 600;
                 font-size: 1.2rem;
                 align-self: center;
@@ -62,14 +70,11 @@
             .delete{
                 align-self: center;
                 text-align: end;
-                width: 20%;
                 color: red;
                 font-size: 25px;
             }
             .favorite{
                 align-self: center;
-                width: 20%;
-                max-width: 80px;
                 text-align: center;
                 font-size: 25px;
                 color: black;
@@ -177,13 +182,27 @@
 }
 
 @media only screen and (max-width: 900px) {
+    .cart-container{
     .box{
         margin: auto;
-        text-align: center;
         display: block !important;        
     }
     .to-pay{
         margin: auto;
     }
-  
+}
+}
+
+@media only screen and (max-width: 700px) {
+    .cart-container{
+        .right-side{
+            display: block !important;
+        }
+        .other-information{
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            // display: block !important;
+        }
+}
 }
