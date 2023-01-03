@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";
+import useAuth from "../../hooks/useAuth";
 
 export default function Cart(props) {
   const [cart, setCart] = useCart();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [auth] = useAuth();
 
   const price = () => {
     let price = 0;
@@ -35,15 +37,24 @@ export default function Cart(props) {
     setDiscount(res?.data?.precent);
   };
 
-  const updateQuantity = (value, item) => {
-    const product = cart.find((x) => x._id === item._id);
-    setCart(
-      cart.map((x) =>
-        x._id === product._id
-          ? { ...product, quantity: (product.quantity = Number(value)) }
-          : x
-      )
-    );
+  const updateQuantity = async (value, item) => {
+    const data = {
+      userId: auth._id,
+      product: item,
+      quantity: value,
+    };
+    const res = await axios.post("update-product", data);
+    console.log(res);
+    setCart(res.data.cart);
+  };
+  const deleteProduct = async (product) => {
+    console.log(product);
+    const data = {
+      userId: auth._id,
+      product: product,
+    };
+    const res = await axios.post("delete-product", data);
+    setCart(res.data.cart);
   };
 
   return (
@@ -100,13 +111,7 @@ export default function Cart(props) {
                           <div className="price">${item.price}</div>
                           <div
                             className="delete"
-                            onClick={() => {
-                              const arr = cart.filter(
-                                (el) =>
-                                  JSON.stringify(el) !== JSON.stringify(item)
-                              );
-                              setCart(arr);
-                            }}
+                            onClick={() => deleteProduct(item)}
                           >
                             <i className="bi bi-trash3"></i>
                           </div>

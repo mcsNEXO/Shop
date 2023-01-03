@@ -5,13 +5,15 @@ import axios from "../../../../../../axios";
 import useCart from "../../../../../../hooks/useCart";
 import ErrorModal from "../../../../../../components/Modals/ErrorModal/ErrorModal";
 import useError from "../../../../../../hooks/useError";
+import useAuth from "../../../../../../hooks/useAuth";
 
 export default function Shoe(props) {
   const { id } = useParams();
   const idProduct = id.split("-")[0];
   const index = id.split("-")[1];
-  const [cart, setCart, addProduct] = useCart();
+  const [cart, setCart] = useCart();
   const [product, setProduct] = useState();
+  const [auth] = useAuth();
   const pathImage = process.env.PUBLIC_URL + "/img/jpg/shoes/";
   const [currentSize, setCurretProduct] = useState();
   const [error, setError] = useError();
@@ -32,6 +34,29 @@ export default function Shoe(props) {
     // setCurretProduct({ ...product, size: size });
     setCurretProduct(size);
   };
+
+  const addToCart = async (product) => {
+    if (auth) {
+      const newProduct = {
+        ...product,
+        colors: product.colors.filter((x) => x === index).toString(),
+        // colors: item.colors[item.index],
+        // image: item.image[item.index],
+        image: product.image.filter((x) => x.includes(index)).toString(),
+      };
+      const data = {
+        userId: auth._id,
+        product: newProduct,
+      };
+      const res = await axios.post("add-product", data);
+      console.log(res);
+      setCart(res.data.cart);
+    } else if (!auth) {
+    } else {
+      throw new Error("Something went wrong");
+    }
+  };
+
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -87,11 +112,7 @@ export default function Shoe(props) {
           <div className="buttons">
             <button
               className="add-to-cart"
-              onClick={() =>
-                currentSize
-                  ? addProduct({ ...product, size: currentSize }, index)
-                  : setError("Select size!")
-              }
+              onClick={() => addToCart({ ...product, size: currentSize })}
             >
               Add to cart <i className="bi bi-cart-fill"></i>
             </button>
