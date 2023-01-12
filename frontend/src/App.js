@@ -21,6 +21,7 @@ import Cart from "./pages/Cart/Cart";
 import Shoe from "./pages/Category/Man/MenProducts/ShoesLifeStyle/Shoe/Shoe";
 import CartContext from "./context/cartContext";
 import ErrorContext from "./context/errorContext";
+import FilterHandlerContext from "./context/filterHandlerContext";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -78,7 +79,14 @@ function App() {
               logout: () => dispatch({ type: "logout" }),
             }}
           >
-            <Layout header={header} nav={nav} menu={menu} footer={footer} />
+            <FilterHandlerContext.Provider
+              value={{
+                open: state.open,
+                setOpen: (value) => dispatch({ type: "filter", value }),
+              }}
+            >
+              <Layout header={header} nav={nav} menu={menu} footer={footer} />
+            </FilterHandlerContext.Provider>
           </AuthContext.Provider>
         </CartContext.Provider>
       </ErrorContext.Provider>

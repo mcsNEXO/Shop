@@ -34,29 +34,6 @@ export default function Shoe(props) {
     setCurrentProduct(size);
   };
 
-  const addToCart = async (product) => {
-    console.log(index);
-    setCart(product);
-
-    // if (auth) {
-    //   const newProduct = {
-    //     ...product,
-    //     colors: product.colors.filter((x) => x === index).toString(),
-    //     image: product.image.filter((x) => x.includes(index)).toString(),
-    //   };
-    //   const data = {
-    //     userId: auth._id,
-    //     product: newProduct,
-    //   };
-    //   const res = await axios.post("add-product", data);
-    //   console.log(res);
-    //   setCart(res.data.cart);
-    // } else if (!auth) {
-    //   setCart(product);
-    // } else {
-    //   throw new Error("Something went wrong");
-    // }
-  };
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -121,7 +98,7 @@ export default function Shoe(props) {
               className="add-to-cart"
               onClick={() =>
                 currentSize
-                  ? addToCart({ ...product, size: currentSize })
+                  ? setCart({ ...product, size: currentSize })
                   : setError("Select size!")
               }
             >

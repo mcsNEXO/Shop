@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { shoesSize } from "../../data/sizeShoes";
 import { shoesColors } from "../../data/sizeShoes";
+import useFilterHandler from "../../hooks/useFilterHandler";
 
 export default function Filters(props) {
   const [search, setSearch] = useSearchParams();
@@ -9,6 +10,20 @@ export default function Filters(props) {
   const [value2, setValue2] = useState(
     search.get("price")?.split("-")[1] ?? 3000
   );
+  const [open, setOpen] = useFilterHandler();
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
+  let resizeWindow = () => {
+    setWindowWidth((prev) => (prev += window.innerWidth - prev));
+    setWindowHeight(window.innerHeight);
+    window.innerWidth <= 950 ? setOpen(false) : console.log();
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
 
   const chooseSize = (size) => {
     size === Number(search.get("size"))
@@ -36,82 +51,90 @@ export default function Filters(props) {
 
   return (
     <>
-      <span className="title-filter">Filter</span>
-      <hr className="filter-line" />
-      <div className="options">
-        <div className="price responsive">
-          <div className="title-option">Price</div>
-          <div className="option">
-            <input
-              type="number"
-              onChange={(e) => setValue(e.target.value)}
-              value={value}
-              className="inp-price"
-            />
-            &nbsp;-&nbsp;
-            <input
-              type="number"
-              onChange={(e) => setValue2(e.target.value)}
-              value={value2}
-              className="inp-price"
-            />
-          </div>
-          <div className="d-center">
-            <button
-              className="price-btn"
-              onClick={() => props.priceHandler(value, value2)}
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-      <hr className="filter-line"></hr>
-      <div className="colors responsive">
-        <div className="title-option">Colors</div>
-        <div className="option">
-          {shoesColors.map((item, index) => (
-            <button
-              className="color-item"
-              onClick={(e) => chooseColor(item.color)}
-              key={index}
-            >
-              <div
-                style={{ backgroundColor: item.color }}
-                className={`${
-                  search.get("colors")?.includes(item.color) ? "active" : ""
-                }`}
-              >
-                {search.get("colors")?.includes(item.color) ? (
-                  <i
-                    className="bi bi-check-lg"
-                    style={
-                      item.color === "white"
-                        ? { color: "black" }
-                        : { color: "white" }
-                    }
-                  ></i>
-                ) : null}
+      <div className={`con-filter-bar ${open ? "open" : "close"}`}>
+        <div className={`filter-bar`}>
+          <i
+            className="bi bi-x-circle closer"
+            onClick={() => setOpen(false)}
+          ></i>
+          <span className="title-filter">Filter</span>
+          <hr className="filter-line" />
+          <div className="options">
+            <div className="price responsive">
+              <div className="title-option">Price</div>
+              <div className="option">
+                <input
+                  type="number"
+                  onChange={(e) => setValue(e.target.value)}
+                  value={value}
+                  className="inp-price"
+                />
+                &nbsp;-&nbsp;
+                <input
+                  type="number"
+                  onChange={(e) => setValue2(e.target.value)}
+                  value={value2}
+                  className="inp-price"
+                />
               </div>
-            </button>
-          ))}
-        </div>
-      </div>
-      <hr className="filter-line"></hr>
-      <div className="size responsive">
-        <div className="title-option">Size</div>
-        <div className="option">
-          {shoesSize.map((size, index) => (
-            <div
-              key={index}
-              className={`number ${
-                Number(search.get("size")) === size.size ? "active" : ""
-              }`}
-              onClick={() => chooseSize(size.size)}
-            >
-              {size.size}
+              <div className="d-center">
+                <button
+                  className="price-btn"
+                  onClick={() => props.priceHandler(value, value2)}
+                >
+                  Save
+                </button>
+              </div>
             </div>
-          ))}
+          </div>
+          <hr className="filter-line"></hr>
+          <div className="colors responsive">
+            <div className="title-option">Colors</div>
+            <div className="option">
+              {shoesColors.map((item, index) => (
+                <button
+                  className="color-item"
+                  onClick={(e) => chooseColor(item.color)}
+                  key={index}
+                >
+                  <div
+                    style={{ backgroundColor: item.color }}
+                    className={`${
+                      search.get("colors")?.includes(item.color) ? "active" : ""
+                    }`}
+                  >
+                    {search.get("colors")?.includes(item.color) ? (
+                      <i
+                        className="bi bi-check-lg"
+                        style={
+                          item.color === "white"
+                            ? { color: "black" }
+                            : { color: "white" }
+                        }
+                      ></i>
+                    ) : null}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <hr className="filter-line"></hr>
+          <div className="size responsive">
+            <div className="title-option">Size</div>
+            <div className="option">
+              {shoesSize.map((size, index) => (
+                <div
+                  key={index}
+                  className={`number ${
+                    Number(search.get("size")) === size.size ? "active" : ""
+                  }`}
+                  onClick={() => chooseSize(size.size)}
+                >
+                  {size.size}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>

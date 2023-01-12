@@ -7,6 +7,7 @@ import "./ShoesLifeStyle.scss";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
 import Filters from "../../../../../components/Filters/Filters";
 import { sortingData } from "../../../../../data/sizeShoes";
+import useFilterHandler from "../../../../../hooks/useFilterHandler";
 
 export default function MenShoesLifeStyle(props) {
   const [search, setSearch] = useSearchParams();
@@ -15,7 +16,7 @@ export default function MenShoesLifeStyle(props) {
   const [edit, setEdit] = useState(false);
   const filterRef = useRef();
   const filterBtn = useRef();
-  const [open, setOpen] = useState("open");
+  const [open, setOpen] = useFilterHandler();
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -65,11 +66,10 @@ export default function MenShoesLifeStyle(props) {
     return setSearch(search);
   };
 
-  const filterHandler = (e) => {
-    setOpen(open === "open" ? "close" : "open");
-    console.log(e.target);
-    return open;
-  };
+  // const filterHandler = (e) => {
+  //   setOpen(open === "open" ? "close" : "open");
+  //   return open;
+  // };
 
   return (
     <>
@@ -81,9 +81,9 @@ export default function MenShoesLifeStyle(props) {
             <button
               className="filter-btn"
               ref={filterBtn}
-              onClick={(e) => filterHandler(e)}
+              onClick={(e) => setOpen(!open)}
             >
-              {open === "open" ? "Hide filters" : "Show filters"}{" "}
+              {open ? "Hide filters" : "Show filters"}{" "}
               <i className="bi bi-filter"></i>
             </button>
             <div className="filter-btn">
@@ -118,12 +118,7 @@ export default function MenShoesLifeStyle(props) {
           </div>
         </div>
         <div className="con-content">
-          <div className={`con-filter-bar ${open}`}>
-            <div className={`filter-bar`}>
-              <i className="bi bi-x-circle closer" onClick={filterHandler}></i>
-              <Filters priceHandler={priceHandler} />
-            </div>
-          </div>
+          <Filters priceHandler={priceHandler} />
           <div className="contents">
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>
