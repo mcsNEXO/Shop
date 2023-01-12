@@ -1,15 +1,62 @@
 import { useContext, useDebugValue } from "react";
 import CartContext from "../context/cartContext";
+import axios from "../axios";
+import useAuth from "./useAuth";
+import AuthContext from "../context/authContext";
 
 export default function useCart() {
   const cartContext = useContext(CartContext);
+  const authContext = useContext(AuthContext);
 
   const cart = cartContext.item;
+  const auth = authContext.user;
 
-  const setCart = (item) => {
-    if (item) {
-      cartContext.login(item);
-      localStorage.setItem("cart", JSON.stringify(item));
+  const setCart = async (product) => {
+    if (Array.isArray(product)) {
+      cartContext.login(product);
+      return localStorage.setItem("cart", JSON.stringify(product));
+    }
+    const index = window.location.pathname.split("-").at(-1);
+    const newProduct = {
+      ...product,
+      colors: product.colors?.filter((x) => x === index).toString(),
+      image: product.image?.filter((x) => x.includes(index)).toString(),
+    };
+    if (auth) {
+      const data = {
+        userId: auth._id,
+        product: newProduct,
+      };
+      const res = await axios.post("add-product", data);
+      setCart(res.data.cart);
+    } else if (!auth) {
+      if (cart) {
+        const exist = cart?.find(
+          (x) =>
+            x._id === newProduct._id &&
+            x.colors === newProduct.colors &&
+            x.size === newProduct.size
+        );
+        if (exist) {
+          const newCart = cart.map((x) =>
+            x._id === newProduct._id && x.size === newProduct.size
+              ? { ...x, quantity: x.quantity + 1 }
+              : x
+          );
+          cartContext.login(newCart);
+          localStorage.setItem("cart", JSON.stringify(newCart));
+        } else {
+          const items = [...cart, { ...newProduct, quantity: 1 }];
+          cartContext.login(items);
+          localStorage.setItem("cart", JSON.stringify(items));
+        }
+      } else {
+        cartContext.login([{ ...newProduct, quantity: 1 }]);
+        localStorage.setItem(
+          "cart",
+          JSON.stringify([{ ...newProduct, quantity: 1 }])
+        );
+      }
     }
   };
 

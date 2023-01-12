@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./Login.css";
 import axios from "../../../axios";
 import useAuth from "../../../hooks/useAuth";
+import useCart from "../../../hooks/useCart";
 import Input from "../../../components/Input/Input";
 
 export default function Login(props) {
@@ -11,6 +12,7 @@ export default function Login(props) {
   const [error, setError] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cart, setCart] = useCart();
 
   const login = async (e) => {
     e.preventDefault();
@@ -18,9 +20,20 @@ export default function Login(props) {
       email: email,
       password: password,
     };
+    const localCart = cart;
     try {
       const res = await axios.post("/sign-in", data);
       setAuth(res.data.user);
+      if (localCart) {
+        console.log("localcart");
+        const data2 = {
+          cart: localCart,
+          userId: res.data.user._id,
+        };
+        const res2 = await axios.post("/add-product", data2);
+        setCart(res2.data.cart);
+      }
+
       navigate("/");
     } catch (e) {
       setError(e.response.data.message);

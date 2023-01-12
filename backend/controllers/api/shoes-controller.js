@@ -1,3 +1,4 @@
+const { copyFileSync } = require("fs");
 const Shoes = require("../../db/models/shoes");
 class ShoesController {
   async getShoes(req, res) {
@@ -53,7 +54,8 @@ class ShoesController {
         );
       }
       if (url.size) {
-        shoes = shoes.filter((shoe) => shoe.size === Number(url.size));
+        shoes = shoes.filter((shoe) => shoe.size.includes(Number(url.size)));
+        console.log(shoes);
       }
     }
     return res.status(200).json({ shoes });

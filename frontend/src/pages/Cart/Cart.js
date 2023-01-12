@@ -6,7 +6,7 @@ import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 
 export default function Cart(props) {
-  const [cart, setCart] = useCart();
+  const [cart, setCart] = useCart("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -38,23 +38,37 @@ export default function Cart(props) {
   };
 
   const updateQuantity = async (value, item) => {
-    const data = {
-      userId: auth._id,
-      product: item,
-      quantity: value,
-    };
-    const res = await axios.post("update-product", data);
-    console.log(res);
-    setCart(res.data.cart);
+    if (auth) {
+      const data = {
+        userId: auth._id,
+        product: item,
+        quantity: value,
+      };
+      const res = await axios.post("update-product", data);
+      setCart(res.data.cart);
+    } else {
+      setCart(
+        cart.map((x) =>
+          x._id === item._id && x.color === item.color && x.size === item.size
+            ? { ...x, quantity: Number(value) }
+            : x
+        )
+      );
+    }
   };
   const deleteProduct = async (product) => {
-    console.log(product);
-    const data = {
-      userId: auth._id,
-      product: product,
-    };
-    const res = await axios.post("delete-product", data);
-    setCart(res.data.cart);
+    if (auth) {
+      const data = {
+        userId: auth._id,
+        product: product,
+      };
+      const res = await axios.post("delete-product", data);
+      setCart(res.data.cart);
+    } else {
+      setCart(
+        cart.filter((x) => JSON.stringify(x) !== JSON.stringify(product))
+      );
+    }
   };
 
   return (

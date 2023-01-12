@@ -21,11 +21,15 @@ export default function Nav(props) {
 
   useEffect(() => {
     let amountItems = 0;
-    for (let i = 0; i < cart?.length; i++) {
-      amountItems += cart[i].quantity;
+    if (true) {
+      for (let i = 0; i < cart?.length; i++) {
+        amountItems += cart[i].quantity;
+      }
+      setAmount(amountItems);
+    } else {
+      setAmount();
     }
-    amountItems >= 9 ? setAmount("9+") : setAmount(amountItems);
-  }, [cart]);
+  });
 
   const handleHamburger = () => {
     hamburger.current.classList.toggle("open");
@@ -122,7 +126,9 @@ export default function Nav(props) {
           <NavLink to="/cart" className="container-icon">
             <button className="btn-icon">
               <i className="bi bi-bag">
-                {amount > 0 ? <span className="amount">{amount}</span> : null}
+                {amount > 0 ? (
+                  <span className="amount">{amount > 9 ? "9+" : amount}</span>
+                ) : null}
               </i>
             </button>
           </NavLink>

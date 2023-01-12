@@ -2,8 +2,18 @@ import "./Profile.css";
 import { NavLink, Outlet, Route, Routes } from "react-router-dom";
 import MyData from "../Profile/MyData/MyData";
 import ProfilePage from "./ProfilePage/ProfilePage";
+import useAuth from "../../hooks/useAuth";
+import useCart from "../../hooks/useCart";
 
 export default function Profile(props) {
+  const [auth, setAuth] = useAuth();
+  const [cart, setCart] = useCart();
+
+  const logoutUser = () => {
+    setAuth("");
+    setCart("");
+  };
+
   return (
     <div className="container-profile">
       <aside>
@@ -20,12 +30,12 @@ export default function Profile(props) {
             </NavLink>
           </div>
           <div className="profile-option">
-            <NavLink className="black" to="cart">
+            <NavLink className="black" to="/cart">
               <i className="bi bi-bag"></i> Your cart
             </NavLink>
           </div>
           <div className="profile-option">
-            <NavLink className="black" to="favorite">
+            <NavLink className="black" to="/favorite">
               <i className="bi bi-heart"></i> Favorite
             </NavLink>
           </div>
@@ -35,7 +45,7 @@ export default function Profile(props) {
             </NavLink>
           </div>
           <div className="profile-option">
-            <NavLink className="black" to="/">
+            <NavLink className="black" to="/" onClick={logoutUser}>
               <i className="bi bi-door-closed"></i> Logout
             </NavLink>
           </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Shoe.scss";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "../../../../../../axios";
 import useCart from "../../../../../../hooks/useCart";
 import ErrorModal from "../../../../../../components/Modals/ErrorModal/ErrorModal";
@@ -15,7 +15,7 @@ export default function Shoe(props) {
   const [product, setProduct] = useState();
   const [auth] = useAuth();
   const pathImage = process.env.PUBLIC_URL + "/img/jpg/shoes/";
-  const [currentSize, setCurretProduct] = useState();
+  const [currentSize, setCurrentProduct] = useState();
   const [error, setError] = useError();
 
   useEffect(() => {
@@ -31,32 +31,32 @@ export default function Shoe(props) {
       .forEach((x) => x.classList.remove("active"));
 
     e.target.classList.add("active");
-    // setCurretProduct({ ...product, size: size });
-    setCurretProduct(size);
+    setCurrentProduct(size);
   };
 
   const addToCart = async (product) => {
-    if (auth) {
-      const newProduct = {
-        ...product,
-        colors: product.colors.filter((x) => x === index).toString(),
-        // colors: item.colors[item.index],
-        // image: item.image[item.index],
-        image: product.image.filter((x) => x.includes(index)).toString(),
-      };
-      const data = {
-        userId: auth._id,
-        product: newProduct,
-      };
-      const res = await axios.post("add-product", data);
-      console.log(res);
-      setCart(res.data.cart);
-    } else if (!auth) {
-    } else {
-      throw new Error("Something went wrong");
-    }
-  };
+    console.log(index);
+    setCart(product);
 
+    // if (auth) {
+    //   const newProduct = {
+    //     ...product,
+    //     colors: product.colors.filter((x) => x === index).toString(),
+    //     image: product.image.filter((x) => x.includes(index)).toString(),
+    //   };
+    //   const data = {
+    //     userId: auth._id,
+    //     product: newProduct,
+    //   };
+    //   const res = await axios.post("add-product", data);
+    //   console.log(res);
+    //   setCart(res.data.cart);
+    // } else if (!auth) {
+    //   setCart(product);
+    // } else {
+    //   throw new Error("Something went wrong");
+    // }
+  };
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -79,7 +79,14 @@ export default function Shoe(props) {
             </div>
             <div className="under-images">
               {product?.image.map((image, index) => (
-                <img src={pathImage + image} alt="underimage" key={index} />
+                <NavLink
+                  key={index}
+                  to={`/product/${product._id}-${
+                    image.split("-").at(-1).split(".")[0]
+                  }`}
+                >
+                  <img src={pathImage + image} alt="underimage" />
+                </NavLink>
               ))}
             </div>
           </div>
@@ -112,7 +119,11 @@ export default function Shoe(props) {
           <div className="buttons">
             <button
               className="add-to-cart"
-              onClick={() => addToCart({ ...product, size: currentSize })}
+              onClick={() =>
+                currentSize
+                  ? addToCart({ ...product, size: currentSize })
+                  : setError("Select size!")
+              }
             >
               Add to cart <i className="bi bi-cart-fill"></i>
             </button>
