@@ -1,7 +1,6 @@
 import { useContext, useDebugValue } from "react";
 import CartContext from "../context/cartContext";
 import axios from "../axios";
-import useAuth from "./useAuth";
 import AuthContext from "../context/authContext";
 
 export default function useCart() {
@@ -12,23 +11,31 @@ export default function useCart() {
   const auth = authContext.user;
 
   const setCart = async (product) => {
+    let newProduct;
     if (Array.isArray(product)) {
       cartContext.login(product);
       return localStorage.setItem("cart", JSON.stringify(product));
     }
-    const index = window.location.pathname.split("-").at(-1);
-    const newProduct = {
-      ...product,
-      colors: product.colors?.filter((x) => x === index).toString(),
-      image: product.image?.filter((x) => x.includes(index)).toString(),
-    };
+    const index = window?.location.pathname.split("-").at(-1);
+    if (!index.includes("/")) {
+      newProduct = {
+        ...product,
+        colors: product.colors?.filter((x) => x === index).toString(),
+        image: product.image?.filter((x) => x.includes(index)).toString(),
+      };
+    } else {
+      newProduct = product;
+    }
+
     if (auth) {
       const data = {
         userId: auth._id,
         product: newProduct,
+        type: "cart",
       };
       const res = await axios.post("add-product", data);
-      setCart(res.data.cart);
+      cartContext.login(res.data.cart);
+      localStorage.setItem("cart", JSON.stringify(res.data.cart));
     } else if (!auth) {
       if (cart) {
         const exist = cart?.find(

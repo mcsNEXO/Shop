@@ -6,6 +6,7 @@ import useCart from "../../../../../../hooks/useCart";
 import ErrorModal from "../../../../../../components/Modals/ErrorModal/ErrorModal";
 import useError from "../../../../../../hooks/useError";
 import useAuth from "../../../../../../hooks/useAuth";
+import useFavorite from "../../../../../../hooks/useFavorite";
 
 export default function Shoe(props) {
   const { id } = useParams();
@@ -17,6 +18,13 @@ export default function Shoe(props) {
   const pathImage = process.env.PUBLIC_URL + "/img/jpg/shoes/";
   const [currentSize, setCurrentProduct] = useState();
   const [error, setError] = useError();
+  const [favorite, setFavorite] = useFavorite();
+  const newProduct = {
+    ...product,
+    colors: product?.colors?.filter((x) => x === index).toString(),
+    image: product?.image?.filter((x) => x.includes(index)).toString(),
+    quantity: 1,
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -32,6 +40,15 @@ export default function Shoe(props) {
 
     e.target.classList.add("active");
     setCurrentProduct(size);
+  };
+
+  const deleteFavProduct = async (product) => {
+    const data = {
+      userId: auth._id,
+      product: product,
+    };
+    const res = await axios.post("delete-favorite", data);
+    setFavorite(res.data.newFavorites);
   };
 
   return (
@@ -104,10 +121,31 @@ export default function Shoe(props) {
             >
               Add to cart <i className="bi bi-cart-fill"></i>
             </button>
-            <button className="favorite">
-              {/* <i className="bi bi-heart-fill"></i> */}
-              <i className="bi bi-heart"></i>
-            </button>
+            {favorite.find(
+              (x) => JSON.stringify(newProduct) === JSON.stringify(x)
+            ) ? (
+              <button
+                className="favorite"
+                onClick={() =>
+                  auth
+                    ? deleteFavProduct(newProduct)
+                    : setError("Sign in to add product to favorites!")
+                }
+              >
+                <i className="bi bi-heart-fill"></i>
+              </button>
+            ) : (
+              <button
+                className="favorite"
+                onClick={() =>
+                  auth
+                    ? setFavorite(product)
+                    : setError("Sign in to add product to favorites!")
+                }
+              >
+                <i className="bi bi-heart"></i>
+              </button>
+            )}
           </div>
           <div className="more-information">
             <div className="size-chart">See size chart</div>

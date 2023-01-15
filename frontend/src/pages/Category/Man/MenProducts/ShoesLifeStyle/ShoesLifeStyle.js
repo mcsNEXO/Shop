@@ -66,11 +66,6 @@ export default function MenShoesLifeStyle(props) {
     return setSearch(search);
   };
 
-  // const filterHandler = (e) => {
-  //   setOpen(open === "open" ? "close" : "open");
-  //   return open;
-  // };
-
   return (
     <>
       {error ? <ErrorModal text={error} closeModal={() => setError()} /> : null}

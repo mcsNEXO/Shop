@@ -1,8 +1,9 @@
 export const initialState = {
-  user: JSON.parse(window.localStorage.getItem("token-data")) ?? null,
-  cart: JSON.parse(window.localStorage.getItem("cart")) ?? null,
-  open: JSON.parse(window.localStorage.getItem("openFilter")) ?? true,
-  error: JSON.parse(window.localStorage.getItem("error") ?? null),
+  user: JSON.parse(localStorage.getItem("token-data")) ?? null,
+  cart: JSON.parse(localStorage.getItem("cart")) ?? null,
+  open: JSON.parse(localStorage.getItem("openFilter")) ?? true,
+  error: JSON.parse(localStorage.getItem("error") ?? null),
+  favorite: JSON.parse(localStorage.getItem("favorite") ?? null),
 };
 
 export const reducer = (state, action) => {
@@ -15,6 +16,8 @@ export const reducer = (state, action) => {
       return {};
     case "cart":
       return { ...state, cart: action.item };
+    case "favorite":
+      return { ...state, favorite: action.item };
     case "filter":
       return { ...state, open: action.value };
     case "error":

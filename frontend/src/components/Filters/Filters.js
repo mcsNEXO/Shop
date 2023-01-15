@@ -11,11 +11,7 @@ export default function Filters(props) {
     search.get("price")?.split("-")[1] ?? 3000
   );
   const [open, setOpen] = useFilterHandler();
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
   let resizeWindow = () => {
-    setWindowWidth((prev) => (prev += window.innerWidth - prev));
-    setWindowHeight(window.innerHeight);
     window.innerWidth <= 950 ? setOpen(false) : console.log();
   };
 

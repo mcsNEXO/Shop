@@ -1,0 +1,119 @@
+.container-favorite{
+  a{
+    color: black;
+  }
+    padding: 20px 40px;
+    width: 100%;
+    .products{
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px 20px;
+      justify-content: flex-start;
+    }
+.box-product{
+  position: relative;
+  margin-bottom: 12px;
+    flex: 1;
+    max-width: 31%;
+    width: 100%;
+    min-width: 28%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
+    height: min-content;
+   .icons{
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    font-size: 1.3rem;
+    .icon{
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100%;
+      background-color: rgb(230, 227, 227);
+      cursor: pointer;
+      i.bi-trash3-fill{
+        color: rgb(209, 51, 51);
+      }
+     
+      i.bi-bag-plus{
+        color: rgb(14, 145, 14);
+      }
+    }
+     .icon:hover > i.bi-bag-plus{
+      color: rgb(14, 138, 14);
+      }
+      .icon:hover > i.bi-trash3-fill{
+        color: rgb(192, 6, 6);
+      }
+    .icon:hover{
+      scale: 1.1  ;
+    }
+   }
+    .main-img-product{
+      width: 100%;
+      img{
+        border-radius: 20px;
+        width: 100%;
+      }
+    }
+    .show {
+      transition: all 400ms ease;
+      opacity: 1;
+      // height: auto;
+    }
+    .hide {
+      transition: all 400ms ease;
+      opacity: 0;
+      height: 0;
+    }
+    .con-imgs {
+      width: 100%;
+      display: flex;
+      padding: 5px;
+      cursor: pointer;
+      .box-img{
+        width: 50px;
+        height: 50px;
+        display: flex;
+        border: 1px solid rgb(160, 156, 156);
+        margin: 2px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    }
+    .active{
+      border: 2px solid rgb(0, 0, 0) !important;
+    }
+    .description {
+      padding: 15px 20px;
+      font-size: 120%;
+      .gender-product {
+        font-size: 0.95rem;
+        color: rgb(101, 96, 96);
+        text-transform: capitalize;
+        font-family: 'Kanit';
+      }
+      .name-product {
+        text-transform: capitalize;
+        font-family: 'Rubik', sans-serif;
+      
+      }
+      .price-product {
+        font-size: 1.1rem;
+        font-family: 'Rubik';
+      }
+    }
+  }
+  .box-product:hover{
+    transform: scale(1.02);
+    transition: all 100ms ease-in;
+    box-shadow: 0 5px 10px -1px rgb(130, 130, 130);
+  }
+}

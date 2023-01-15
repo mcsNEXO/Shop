@@ -22,6 +22,8 @@ import Shoe from "./pages/Category/Man/MenProducts/ShoesLifeStyle/Shoe/Shoe";
 import CartContext from "./context/cartContext";
 import ErrorContext from "./context/errorContext";
 import FilterHandlerContext from "./context/filterHandlerContext";
+import Favorite from "./pages/Favorite/Favorite";
+import FavoriteContext from "./context/favoriteContext";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -35,6 +37,15 @@ function App() {
         <Route path="men-shoes-lifestyle/" element={<ShoesLifeStyle />}></Route>
         <Route path="men-shoes-running" element={<ShoesRunning />} />
       </Route>
+      <Route
+        path="favorite"
+        element={
+          <RequireAuth>
+            <Favorite />
+          </RequireAuth>
+        }
+      />
+
       <Route path="cart" element={<Cart />} />
       <Route path="/product/:id" element={<Shoe />} />
 
@@ -49,7 +60,6 @@ function App() {
         <Route path="" element={<ProfilePage />} />
         <Route path="my-data" element={<MyData />} />
         <Route path="cart" element />
-        <Route path="favorite" element={<div>WHAT</div>} />
         <Route path="orders" element />
         <Route path="*" element={<div>Not Found</div>} />
       </Route>
@@ -79,14 +89,21 @@ function App() {
               logout: () => dispatch({ type: "logout" }),
             }}
           >
-            <FilterHandlerContext.Provider
+            <FavoriteContext.Provider
               value={{
-                open: state.open,
-                setOpen: (value) => dispatch({ type: "filter", value }),
+                item: state.favorite,
+                setFavorite: (item) => dispatch({ type: "favorite", item }),
               }}
             >
-              <Layout header={header} nav={nav} menu={menu} footer={footer} />
-            </FilterHandlerContext.Provider>
+              <FilterHandlerContext.Provider
+                value={{
+                  open: state.open,
+                  setOpen: (value) => dispatch({ type: "filter", value }),
+                }}
+              >
+                <Layout header={header} nav={nav} menu={menu} footer={footer} />
+              </FilterHandlerContext.Provider>
+            </FavoriteContext.Provider>
           </AuthContext.Provider>
         </CartContext.Provider>
       </ErrorContext.Provider>

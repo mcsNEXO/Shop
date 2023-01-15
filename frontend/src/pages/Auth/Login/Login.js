@@ -25,10 +25,10 @@ export default function Login(props) {
       const res = await axios.post("/sign-in", data);
       setAuth(res.data.user);
       if (localCart) {
-        console.log("localcart");
         const data2 = {
           cart: localCart,
           userId: res.data.user._id,
+          type: "cart",
         };
         const res2 = await axios.post("/add-product", data2);
         setCart(res2.data.cart);

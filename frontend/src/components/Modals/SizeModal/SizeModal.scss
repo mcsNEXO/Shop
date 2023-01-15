@@ -1,0 +1,94 @@
+.black-bg{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.39);
+    z-index: 100;
+}
+
+.container-size-modal{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .box{
+        .bi-x-circle{
+            position: absolute;
+            top:1rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            right: 1rem;
+        }
+        border-radius: 18px;
+        width: 650px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        height: 350px;
+        padding: 15px;
+        position: relative;
+        .left-side{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img{
+                width: 250px;
+                border-radius: 24px;
+                height: 250px;
+            }
+        }
+        .right-side{
+            width: 50%;
+            .size-title{
+                font-family: 'kanit';
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+        .sizes-box{
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            .size{
+                background-color: rgb(250, 250, 250);
+                border: 1px solid rgb(172, 172, 172);
+                cursor: pointer;
+                width: 50px;
+                height: 35px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                 border-radius: 16px;
+            }
+            .size.active{
+                border: 2px solid black;
+            }
+        }
+        .btn-add{
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            button{
+                width: 100%;
+                background-color: black;
+                color: white;
+                border-radius: 22px;
+                font-family: 'kanit';
+                height: 35px;
+            }
+        }
+          
+        }
+    }
+}
