@@ -31,6 +31,7 @@ export default function Shoe(props) {
   }, []);
   const fetchProduct = async () => {
     const res = await axios.post("fetch-product", { idProduct });
+    console.log(res);
     setProduct(res.data.product);
   };
   const chooseSize = (e, size) => {
@@ -121,7 +122,7 @@ export default function Shoe(props) {
             >
               Add to cart <i className="bi bi-cart-fill"></i>
             </button>
-            {favorite.find(
+            {favorite?.find(
               (x) => JSON.stringify(newProduct) === JSON.stringify(x)
             ) ? (
               <button

@@ -8,6 +8,14 @@ class ProductController {
       return res.status(402).json({ message: "Cannot find this product" });
     }
   }
+  async fetchAllProduct(req, res) {
+    try {
+      const products = await Shoe.find();
+      return res.status(200).json({ products });
+    } catch (e) {
+      return res.status(402).json({ message: "Something went wrong" });
+    }
+  }
 }
 
 module.exports = new ProductController();

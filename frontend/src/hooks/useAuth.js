@@ -23,6 +23,7 @@ export default function useAuth() {
     } else {
       setCart([]);
       window.localStorage.removeItem("cart");
+      window.localStorage.removeItem("favorite");
       window.localStorage.removeItem("token-data");
       authContext.logout();
     }

@@ -29,7 +29,7 @@ export default function Nav(props) {
     } else {
       setAmount();
     }
-  });
+  }, [JSON.stringify(cart)]);
 
   const handleHamburger = () => {
     hamburger.current.classList.toggle("open");
@@ -88,7 +88,7 @@ export default function Nav(props) {
         </div>
         <div className="right-side-menu">
           <div className="searchbar">
-            <Serachbar />
+            <Serachbar setIsOpen={setIsOpen} isOpen={isOpen} />
           </div>
 
           <div className="container-icon">
@@ -143,7 +143,11 @@ export default function Nav(props) {
         </div>
         <div className="line-list"></div>
       </nav>
-      <div className={`bg-page ${isOpen ? "is-open" : ""}`} ref={bgPage}></div>
+      <div
+        className={`bg-page ${isOpen ? "is-open" : ""}`}
+        ref={bgPage}
+        onClick={() => setIsOpen(false)}
+      ></div>
     </>
   );
 }

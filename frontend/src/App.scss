@@ -63,7 +63,7 @@ a.black:link {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100;
+  z-index: 300;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,7 +77,7 @@ a.black:link {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 101;
+  z-index: 301;
 }
   .content{
     position: relative;
@@ -96,6 +96,7 @@ a.black:link {
       right: 1rem;
       top: 1rem;
       font-size: 1.6rem;
+      cursor: pointer;
     }
     .e-title{
       font-size: 1.5rem;
