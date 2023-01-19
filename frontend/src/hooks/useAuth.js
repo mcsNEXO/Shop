@@ -1,11 +1,13 @@
 import { useContext, useDebugValue } from "react";
 import AuthContext from "../context/authContext";
 import useCart from "./useCart";
+import useFavorite from "./useFavorite";
 import axios from "../axios";
 
 export default function useAuth() {
   const authContext = useContext(AuthContext);
   const [cart, setCart] = useCart();
+  const [favorite, setFavorite] = useFavorite();
   const auth = authContext.user;
   useDebugValue(auth ? "Zalogowany" : "Wylogowany");
 
@@ -20,6 +22,12 @@ export default function useAuth() {
       const res = await axios.post("get-product", data);
       window.localStorage.setItem("cart", JSON.stringify(res.data.cart));
       setCart(res.data.cart);
+      const res2 = await axios.post("get-fav-product", data);
+      window.localStorage.setItem(
+        "favorite",
+        JSON.stringify(res2.data.products)
+      );
+      setFavorite(res2.data.products);
     } else {
       setCart([]);
       window.localStorage.removeItem("cart");

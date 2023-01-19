@@ -72,13 +72,21 @@
                 color: red;
                 font-size: 25px;
             }
-            .favorite{
-                align-self: center;
-                text-align: center;
-                font-size: 25px;
-                color: black;
-            }
-           
+                    .favorites{
+                        height: fit-content;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100%;
+                        color: black;
+                        background-color: white;
+                        border-radius: 10px;
+                        .favorite{
+                            border: none;
+                            background-color: transparent;
+                            font-size: 25px;
+                        }
+                    }
     }
     }
     .to-pay{

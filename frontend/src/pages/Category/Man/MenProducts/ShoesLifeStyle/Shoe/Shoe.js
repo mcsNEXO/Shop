@@ -123,7 +123,9 @@ export default function Shoe(props) {
               Add to cart <i className="bi bi-cart-fill"></i>
             </button>
             {favorite?.find(
-              (x) => JSON.stringify(newProduct) === JSON.stringify(x)
+              (x) =>
+                JSON.stringify({ ...newProduct, size: x.size }) ===
+                JSON.stringify(x)
             ) ? (
               <button
                 className="favorite"
@@ -140,7 +142,7 @@ export default function Shoe(props) {
                 className="favorite"
                 onClick={() =>
                   auth
-                    ? setFavorite(product)
+                    ? setFavorite({ ...product, size: currentSize })
                     : setError("Sign in to add product to favorites!")
                 }
               >

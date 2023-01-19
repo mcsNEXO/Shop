@@ -26,6 +26,12 @@ export default function Serachbar(props) {
     setSearchedProducts(res.data.products);
   };
 
+  const closeSearchBar = () => {
+    props.setIsOpen(false);
+    setOpen(false);
+    inputSearch.current.value = "";
+  };
+
   const searchHandler = (e) => {
     const value = inputSearch.current.value;
     if (value) {
@@ -39,7 +45,6 @@ export default function Serachbar(props) {
       x.name.includes(value) ? x : null
     );
     setSearchedProducts(newProducts);
-    console.log(searchedProducts);
   };
   useEffect(() => {
     search();
@@ -105,6 +110,7 @@ export default function Serachbar(props) {
                 product.image.map((x, index) => (
                   <NavLink
                     to={`product/${product._id}-${product.colors[index]}`}
+                    onClick={closeSearchBar}
                     key={index.toString()}
                   >
                     <div className="s-product">

@@ -4,12 +4,14 @@ import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
+import useFavorite from "../../hooks/useFavorite";
 
 export default function Cart(props) {
   const [cart, setCart] = useCart("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [favorite, setFavorite] = useFavorite();
   const [auth] = useAuth();
 
   const price = () => {
@@ -70,7 +72,14 @@ export default function Cart(props) {
       );
     }
   };
-
+  const deleteFavProduct = async (product) => {
+    const data = {
+      userId: auth._id,
+      product: product,
+    };
+    const res = await axios.post("delete-favorite", data);
+    setFavorite(res.data.newFavorites);
+  };
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -129,8 +138,53 @@ export default function Cart(props) {
                           >
                             <i className="bi bi-trash3"></i>
                           </div>
-                          <div className="favorite ">
-                            <i className="bi bi-heart"></i>
+                          {console.log(
+                            favorite?.find(
+                              (x) =>
+                                JSON.stringify(x) ===
+                                JSON.stringify({
+                                  ...item,
+                                  size: x.size,
+                                  quantity: 1,
+                                })
+                            )
+                          )}
+                          <div className="favorites">
+                            {favorite?.find(
+                              (x) =>
+                                JSON.stringify(x) ===
+                                JSON.stringify({
+                                  ...item,
+                                  size: x.size,
+                                  quantity: 1,
+                                })
+                            ) ? (
+                              <button
+                                className="favorite"
+                                onClick={() =>
+                                  auth
+                                    ? deleteFavProduct(item)
+                                    : setError(
+                                        "Sign in to add product to favorites!"
+                                      )
+                                }
+                              >
+                                <i className="bi bi-heart-fill"></i>
+                              </button>
+                            ) : (
+                              <button
+                                className="favorite"
+                                onClick={() =>
+                                  auth
+                                    ? setFavorite(item)
+                                    : setError(
+                                        "Sign in to add product to favorites!"
+                                      )
+                                }
+                              >
+                                <i className="bi bi-heart"></i>
+                              </button>
+                            )}
                           </div>
                         </div>
                         <hr></hr>

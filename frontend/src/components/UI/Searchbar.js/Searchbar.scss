@@ -193,21 +193,22 @@ input.search-input:hover {
     .box{
       width: 100%;
       height: 100%;
-      position: -webkit-sticky;
-      position: sticky;
-      top: 0;
-      left: 0;
   }
     h4{
       width: 100%;
       font-size: 1.8rem;
       font-family: "Kanit";
     }
+    .product-name:hover{
+      border: 1px solid black;
+      cursor: pointer;
+    }
     .product-names{
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-right: 6px;
+      height: 100%;
       gap: 10px;
       .product-name{
         min-width: 80%;
@@ -228,7 +229,10 @@ input.search-input:hover {
     flex-direction: column;
     gap: 1rem;
     overflow-y: auto;
-    padding-right: 10px;
+    padding: 5px 5px 5px 10px;
+  }
+  .s-product:hover{
+    box-shadow:0 0 3px 1px black;
   }
   .s-product{
    width: 100%;

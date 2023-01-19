@@ -10,16 +10,23 @@ export default function useFavorite() {
   const favorite = favoriteContext.item;
 
   const setFavorite = async (product) => {
+    console.log("new", product);
     if (Array.isArray(product)) {
       favoriteContext.setFavorite(product);
       return localStorage.setItem("favorite", JSON.stringify(product));
     }
     const index = window.location.pathname.split("-").at(-1);
-    const newProduct = {
-      ...product,
-      colors: product.colors?.filter((x) => x === index).toString(),
-      image: product.image?.filter((x) => x.includes(index)).toString(),
-    };
+    let newProduct;
+    if (!index.includes("/")) {
+      newProduct = {
+        ...product,
+        colors: product.colors?.filter((x) => x === index).toString(),
+        image: product.image?.filter((x) => x.includes(index)).toString(),
+      };
+    } else {
+      newProduct = product;
+    }
+
     const data = {
       userId: auth._id,
       product: newProduct,

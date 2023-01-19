@@ -16,7 +16,7 @@ class CartController {
 
     const products = req.body.product ? [req.body.product] : req.body.cart;
 
-    for (let i = 0; i < products.length; i++) {
+    for (let i = 0; i < products?.length; i++) {
       let product = products[i];
       if (userData?.user && userData.user !== null) {
         const exist = userData.products?.find(
@@ -110,11 +110,17 @@ class CartController {
     const userCart = await Cart.findOne({ user: req.body.userId });
     res.status(200).json({ cart: userCart?.products ?? [] });
   }
+  async getFavProduct(req, res) {
+    const userFav = await Favorite.findOne({ user: req.body.userId });
+    res.status(200).json({ products: userFav?.products ?? [] });
+  }
 
   async deleteFavorite(req, res) {
     const userCart = await Favorite.findOne({ user: req.body.userId });
     userCart.products = userCart.products.filter(
-      (x) => JSON.stringify(x) !== JSON.stringify(req.body.product)
+      (x) =>
+        JSON.stringify(x) !==
+        JSON.stringify({ ...req.body.product, size: x.size })
     );
     try {
       await userCart.save();
