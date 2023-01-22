@@ -5,11 +5,13 @@ import axios from "../../axios";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import SizeModal from "../../components/Modals/SizeModal/SizeModal.js";
+import useCart from "../../hooks/useCart";
 
 export default function Favorite(props) {
   const [favorite, setFavorite] = useFavorite();
   const [auth] = useAuth();
   const [open, setOpen] = useState(false);
+  const [cart, setCart] = useCart();
   const [product, setProduct] = useState("");
 
   const deleteFavProduct = async (product) => {
@@ -22,8 +24,12 @@ export default function Favorite(props) {
   };
 
   const addProduct = async (product) => {
-    setProduct(product);
-    setOpen(true);
+    if (!Array.isArray(product.size)) {
+      return setCart(product);
+    } else {
+      setProduct(product);
+      setOpen(true);
+    }
   };
 
   return (

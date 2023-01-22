@@ -77,6 +77,7 @@ export default function Cart(props) {
       userId: auth._id,
       product: product,
     };
+    console.log("data", data);
     const res = await axios.post("delete-favorite", data);
     setFavorite(res.data.newFavorites);
   };
@@ -138,17 +139,6 @@ export default function Cart(props) {
                           >
                             <i className="bi bi-trash3"></i>
                           </div>
-                          {console.log(
-                            favorite?.find(
-                              (x) =>
-                                JSON.stringify(x) ===
-                                JSON.stringify({
-                                  ...item,
-                                  size: x.size,
-                                  quantity: 1,
-                                })
-                            )
-                          )}
                           <div className="favorites">
                             {favorite?.find(
                               (x) =>

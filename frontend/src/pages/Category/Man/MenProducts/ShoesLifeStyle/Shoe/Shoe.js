@@ -31,7 +31,6 @@ export default function Shoe(props) {
   }, []);
   const fetchProduct = async () => {
     const res = await axios.post("fetch-product", { idProduct });
-    console.log(res);
     setProduct(res.data.product);
   };
   const chooseSize = (e, size) => {
@@ -142,7 +141,9 @@ export default function Shoe(props) {
                 className="favorite"
                 onClick={() =>
                   auth
-                    ? setFavorite({ ...product, size: currentSize })
+                    ? currentSize
+                      ? setFavorite({ ...product, size: currentSize })
+                      : setFavorite(product)
                     : setError("Sign in to add product to favorites!")
                 }
               >

@@ -27,6 +27,7 @@ export default function SizeModal(props) {
   };
   return (
     <>
+      {console.log(props.product)}
       {error ? <ErrorModal /> : null}
       <div className="black-bg"></div>
       <div className="container-size-modal">
@@ -48,15 +49,19 @@ export default function SizeModal(props) {
           <div className="right-side">
             <div className="size-title">Select size</div>
             <div className="sizes-box">
-              {props.product.size.map((x, index) => (
-                <div
-                  className="size"
-                  onClick={(e) => chooseSize(e, x)}
-                  key={index.toString()}
-                >
-                  {x}
-                </div>
-              ))}
+              {Array.isArray(props.product.size) ? (
+                props.product.size.map((x, index) => (
+                  <div
+                    className="size"
+                    onClick={(e) => chooseSize(e, x)}
+                    key={index.toString()}
+                  >
+                    {x}
+                  </div>
+                ))
+              ) : (
+                <div className="size">{props.product.size}</div>
+              )}
             </div>
             <div className="btn-add">
               <button onClick={() => addProduct()}>Add product</button>

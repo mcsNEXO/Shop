@@ -120,7 +120,7 @@ class CartController {
     userCart.products = userCart.products.filter(
       (x) =>
         JSON.stringify(x) !==
-        JSON.stringify({ ...req.body.product, size: x.size })
+        JSON.stringify({ ...req.body.product, quantity: 1 })
     );
     try {
       await userCart.save();
