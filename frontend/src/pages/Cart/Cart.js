@@ -1,5 +1,5 @@
 import "./Cart.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";

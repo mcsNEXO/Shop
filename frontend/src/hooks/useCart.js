@@ -16,7 +16,6 @@ export default function useCart() {
       cartContext.login(product);
       return localStorage.setItem("cart", JSON.stringify(product));
     }
-    console.log('next')
     const index = window?.location.pathname.split("-").at(-1);
     if (!index.includes("/")) {
       newProduct = {

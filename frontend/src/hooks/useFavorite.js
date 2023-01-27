@@ -10,7 +10,6 @@ export default function useFavorite() {
   const favorite = favoriteContext.item;
 
   const setFavorite = async (product) => {
-    console.log("new", product);
     if (Array.isArray(product)) {
       favoriteContext.setFavorite(product);
       return localStorage.setItem("favorite", JSON.stringify(product));

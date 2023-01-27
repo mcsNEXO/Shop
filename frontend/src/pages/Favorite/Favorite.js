@@ -3,7 +3,7 @@ import useFavorite from "../../hooks/useFavorite";
 import { NavLink } from "react-router-dom";
 import axios from "../../axios";
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SizeModal from "../../components/Modals/SizeModal/SizeModal.js";
 import useCart from "../../hooks/useCart";
 
@@ -38,42 +38,58 @@ export default function Favorite(props) {
       <div className="container-favorite">
         <h2>Favorite</h2>
         <div className="products">
-          {favorite?.map((product, index) => (
-            <div className="box-product" key={index}>
-              <div className="icons">
-                <div className="icon" onClick={() => addProduct(product)}>
-                  <i className="bi bi-bag-plus"></i>
-                </div>
-                <div className="icon" onClick={() => deleteFavProduct(product)}>
-                  <i className="bi bi-trash3-fill"></i>
-                </div>
-              </div>
-              <NavLink
-                to={`/product/${product._id}-${product.colors}`}
-                key={`${product._id}-${index}`}
-              >
-                <div className="main-img-product">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/img/jpg/shoes/" +
-                      product?.image
-                    }
-                    alt="shoe"
-                  />
-                </div>
-                <div className="description">
-                  <div className="gender-product">
-                    {product?.gender === "man"
-                      ? `${product?.gender}'s shoes`
-                      : `${product?.gender}'s shoes`}
+          {favorite.length > 0 ? (
+            favorite?.map((product, index) => (
+              <div className="box-product" key={index}>
+                <div className="icons">
+                  <div className="icon" onClick={() => addProduct(product)}>
+                    <div className="name-bag">
+                      <span>
+                        {Array.isArray(product.size)
+                          ? "Select size!"
+                          : "Add to bag!"}
+                      </span>
+                    </div>
+                    <div className="add-icon">
+                      <i className="bi bi-bag-plus"></i>
+                    </div>
                   </div>
-                  <div className="name-product">{product?.name}</div>
-                  <div className="price-product">${product?.price}</div>
+                  <div
+                    className="icon"
+                    onClick={() => deleteFavProduct(product)}
+                  >
+                    <i className="bi bi-trash3-fill"></i>
+                  </div>
                 </div>
-              </NavLink>
-            </div>
-          ))}
+                <NavLink
+                  to={`/product/${product._id}-${product.colors}`}
+                  key={`${product._id}-${index}`}
+                >
+                  <div className="main-img-product">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/img/jpg/shoes/" +
+                        product?.image
+                      }
+                      alt="shoe"
+                    />
+                  </div>
+                  <div className="description">
+                    <div className="gender-product">
+                      {product?.gender === "man"
+                        ? `${product?.gender}'s shoes`
+                        : `${product?.gender}'s shoes`}
+                    </div>
+                    <div className="name-product">{product?.name}</div>
+                    <div className="price-product">${product?.price}</div>
+                  </div>
+                </NavLink>
+              </div>
+            ))
+          ) : (
+            <h3>You don't have any favorite products</h3>
+          )}
         </div>
       </div>
     </>

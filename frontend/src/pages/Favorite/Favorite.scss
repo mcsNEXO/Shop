@@ -29,31 +29,65 @@
     display: flex;
     gap: 8px;
     font-size: 1.3rem;
-    .icon{
-      width: 32px;
-      height: 32px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 100%;
-      background-color: rgb(230, 227, 227);
-      cursor: pointer;
-      i.bi-trash3-fill{
-        color: rgb(209, 51, 51);
-      }
-     
-      i.bi-bag-plus{
-        color: rgb(14, 145, 14);
-      }
+    z-index: 10;
+    .icon:has(.name-bag):hover{
+      transition : width 0.5s ease;
+      justify-content: flex-end;
+      border-radius: 0;
+      border-top-right-radius: 25%;
+      border-bottom-right-radius:25%;
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      width : 156px;
+      padding-right : 16px;
     }
-     .icon:hover > i.bi-bag-plus{
-      color: rgb(14, 138, 14);
+    .icon:has(.bi-trash3-fill):hover{
+      scale: 1.1;
+    }
+    .icon:hover .name-bag{
+      display : flex;
+      width : 100%;
+    }
+    .icon{
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        background-color: rgba(233, 233, 233, 0.658);
+        border-radius: 100%;
+        overflow: hidden;
+        transition: none;
+        cursor: pointer;
+      .add-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(233, 233, 233, 0.658);
+        z-index: 1;
+        i.bi-bag-plus{
+          color: rgb(2, 155, 2);
+          font-size: 1.5rem;
+        }
       }
-      .icon:hover > i.bi-trash3-fill{
-        color: rgb(192, 6, 6);
+      .name-bag{
+        z-index: 0;
+        overflow: hidden;
+        display: none;
+        display:none;
+        width :0;
+        min-width: 120px;
+        color: rgb(2, 155, 2);
+        font-size: 1.2rem;
+        span{
+          padding: 3px;
+          padding-left: 16px;
+        }
       }
-    .icon:hover{
-      scale: 1.1  ;
+      i.bi-trash3-fill{
+        color: rgb(194, 11, 11);
+        font-size: 1.5rem;
+      }
     }
    }
     .main-img-product{
