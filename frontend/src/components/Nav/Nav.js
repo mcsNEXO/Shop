@@ -12,12 +12,25 @@ export default function Nav(props) {
   const logo = process.env.PUBLIC_URL + "/img/svg/logo.svg";
   const [auth, setAuth] = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [prevPath, setPrevPath] = useState("");
+  const [currentPath, setCurrentPath] = useState("");
   const navigate = useNavigate();
   const [cart] = useCart();
   const hamburger = useRef();
   const mainNav = useRef();
+  const defaultMenu = useRef();
   const bgPage = useRef();
   const [amount, setAmount] = useState();
+
+  let resizeWindow = () => {
+    window.innerWidth >= 1000 ? setIsOpen(false) : console.log();
+  };
+
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
 
   useEffect(() => {
     let amountItems = 0;
@@ -33,7 +46,9 @@ export default function Nav(props) {
 
   const handleHamburger = () => {
     hamburger.current.classList.toggle("open");
-    setIsOpen((prev) => !prev);
+    hamburger.current.classList.value.includes("open")
+      ? setIsOpen(true)
+      : setIsOpen(false);
   };
 
   const closeDdMenu = () => {
@@ -49,6 +64,59 @@ export default function Nav(props) {
     mainNav.current.classList.add("nav-open");
     setIsOpen(true);
     e.target.classList.add("open");
+  };
+  const closeHamburger = () => {
+    hamburger.current.classList.value.includes("open")
+      ? handleHamburger()
+      : console.log();
+    setIsOpen(false);
+  };
+
+  const optionHandle = (path, type, secondPath) => {
+    if (type === "first") {
+      defaultMenu.current.style.transform = "translate(100%)";
+      const kolMenu = document?.querySelector(`.kol-menu.${path}`);
+      kolMenu.style.transform = "translate(0)";
+      setCurrentPath(kolMenu);
+      setPrevPath(defaultMenu.current);
+    } else if ((type = "second")) {
+      const nextMenu = document?.querySelector(
+        `.kol-menu.${path} .next-menu.${secondPath}`
+      );
+      const currentMenu = document?.querySelector(
+        `.kol-menu.${path} .current-menu`
+      );
+      nextMenu.style.transform = "translate(0)";
+      currentMenu.style.transform = "translate(100%)";
+      setCurrentPath(nextMenu);
+      setPrevPath(currentMenu);
+    }
+  };
+
+  const backHandle = () => {
+    console.log("curr", currentPath);
+    console.log("prev", prevPath);
+    if (currentPath === prevPath) {
+      currentPath.parentNode.style.transform = "translate(-100%)";
+      defaultMenu.current.style.transform = "translate(0)";
+      setCurrentPath(currentPath.parentNode);
+      setPrevPath(defaultMenu.current);
+    } else {
+      currentPath === ""
+        ? (defaultMenu.current.style.transform = "translate(0)")
+        : (currentPath.style.transform = "translate(-100%)");
+      currentPath === ""
+        ? (prevPath.style.transform = "translate(-100%)")
+        : (prevPath.style.transform = "translate(0)");
+      if (currentPath === "") {
+        setPrevPath("");
+      }
+      setCurrentPath(prevPath);
+    }
+  };
+  const consoles = () => {
+    console.log("prev", prevPath);
+    console.log("curr", currentPath);
   };
   return (
     <>
@@ -134,7 +202,7 @@ export default function Nav(props) {
           </NavLink>
         </div>
       </nav>
-      <nav className={`hamburger close`} ref={hamburger}>
+      <nav className={`hamburger`} ref={hamburger} onClick={() => consoles()}>
         <div className="close-icon" onClick={handleHamburger}>
           <i className="bi bi-x-circle"></i>
         </div>
@@ -142,11 +210,85 @@ export default function Nav(props) {
           <img src={process.env.PUBLIC_URL + "/img/svg/logo.svg"} alt="logo" />
         </div>
         <div className="line-list"></div>
+        <div className="box">
+          {true ? (
+            <button className="back-btn" onClick={(e) => backHandle()}>
+              <i className="bi bi-arrow-left-square-fill"></i> Back
+            </button>
+          ) : null}
+          <div className="default-menu" ref={defaultMenu}>
+            {navItems.map((item) => {
+              return (
+                <div key={item.id} className={`choice-panel`}>
+                  <button
+                    onClick={(e) => optionHandle(item.path, "first")}
+                    data-name={`btn ${item.path}`}
+                  >
+                    <div>{item.title}</div>
+                    <div className="arrow">{`>`}</div>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          {navItems.map((item) => {
+            return (
+              <div className={`kol-menu ${item.path}`} key={item.id.toString()}>
+                <div className="current-menu">
+                  <div className="title-item">{item.title}</div>
+                  {item.submenu.map((subItem, index) => {
+                    return (
+                      <div className={`choice-panel`} key={index.toString()}>
+                        <button
+                          onClick={(e) =>
+                            optionHandle(
+                              item.path,
+                              "second",
+                              subItem.title.toLowerCase()
+                            )
+                          }
+                          data-name={`btn ${subItem.title.toLowerCase()}`}
+                        >
+                          <div>{subItem.title}</div>
+                          <div className="arrow">{`>`}</div>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+                {item.submenu.map((el, index) => (
+                  <div
+                    className={`next-menu ${el.title.toLowerCase()}`}
+                    key={index.toString()}
+                  >
+                    <div className="title-item">{el.title}</div>
+                    {el.submenuOption.map((element, index) => {
+                      return (
+                        <NavLink
+                          to={`${
+                            item.path
+                          }/${el.title.toLowerCase()}/${element.title.toLowerCase()}`}
+                          key={index.toString()}
+                          onClick={handleHamburger}
+                        >
+                          <button className="choice-panel">
+                            <div>{element.title}</div>
+                          </button>
+                        </NavLink>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
       </nav>
       <div
         className={`bg-page ${isOpen ? "is-open" : ""}`}
         ref={bgPage}
-        onClick={() => setIsOpen(false)}
+        onClick={() => closeHamburger()}
       ></div>
     </>
   );

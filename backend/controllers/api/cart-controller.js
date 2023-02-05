@@ -117,10 +117,13 @@ class CartController {
 
   async deleteFavorite(req, res) {
     const userCart = await Favorite.findOne({ user: req.body.userId });
+    console.log("user", userCart.products);
+    console.log("req", req.body.product);
+
     userCart.products = userCart.products.filter(
       (x) =>
-        JSON.stringify(x) !==
-        JSON.stringify({ ...req.body.product, quantity: 1 })
+        JSON.stringify({ ...x, size: 0 }) !==
+        JSON.stringify({ ...req.body.product, quantity: 1, size: 0 })
     );
     try {
       await userCart.save();

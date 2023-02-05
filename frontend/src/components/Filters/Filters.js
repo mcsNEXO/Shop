@@ -53,7 +53,10 @@ export default function Filters(props) {
             className="bi bi-x-circle closer"
             onClick={() => setOpen(false)}
           ></i>
-          <span className="title-filter">Filter</span>
+          <span className="title-filter">
+            Filter{" "}
+            {search.toString() !== "" ? `(${props.products?.length})` : ""}
+          </span>
           <hr className="filter-line" />
           <div className="options">
             <div className="price responsive">

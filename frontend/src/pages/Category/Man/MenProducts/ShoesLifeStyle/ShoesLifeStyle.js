@@ -113,7 +113,7 @@ export default function MenShoesLifeStyle(props) {
           </div>
         </div>
         <div className="con-content">
-          <Filters priceHandler={priceHandler} />
+          <Filters priceHandler={priceHandler} products={shoes} />
           <div className="contents">
             {shoes?.map((item, index) => (
               <div className="box-product" key={index}>

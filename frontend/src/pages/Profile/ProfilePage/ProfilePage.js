@@ -1,9 +1,11 @@
 import "./ProfilePage.css";
 import useAuth from "../../../hooks/useAuth";
 import { NavLink } from "react-router-dom";
+import useFavorite from "../../../hooks/useFavorite";
 
 export default function ProfilePage(props) {
   const [auth] = useAuth();
+  const [favorite] = useFavorite();
   return (
     <div className="pg-container">
       <div className="pg-box pg-height">
@@ -22,7 +24,7 @@ export default function ProfilePage(props) {
         </div>
       </div>
       <div className="pg-box-product">
-        {/* <div className="pg-products-title">Recently viewed products</div> */}
+        <div className="pg-products-title">Recently viewed products</div>
         <div className="pg-last-products">
           <div className="pg-product"></div>
           <div className="pg-product"></div>
@@ -54,7 +56,18 @@ export default function ProfilePage(props) {
       <div className="pg-box-product">
         <div className="pg-favorites">
           <div className="pg-favorite-title">Favorite</div>
-          <div className="pg-favorite"></div>
+          {favorite?.length > 0 ? (
+            favorite?.map((item, index) => (
+              <div className="pg-favorite" key={index.toString()}>
+                <img
+                  src={process.env.PUBLIC_URL + "img/jpg/shoes/" + item.image}
+                  alt="prodcut"
+                />
+              </div>
+            ))
+          ) : (
+            <div>You don't have any favorites products</div>
+          )}
         </div>
       </div>
     </div>

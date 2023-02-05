@@ -76,6 +76,7 @@ export default function Cart(props) {
     const data = {
       userId: auth._id,
       product: product,
+      type: "favorite",
     };
     console.log("data", data);
     const res = await axios.post("delete-favorite", data);
