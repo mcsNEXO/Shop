@@ -55,7 +55,6 @@ class ShoesController {
       }
       if (url.size) {
         shoes = shoes.filter((shoe) => shoe.size.includes(Number(url.size)));
-        console.log(shoes);
       }
     }
     return res.status(200).json({ shoes });

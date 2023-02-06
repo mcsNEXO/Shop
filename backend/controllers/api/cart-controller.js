@@ -117,9 +117,6 @@ class CartController {
 
   async deleteFavorite(req, res) {
     const userCart = await Favorite.findOne({ user: req.body.userId });
-    console.log("user", userCart.products);
-    console.log("req", req.body.product);
-
     userCart.products = userCart.products.filter(
       (x) =>
         JSON.stringify({ ...x, size: 0 }) !==

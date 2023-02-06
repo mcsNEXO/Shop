@@ -78,7 +78,6 @@ export default function Cart(props) {
       product: product,
       type: "favorite",
     };
-    console.log("data", data);
     const res = await axios.post("delete-favorite", data);
     setFavorite(res.data.newFavorites);
   };

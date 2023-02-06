@@ -27,7 +27,6 @@ export default function SizeModal(props) {
   };
   return (
     <>
-      {console.log(props.product)}
       {error ? <ErrorModal /> : null}
       <div className="black-bg"></div>
       <div className="container-size-modal">

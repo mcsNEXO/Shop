@@ -31,13 +31,10 @@ export default function ModalImage(props) {
         await deleteUploadImage(e);
       }
       const res = await axios.post("image", formdata);
-      console.log(res);
       setNewImage(
         process.env.PUBLIC_URL + "/uploads/" + res.data.file.filename
       );
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
     setLoading(false);
   };
   const deleteUploadImage = async (e, flag) => {
@@ -67,7 +64,6 @@ export default function ModalImage(props) {
       image: auth.image,
     };
     const res = await axios.post("delete-image", data);
-    console.log(res);
     setAuth(res.data.user);
     setLoading(false);
   };
@@ -92,10 +88,6 @@ export default function ModalImage(props) {
     setLoading(false);
     props.closeModal();
   };
-  const kk = (e) => {
-    e.preventDefault();
-    console.log(auth);
-  };
   return (
     <>
       <div
@@ -112,7 +104,6 @@ export default function ModalImage(props) {
                   : process.env.PUBLIC_URL + "/uploads/" + auth.image
               }
               alt="src"
-              onClick={kk}
             />
           </div>
           <form encType="multipart/form-data" onSubmit={saveImage}>
