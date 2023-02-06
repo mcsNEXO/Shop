@@ -10,7 +10,7 @@ export default function Serachbar(props) {
   const conResponsiveSearch = useRef();
   const [open, setOpen] = useState();
   const inputSearch = useRef();
-  const handleSearch = () => {
+  const handleSearch = (e) => {
     const classes = [...conResponsiveSearch.current.classList];
     window.innerWidth <= 1000
       ? conResponsiveSearch.current.classList.toggle("open")
@@ -18,23 +18,25 @@ export default function Serachbar(props) {
     classes.includes("open") && window.innerWidth > 1000
       ? conResponsiveSearch.current.classList.remove("open")
       : console.log();
+    document.querySelector(".input input").value = "";
+    setSearchedProducts([]);
   };
 
   const search = async () => {
     const res = await axios.get("fetch-all-products");
     setProducts(res.data.products);
-    setSearchedProducts(res.data.products);
   };
 
   const closeSearchBar = () => {
     props.setIsOpen(false);
     setOpen(false);
     inputSearch.current.value = "";
+    conResponsiveSearch.current.classList.remove("open");
   };
 
   const searchHandler = (e) => {
-    const value = inputSearch.current.value;
-    if (value) {
+    const value = e.target.value;
+    if (value && e.target === inputSearch.current) {
       props.setIsOpen(true);
       setOpen(true);
     } else {
@@ -44,8 +46,24 @@ export default function Serachbar(props) {
     const newProducts = products.filter((x) =>
       x.name.includes(value) ? x : null
     );
-    setSearchedProducts(newProducts);
+    value === "" ? setSearchedProducts([]) : setSearchedProducts(newProducts);
   };
+
+  const next = () => {
+    const container = [...document.querySelectorAll(".slider-search")];
+    container.forEach((item, i) => {
+      let containerWidth = item.getBoundingClientRect().width;
+      item.scrollLeft += containerWidth;
+    });
+  };
+  const pre = () => {
+    const container = [...document.querySelectorAll(".slider-search")];
+    container.forEach((item, i) => {
+      let containerWidth = item.getBoundingClientRect().width;
+      item.scrollLeft -= containerWidth;
+    });
+  };
+
   useEffect(() => {
     search();
   }, []);
@@ -63,7 +81,7 @@ export default function Serachbar(props) {
       ) : null}
       <div className="search">
         <div className="search-icon">
-          <i className="bi bi-search" onClick={handleSearch}></i>
+          <i className="bi bi-search" onClick={(e) => handleSearch(e)}></i>
         </div>
         <form action="/search" method="get">
           <input
@@ -80,16 +98,53 @@ export default function Serachbar(props) {
       <div className="responsive-search" ref={conResponsiveSearch}>
         <div className="header-search">
           <div className="input">
-            <input type="text" placeholder="Search" />
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={(e) => searchHandler(e)}
+            />
             <i className="bi bi-search"></i>
           </div>
           <div className="button">
             <i className="bi bi-arrow-left" onClick={handleSearch}></i>
           </div>
         </div>
-        <div className="hint"></div>
+        {searchedProducts?.length > 0 ? (
+          <div className="hint">
+            <div className="slider-search">
+              {searchedProducts?.map((product) =>
+                product.image.map((x, index) => (
+                  <NavLink
+                    to={`product/${product._id}-${product.colors[index]}`}
+                    onClick={closeSearchBar}
+                    key={index.toString()}
+                  >
+                    <div className="product-search">
+                      <div className="image">
+                        <img
+                          src={`${
+                            process.env.PUBLIC_URL + "/img/jpg/shoes/" + x
+                          }`}
+                          alt="product"
+                        />
+                      </div>
+                      <div className="description">
+                        <div className="name">{product.name}</div>
+                        <div className="gender">{`${product.gender}'s ${product.type}`}</div>
+                      </div>
+                      <div className="price">{product.price}$</div>
+                    </div>
+                  </NavLink>
+                ))
+              )}
+            </div>
+            <div className="slider-search-arrows">
+              <i className="bi bi-arrow-left preBtn" onClick={pre}></i>
+              <i className="bi bi-arrow-right nextBtn" onClick={next}></i>
+            </div>
+          </div>
+        ) : null}
       </div>
-
       {open & props.isOpen ? (
         <div className="search-products">
           <div className="left">

@@ -1,3 +1,7 @@
+::root{
+  --widthArrow:50;
+}
+
 .event{
   height: 100vh;
   width: 100vw;
@@ -101,6 +105,69 @@ input.search-input:hover {
   background-color: white;
   z-index: 101;
   height: 100vh;
+  .hint{
+    max-width: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    margin-top: 40px;
+
+    .slider-search {
+      margin: auto;
+      max-width: calc(100% - 2*60px);
+      overflow: hidden;
+      display: flex;
+      gap: 25px;
+      min-height: 230px;
+      scroll-behavior: smooth;
+    }
+    .slider-search-arrows {
+      position: absolute;
+      transform: translate(0, 220%);
+      width: 100%;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    
+    .slider-search-arrows i {
+      background-color: rgba(0, 0, 0, 0.384);
+      border-radius: 100%;
+      width: var(--widthArrow);
+      height: var(--widthArrow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      padding: 10px;
+      color: white;
+      cursor: pointer;
+    }
+    
+    
+    .product-search{
+      width: 200px;
+      background-color: whitesmoke;
+      text-align: center;
+      color: rgb(0, 0, 0);
+      border-radius: 12px;
+      padding: 0px 5px 15px 5px;
+      font-family: "Roboto", sans-serif;
+      font-size: 1rem;
+      text-transform: capitalize;
+      .description{
+        border-top: 1px solid rgba(0, 0, 0, 0.329);
+        padding-top: 10px;
+      }
+      img{
+        width: 100%;
+        border-top-left-radius:12px;
+        border-top-right-radius:12px;
+      }
+    }
+  }
   .header-search{
     display: flex;
     gap: 10px;
@@ -109,8 +176,12 @@ input.search-input:hover {
       background-color: rgb(229, 229, 229);
       border-bottom-right-radius: 20px;
       width: 50px;
-      // min-width: 
       i{
+        height: 100%;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.6rem;
       }
       i:hover{
@@ -123,22 +194,23 @@ input.search-input:hover {
     order: 2;
     position: relative;
     margin-left: auto;
+    i{
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      top: 5px;
+      left: 5px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+    i:hover{
+      background-color: whitesmoke;
+    }
   }
-  i{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 5px;
-    left: 5px;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-  }
-  i:hover{
-    background-color: whitesmoke;
-  }
+ 
    input{
     font-size: 1.2rem;
     position: relative;

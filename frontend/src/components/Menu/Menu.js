@@ -1,4 +1,4 @@
-import "./Menu.css";
+import "./Menu.scss";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Collection from "./Collection/Collection";
@@ -7,7 +7,7 @@ import OftenChosen from "./OftenChosen/OftenChosen";
 import SummerCollection from "./SummerCollection/SummerCollection";
 
 export default function Menu(props) {
-  const picture = process.env.PUBLIC_URL + "/img/jpg/picture5.png";
+  const picture = process.env.PUBLIC_URL + "/img/jpg/picture4.webp";
   return (
     <main>
       <div className="container-baner">

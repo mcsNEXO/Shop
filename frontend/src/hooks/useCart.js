@@ -26,7 +26,6 @@ export default function useCart() {
     } else {
       newProduct = product;
     }
-    console.log("new", newProduct);
     if (auth) {
       const data = {
         userId: auth._id,

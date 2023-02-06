@@ -24,7 +24,6 @@
 .slider-arrows {
   position: absolute;
   transform: translate(0%, 300%);
-  /* background-color: yellow; */
   width: 100%;
   top: 0;
   display: flex;

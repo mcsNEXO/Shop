@@ -58,7 +58,9 @@ class UserController {
         return res.status(404).json({ message: "Passwords are not the same!" });
       }
     } else {
-      return res.status(404).json({ message: "Something went wrong!" });
+      return res
+        .status(404)
+        .json({ message: "Entered 'current password' is not correct!" });
     }
     try {
       await user.save();
@@ -104,6 +106,7 @@ class UserController {
     user.image = "";
     try {
       fs.unlinkSync("../frontend/public/uploads/" + req.body.image);
+      user.image = "avatar.png";
       await user.save();
       return res.status(200).json({ user });
     } catch (e) {

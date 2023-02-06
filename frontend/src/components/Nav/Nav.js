@@ -94,13 +94,11 @@ export default function Nav(props) {
   };
 
   const backHandle = () => {
-    console.log("curr", currentPath);
-    console.log("prev", prevPath);
     if (currentPath === prevPath) {
       currentPath.parentNode.style.transform = "translate(-100%)";
       defaultMenu.current.style.transform = "translate(0)";
-      setCurrentPath(currentPath.parentNode);
-      setPrevPath(defaultMenu.current);
+      setCurrentPath(defaultMenu.current);
+      setPrevPath("");
     } else {
       currentPath === ""
         ? (defaultMenu.current.style.transform = "translate(0)")
@@ -113,10 +111,6 @@ export default function Nav(props) {
       }
       setCurrentPath(prevPath);
     }
-  };
-  const consoles = () => {
-    console.log("prev", prevPath);
-    console.log("curr", currentPath);
   };
   return (
     <>
@@ -167,7 +161,9 @@ export default function Nav(props) {
                   <div className="person-option">
                     <NavLink to="profile">Profile</NavLink>
                   </div>
-                  <div className="person-option">Settings</div>
+                  <div className="person-option">
+                    <NavLink to="settings">Settings</NavLink>
+                  </div>
                   <div className="person-option">
                     {auth ? (
                       <NavLink
@@ -202,7 +198,7 @@ export default function Nav(props) {
           </NavLink>
         </div>
       </nav>
-      <nav className={`hamburger`} ref={hamburger} onClick={() => consoles()}>
+      <nav className={`hamburger`} ref={hamburger}>
         <div className="close-icon" onClick={handleHamburger}>
           <i className="bi bi-x-circle"></i>
         </div>
@@ -211,7 +207,7 @@ export default function Nav(props) {
         </div>
         <div className="line-list"></div>
         <div className="box">
-          {true ? (
+          {prevPath && currentPath !== defaultMenu.current ? (
             <button className="back-btn" onClick={(e) => backHandle()}>
               <i className="bi bi-arrow-left-square-fill"></i> Back
             </button>

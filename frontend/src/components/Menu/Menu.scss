@@ -45,12 +45,14 @@ main {
   border-radius: 6px;
 }
 
-.picture-text button a:visited,
-a:link {
-  color: white;
-  text-decoration: none;
-}
-
+.picture-text{
+  button a:visited,
+  a:link {
+    color: white;
+    text-decoration: none;
+  }
+  
+} 
 .newsletter {
   margin-top: 2rem;
   width: 100%;

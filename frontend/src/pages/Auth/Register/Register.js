@@ -53,7 +53,6 @@ export default function Register(props) {
       await axios.post("/sign-up", user);
       navigate("/login");
     } catch (e) {
-      console.log(e.response.data.message[0]);
       e.response.data.message[0].includes(":")
         ? setError(e.response.data.message[0].split(":")[2].split(",")[0])
         : setError(e.response.data.message);
