@@ -21,10 +21,18 @@ export default function Filters(props) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-  const chooseSize = (size) => {
-    size === Number(search.get("size"))
-      ? search.delete("size")
-      : search.set("size", size);
+  const chooseSize = (currentSize) => {
+    const size = search.get("size");
+    if (!size) {
+      search.set("size", currentSize);
+    } else {
+      let x = size.split(",");
+      size.includes(currentSize.toString())
+        ? (x = x.filter((z) => z !== currentSize.toString()))
+        : x.push(currentSize);
+      search.set("size", x);
+      search.get("size") !== "" ? search.set("size", x) : search.delete("size");
+    }
     setSearch(search);
   };
 
@@ -125,7 +133,7 @@ export default function Filters(props) {
                 <div
                   key={index}
                   className={`number ${
-                    Number(search.get("size")) === size.size ? "active" : ""
+                    search.get("size")?.includes(size.size) ? "active" : ""
                   }`}
                   onClick={() => chooseSize(size.size)}
                 >

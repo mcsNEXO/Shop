@@ -23,7 +23,7 @@ export default function MenShoesLifeStyle(props) {
     setWebLink(webPath());
     getProducts();
   }, [search]);
-
+  console.log();
   const getProducts = async (
     url = {
       colors: search.get("colors"),
@@ -33,6 +33,7 @@ export default function MenShoesLifeStyle(props) {
     }
   ) => {
     const res = await axios.post("get-shoes", { url });
+    console.log(res);
     return setShoes(res.data.shoes);
   };
   const setNewIndex = (item, index) => {
@@ -128,7 +129,9 @@ export default function MenShoesLifeStyle(props) {
                       src={
                         process.env.PUBLIC_URL +
                         "/img/jpg/shoes/" +
-                        item?.image[item.index]
+                        item?.type +
+                        `-${item?.name.replaceAll(" ", "-")}` +
+                        `-${item?.colors[item.index]}.png`
                       }
                       alt="shoe"
                     />
@@ -136,7 +139,7 @@ export default function MenShoesLifeStyle(props) {
                   <div className={` ${edit === index ? "show" : "hide"}`}>
                     {edit === index ? (
                       <div className="con-imgs">
-                        {item.image.map((img, imageIndex) => (
+                        {item.colors.map((img, imageIndex) => (
                           <div
                             className={`box-img ${
                               imageIndex === item.index ? "active" : ""
@@ -148,7 +151,11 @@ export default function MenShoesLifeStyle(props) {
                                 setNewIndex(item, imageIndex)
                               }
                               src={
-                                process.env.PUBLIC_URL + "/img/jpg/shoes/" + img
+                                process.env.PUBLIC_URL +
+                                "/img/jpg/shoes/" +
+                                `${item.type}-` +
+                                item.name.replaceAll(" ", "-") +
+                                `-${img}.png`
                               }
                               alt="shoe"
                             />

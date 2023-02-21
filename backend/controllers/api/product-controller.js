@@ -10,7 +10,7 @@ class ProductController {
   }
   async fetchAllProduct(req, res) {
     try {
-      const products = await Shoe.find();
+      const products = await Shoe.find().limit(5);
       return res.status(200).json({ products });
     } catch (e) {
       return res.status(402).json({ message: "Something went wrong" });
