@@ -16,6 +16,10 @@ class ProductController {
       return res.status(402).json({ message: "Something went wrong" });
     }
   }
+  async addProduct(req, res) {
+    try {
+    } catch (err) {}
+  }
 }
 
 module.exports = new ProductController();

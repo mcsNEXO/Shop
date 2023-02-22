@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink,Route } from "react-router-dom";
 import "./AdminPanel.scss";
 
 export default function AdminPanel(props) {

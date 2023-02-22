@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const shoesSchema = new Schema({
   name: {
     type: String,
+    unique: [true, "These shoes are already exist"],
   },
   type: {
     type: String,
@@ -25,6 +26,7 @@ const shoesSchema = new Schema({
   },
   index: {
     type: Number,
+    default: 0,
   },
 });
 
