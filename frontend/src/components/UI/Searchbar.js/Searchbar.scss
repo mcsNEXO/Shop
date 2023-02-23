@@ -249,6 +249,7 @@ input.search-input:hover {
     font-weight: 600;
   }
   width: 70vw;
+  overflow: hidden;
   display: flex;
   position: absolute;
   z-index: 200;
@@ -280,6 +281,7 @@ input.search-input:hover {
       flex-direction: column;
       align-items: center;
       padding-right: 6px;
+      overflow-y: auto;
       height: 100%;
       gap: 10px;
       .product-name{

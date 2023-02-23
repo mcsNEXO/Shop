@@ -1,0 +1,71 @@
+body{
+    overflow-y: scroll !important;
+}
+
+.con-add-product{
+    max-width: 1000px;
+    margin: auto;
+    padding: 2rem;
+
+    form {
+        max-width: 500px;
+        min-height:350px;
+        width: auto;
+        height: auto;
+        margin: auto;
+        padding: 25px;
+        background-color: rgba(245, 245, 245, 0.596);
+        border-radius: 15px;
+
+        h2{
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 5px 0px 20px 0px;
+            border-bottom: 2px solid black;
+        }
+
+        .group {
+            display: flex;
+            margin:5px 0 20px 0;
+
+            label{
+                width: 100px;
+            }
+
+            .checkbox-flex{
+                max-width: 300px;
+                display: flex;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .ant-checkbox-wrapper{
+                margin: 0 !important;
+            }
+
+            .select,.input-name-product,.input-number{
+                width: auto;
+                min-width: 300px;
+            }
+
+        }
+
+        .btn-andt{
+            width: 100%;
+        }
+
+    }
+}
+
+
+@media only screen and (max-width: 650px) {
+    .con-add-product{
+    .select,.input-name-product,.input-number{
+        min-width: auto !important;
+        width: 100% !important;
+    }
+    .ant-checkbox-group{
+        max-width: 250px !important;
+    }
+}
+}

@@ -9,11 +9,13 @@ import Menu from "./components/Menu/Menu";
 import Login from "./pages/Auth/Login/Login";
 import AuthContext from "./context/authContext";
 import Register from "./pages/Auth/Register/Register";
+import AdminPanel from "./pages/AdminPanel/AdminPanel";
 import { reducer, initialState } from "./reducer";
 import Profile from "./pages/Profile/Profile";
 import MyData from "./pages/Profile/MyData/MyData";
 import ProfilePage from "./pages/Profile/ProfilePage/ProfilePage";
 import RequireAuth from "./hoc/RequireAuth";
+import RequireAdmin from "./hoc/RequireAdmin";
 import Men from "./pages/Category/Man/Men";
 import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
 import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
@@ -24,6 +26,7 @@ import ErrorContext from "./context/errorContext";
 import FilterHandlerContext from "./context/filterHandlerContext";
 import Favorite from "./pages/Favorite/Favorite";
 import FavoriteContext from "./context/favoriteContext";
+import AddProduct from './pages/AdminPanel/AddProduct/AddProduct'
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -48,7 +51,23 @@ function App() {
 
       <Route path="cart" element={<Cart />} />
       <Route path="/product/:id" element={<Shoe />} />
-
+      <Route
+        path="admin-panel"
+        element={
+          <RequireAuth>
+            <RequireAdmin>
+              <AdminPanel />
+            </RequireAdmin>
+          </RequireAuth>
+        }
+      />
+      <Route path="admin-panel/add-product" element={
+        <RequireAuth>
+        <RequireAdmin>
+          <AddProduct/>
+        </RequireAdmin>
+      </RequireAuth>
+      }/>
       <Route
         path="profile/*"
         element={

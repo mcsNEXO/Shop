@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { shoesSize } from "../../data/sizeShoes";
-import { shoesColors } from "../../data/sizeShoes";
+import { colorsData } from "../../data/sizeShoes";
 import useFilterHandler from "../../hooks/useFilterHandler";
 
 export default function Filters(props) {
@@ -21,10 +21,18 @@ export default function Filters(props) {
     return () => window.removeEventListener("resize", resizeWindow);
   }, []);
 
-  const chooseSize = (size) => {
-    size === Number(search.get("size"))
-      ? search.delete("size")
-      : search.set("size", size);
+  const chooseSize = (currentSize) => {
+    const size = search.get("size");
+    if (!size) {
+      search.set("size", currentSize);
+    } else {
+      let x = size.split(",");
+      size.includes(currentSize.toString())
+        ? (x = x.filter((z) => z !== currentSize.toString()))
+        : x.push(currentSize);
+      search.set("size", x);
+      search.get("size") !== "" ? search.set("size", x) : search.delete("size");
+    }
     setSearch(search);
   };
 
@@ -90,23 +98,23 @@ export default function Filters(props) {
           <div className="colors responsive">
             <div className="title-option">Colors</div>
             <div className="option">
-              {shoesColors.map((item, index) => (
+              {colorsData.map((color, index) => (
                 <button
                   className="color-item"
-                  onClick={(e) => chooseColor(item.color)}
+                  onClick={(e) => chooseColor(color)}
                   key={index}
                 >
                   <div
-                    style={{ backgroundColor: item.color }}
+                    style={{ backgroundColor: color }}
                     className={`${
-                      search.get("colors")?.includes(item.color) ? "active" : ""
+                      search.get("colors")?.includes(color) ? "active" : ""
                     }`}
                   >
-                    {search.get("colors")?.includes(item.color) ? (
+                    {search.get("colors")?.includes(color) ? (
                       <i
                         className="bi bi-check-lg"
                         style={
-                          item.color === "white"
+                          color === "white"
                             ? { color: "black" }
                             : { color: "white" }
                         }
@@ -125,7 +133,7 @@ export default function Filters(props) {
                 <div
                   key={index}
                   className={`number ${
-                    Number(search.get("size")) === size.size ? "active" : ""
+                    search.get("size")?.includes(size.size) ? "active" : ""
                   }`}
                   onClick={() => chooseSize(size.size)}
                 >

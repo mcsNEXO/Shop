@@ -1,0 +1,37 @@
+.con-admin-panel{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    height: 200px;
+    .option-p[data-name="product"]{
+        background-image: url('../../../public/img/jpg/admin/product.jpg');
+        background-position: center;
+        background-size: cover;
+        color: white;
+        font-size: 1.4rem;
+        span{
+            background-color: rgba(0, 0, 0, 0.582);
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+    }   
+    .option-p[data-name="product"]:hover{
+        span{
+            scale: 1.05;
+            transition: scale 400ms ease-out;
+
+        }
+    }
+    .option-p{
+        cursor: pointer;
+        width: 300px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid black;
+        border-radius: 6px;
+        height: 70px;
+    }
+}

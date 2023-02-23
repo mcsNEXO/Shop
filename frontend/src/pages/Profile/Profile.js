@@ -29,6 +29,13 @@ export default function Profile(props) {
               My data
             </NavLink>
           </div>
+          {auth.admin === true ? (
+            <div className="profile-option">
+              <NavLink className="black" to="/admin-panel">
+                <i className="bi bi-hdd-stack"></i> Admin panel
+              </NavLink>
+            </div>
+          ) : null}
           <div className="profile-option">
             <NavLink className="black" to="/cart">
               <i className="bi bi-bag"></i> Your cart

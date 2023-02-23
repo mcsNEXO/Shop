@@ -1,8 +1,8 @@
-const Shoe = require("../../db/models/shoes");
+const Shoes = require("../../db/models/shoes");
 class ProductController {
   async fetchProduct(req, res) {
     try {
-      const product = await Shoe.findOne({ _id: req.body.idProduct });
+      const product = await Shoes.findOne({ _id: req.body.idProduct });
       return res.status(200).json({ product });
     } catch (e) {
       return res.status(402).json({ message: "Cannot find this product" });
@@ -10,10 +10,44 @@ class ProductController {
   }
   async fetchAllProduct(req, res) {
     try {
-      const products = await Shoe.find();
+      const products = await Shoes.find().limit(5);
       return res.status(200).json({ products });
     } catch (e) {
       return res.status(402).json({ message: "Something went wrong" });
+    }
+  }
+  async addProduct(req, res) {
+    const data = req.body;
+    let exist = await Shoes.findOne({
+      name: data.nameProduct.toLowerCase().trim(),
+      gender: data.gender,
+    });
+    if (exist) {
+      return res.status(401).json({ message: "These shoes already exist!" });
+    }
+    try {
+      if (data.type === "shoes") {
+        const newShoes = new Shoes({
+          gender: data.gender,
+          name: data.nameProduct,
+          colors: data.colors,
+          price: data.price,
+          size: data.size,
+          image: data.colors.map(
+            (el) =>
+              `${data.type}-${data.nameProduct
+                .trim()
+                .replace(/ /g, "-")}-${el}.png`
+          ),
+          type: data.type,
+        });
+        await newShoes.save();
+      }
+      return res.status(200).json({ message: "ok" });
+    } catch (e) {
+      console.log("e", e);
+      e.code === 11000 ? (e.message = "These shoes already exist!") : e.message;
+      return res.status(401).json({ message: e.message });
     }
   }
 }
