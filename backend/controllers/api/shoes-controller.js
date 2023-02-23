@@ -41,6 +41,7 @@ class ShoesController {
             "size.0": {
               $exists: true,
             },
+            gender: url.gender ? url.gender : { $exists: true },
           },
         },
         {

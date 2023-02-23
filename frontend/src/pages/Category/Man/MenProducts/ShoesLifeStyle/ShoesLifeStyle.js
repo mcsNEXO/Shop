@@ -23,13 +23,13 @@ export default function MenShoesLifeStyle(props) {
     setWebLink(webPath());
     getProducts();
   }, [search]);
-  console.log();
   const getProducts = async (
     url = {
       colors: search.get("colors"),
       sort: search.get("sort"),
       price: search.get("price"),
       size: search.get("size"),
+      gender: window.location.pathname.includes("men" || "man") && "man",
     }
   ) => {
     const res = await axios.post("get-shoes", { url });
@@ -38,7 +38,11 @@ export default function MenShoesLifeStyle(props) {
   };
   const setNewIndex = (item, index) => {
     return setShoes(
-      shoes.map((x) => (x.name === item.name ? { ...item, index: index } : x))
+      shoes.map((x) =>
+        (x.name === item.name) & (x.gender === item.gender)
+          ? { ...item, index: index }
+          : x
+      )
     );
   };
 

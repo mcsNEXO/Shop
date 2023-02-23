@@ -40,5 +40,6 @@ router.post("/get-promocode", promoCodeController.getCode);
 
 router.post("/fetch-product", productController.fetchProduct);
 router.get("/fetch-all-products", productController.fetchAllProduct);
+router.post("/add-product-db", productController.addProduct);
 
 module.exports = router;

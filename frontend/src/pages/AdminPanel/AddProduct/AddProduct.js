@@ -1,21 +1,57 @@
 import { React, useState, useEffect } from "react";
-import { Checkbox, Input, Select, InputNumber, Tag, Button } from "antd";
+import { Checkbox, Input, Select, InputNumber, Tag, Button, Modal } from "antd";
 import axios from "../../../axios";
-
+import {
+  bigKidsSize,
+  smallKidsSize,
+  womenSize,
+  menSize,
+  genderOptions,
+  typeClothes,
+} from "../../../data/sizeShoes";
+import { colorsData } from "../../../data/sizeShoes";
 import "./AddProduct.scss";
 
 export default function AddProduct(props) {
   const [nameProduct, setNameProduct] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState(
+    typeClothes.length > 1 ? "" : typeClothes[0].value
+  );
   const [colors, setColors] = useState([]);
   const [price, setPrice] = useState(100);
   const [gender, setGender] = useState("");
   const [sizeOptions, setSizeOptions] = useState([]);
   const [size, setSize] = useState([]);
+  const [loading, setLoading] = useState();
+
+  useEffect(() => {
+    handleSizeOptions(gender);
+  }, [type]);
+
+  const error = (text) => {
+    Modal.error({
+      title: "Error",
+      content: text,
+      afterClose: () => setLoading(false),
+    });
+  };
+
+  const success = () => {
+    Modal.success({
+      content: "Success",
+    });
+  };
 
   const addProduct = async () => {
+    setLoading(true);
     const data = { nameProduct, type, colors, price, gender, size };
-    const res = await axios.post("add-product", data);
+    try {
+      const res = await axios.post("add-product-db", data);
+      setLoading(false);
+      return success();
+    } catch (err) {
+      error(err.response.data.message);
+    }
   };
 
   const handleSizeOptions = (genderValue) => {
@@ -36,122 +72,115 @@ export default function AddProduct(props) {
         default:
           return "Select gender";
       }
-    } else if (type === "clothes") {
+    } else if (type === "hoddies") {
       return setSizeOptions(["S", "M", "L", "XL", "XLL"]);
     }
   };
-  useEffect(() => {
-    handleSizeOptions(gender);
-  }, [type]);
-  const options = [
-    { label: "shoes", value: "shoes" },
-    { label: "clothes", value: "clothes" },
-  ];
-
-  const genderOptions = [
-    { label: "man", value: "man" },
-    { label: "woman", value: "woman" },
-    { label: "big kids", value: "bigKids" },
-    { label: "small kids", value: "smallKids" },
-  ];
-  const colorsOptions = ["white", "black", "gray", "red"];
-
-  const bigKidsSize = [35, 35.5, 36, 36.5, 37, 37.5, 38, 38.5, 39];
-  const smallKidsSize = [
-    27, 28, 29, 30, 30.5, 31, 31.5, 32, 32.5, 33, 33.5, 34,
-  ];
-  const menSize = [40, 41, 42, 43, 44, 45, 46, 47, 48];
-  const womenSize = [40, 41, 42, 43, 44, 45, 46, 47, 48];
 
   return (
-    <div className="con-add-product">
-      <form>
-        <div className="group name-input">
-          <label htmlFor="name">Name</label>
-          <Input
-            type="text"
-            id="name"
-            value={nameProduct}
-            onChange={(e) => setNameProduct(e.target.value)}
-            placeholder="Name Product"
-          />
-        </div>
-        <div className="group type-select">
-          <label htmlFor="type">Type</label>
-          <Select
-            defaultValue={options.length > 1 ? "Select type" : options[0].value}
-            options={options}
-            className={"select"}
-            id="type"
-            onChange={(value) => setType(value)}
-          />
-        </div>
-        <div className="group gender-select">
-          <label htmlFor="gender">Gender</label>
-          <Select
-            defaultValue={
-              genderOptions.length > 1
-                ? "Select gender"
-                : genderOptions[0].value
-            }
-            options={genderOptions}
-            className={"select"}
-            id="gender"
-            onChange={(value) => {
-              setGender(value);
-              handleSizeOptions(value);
-            }}
-          />
-        </div>
-        <div className="group colors-checkbox">
-          <label>Colors</label>
-          <Checkbox.Group
-            options={colorsOptions}
-            onChange={(value) => setColors(value)}
-          />
-        </div>
-        <div className="group price-input">
-          <label htmlFor="price" onClick={() => console.log(price)}>
-            Price
-          </label>
-          <InputNumber
-            id="price"
-            addonAfter="$"
-            value={price}
-            onChange={(value) => setPrice(value)}
-            defaultValue={100}
-          />
-        </div>
-        <div className="group size-select">
-          <label htmlFor="size">Size</label>
-          {!gender || !type ? (
-            <Tag color="#cd201f">Select gender & type</Tag>
-          ) : (
-            <Checkbox.Group
-              id="size"
-              options={sizeOptions}
-              onChange={(value) => setSize(value)}
+    <>
+      <div className="con-add-product">
+        <form>
+          <h2>Add new product</h2>
+          <div className="group name-input">
+            <label htmlFor="name">Name</label>
+            <Input
+              className="input-name-product"
+              type="text"
+              id="name"
+              value={nameProduct}
+              onChange={(e) => setNameProduct(e.target.value)}
+              placeholder="Name Product"
             />
-          )}
-        </div>
-        <Button
-          type="primary"
-          size={"middle"}
-          disabled={
-            nameProduct === "" ||
-            type === "" ||
-            gender === "" ||
-            colors.length === 0 ||
-            price === null ||
-            size.length === 0
-              ? true
-              : false
-          }
-          onClick={addProduct}
-        >
-          Add product
-        </Button>
-      </form>
-    </div>
+          </div>
+          <div className="group type-select">
+            <label htmlFor="type">Type</label>
+            <Select
+              defaultValue={
+                typeClothes.length > 1 ? "Select type" : typeClothes[0].value
+              }
+              options={typeClothes}
+              className={"select"}
+              id="type"
+              onChange={(value) => setType(value)}
+            />
+          </div>
+          <div className="group gender-select">
+            <label htmlFor="gender">Gender</label>
+            <Select
+              defaultValue={
+                genderOptions.length > 1
+                  ? "Select gender"
+                  : genderOptions[0].value
+              }
+              options={genderOptions}
+              className={"select"}
+              id="gender"
+              onChange={(value) => {
+                setGender(value);
+                handleSizeOptions(value);
+              }}
+            />
+          </div>
+          <div className="group colors-checkbox">
+            <label>Colors</label>
+            <Checkbox.Group
+              className="checkbox-flex"
+              options={colorsData}
+              onChange={(value) => setColors(value)}
+            />
+          </div>
+          <div className="group price-input">
+            <label htmlFor="price" onClick={() => console.log(price)}>
+              Price
+            </label>
+            <InputNumber
+              className="input-number"
+              id="price"
+              addonAfter="$"
+              value={price}
+              onChange={(value) => setPrice(value)}
+              defaultValue={100}
+            />
+          </div>
+          <div className="group size-select">
+            <label htmlFor="size">Size</label>
+            {!gender || !type ? (
+              <Tag color="#cd201f" style={{ fontSize: "0.95rem" }}>
+                Select gender & type
+              </Tag>
+            ) : (
+              <Checkbox.Group
+                id="size"
+                className="checkbox-flex"
+                options={sizeOptions}
+                onChange={(value) => setSize(value)}
+              />
+            )}
+          </div>
+          <div className="btn-andt">
+            <Button
+              loading={loading}
+              style={{ width: "100%" }}
+              type="primary"
+              size={"middle"}
+              disabled={
+                nameProduct === "" ||
+                type === "" ||
+                gender === "" ||
+                colors.length === 0 ||
+                price === null ||
+                size.length === 0
+                  ? true
+                  : false
+              }
+              onClick={addProduct}
+            >
+              Add product
+            </Button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }
