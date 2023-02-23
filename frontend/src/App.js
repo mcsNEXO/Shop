@@ -26,7 +26,8 @@ import ErrorContext from "./context/errorContext";
 import FilterHandlerContext from "./context/filterHandlerContext";
 import Favorite from "./pages/Favorite/Favorite";
 import FavoriteContext from "./context/favoriteContext";
-import AddProduct from './pages/AdminPanel/AddProduct/AddProduct'
+import AddProduct from "./pages/AdminPanel/AddProduct/AddProduct";
+import DeleteProduct from "./pages/AdminPanel/DeleteProduct/DeleteProduct";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -48,26 +49,37 @@ function App() {
           </RequireAuth>
         }
       />
-
       <Route path="cart" element={<Cart />} />
       <Route path="/product/:id" element={<Shoe />} />
-      <Route
-        path="admin-panel"
-        element={
-          <RequireAuth>
-            <RequireAdmin>
+
+      {/* admin panel routs */}
+      <Route path="admin-panel">
+        <Route
+          index
+          element={
+            <RequireAuth>
               <AdminPanel />
-            </RequireAdmin>
-          </RequireAuth>
-        }
-      />
-      <Route path="admin-panel/add-product" element={
-        <RequireAuth>
-        <RequireAdmin>
-          <AddProduct/>
-        </RequireAdmin>
-      </RequireAuth>
-      }/>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="add-product"
+          element={
+            <RequireAuth>
+              <AddProduct />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="delete-product"
+          element={
+            <RequireAuth>
+              <DeleteProduct />
+            </RequireAuth>
+          }
+        />
+      </Route>
+
       <Route
         path="profile/*"
         element={

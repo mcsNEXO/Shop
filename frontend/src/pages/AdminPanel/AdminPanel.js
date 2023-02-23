@@ -1,13 +1,15 @@
-import { NavLink,Route } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./AdminPanel.scss";
 
 export default function AdminPanel(props) {
   return (
     <div className="con-admin-panel">
-      <NavLink to="add-product" className="option-p" data-name="product">
+      <NavLink to="add-product" className="option-add" data-name="product">
         <span>Add product</span>
       </NavLink>
-      <div className="option-p"></div>
+      <NavLink to="delete-product" className="option-delete">
+        <span>Delete product</span>
+      </NavLink>
     </div>
   );
 }
