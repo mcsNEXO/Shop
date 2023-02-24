@@ -8,6 +8,27 @@ class ProductController {
       return res.status(402).json({ message: "Cannot find this product" });
     }
   }
+
+  async getProduct(req, res) {
+    console.log(req.body);
+    let products;
+    try {
+      if (req.body.type === "shoes") {
+        products = await Shoes.find({
+          // type: req.body.type,
+          $text: { $search: `"${req.body.text}"` },
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "Can't find this type of products!" });
+      }
+      return res.status(200).json({ products });
+    } catch (e) {
+      return res.status(400).json({ message: e.message });
+    }
+  }
+
   async fetchAllProduct(req, res) {
     try {
       const products = await Shoes.find().limit(5);

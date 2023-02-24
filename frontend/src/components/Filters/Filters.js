@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { shoesSize } from "../../data/sizeShoes";
-import { colorsData } from "../../data/sizeShoes";
+import { shoesSize } from "../../data/dataProduct";
+import { colorsData } from "../../data/dataProduct";
 import useFilterHandler from "../../hooks/useFilterHandler";
 
 export default function Filters(props) {

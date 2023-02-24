@@ -8,8 +8,8 @@ import {
   menSize,
   genderOptions,
   typeClothes,
-} from "../../../data/sizeShoes";
-import { colorsData } from "../../../data/sizeShoes";
+} from "../../../data/dataProduct";
+import { colorsData } from "../../../data/dataProduct";
 import "./AddProduct.scss";
 
 export default function AddProduct(props) {

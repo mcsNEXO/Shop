@@ -39,6 +39,7 @@ router.post("/get-shoes", shoesController.getShoes);
 router.post("/get-promocode", promoCodeController.getCode);
 
 router.post("/fetch-product", productController.fetchProduct);
+router.post("/get-search-product", productController.getProduct);
 router.get("/fetch-all-products", productController.fetchAllProduct);
 router.post("/add-product-db", productController.addProduct);
 

@@ -6,7 +6,7 @@ import axios from "../../../../../axios";
 import "./ShoesLifeStyle.scss";
 import ErrorModal from "../../../../../components/Modals/ErrorModal/ErrorModal";
 import Filters from "../../../../../components/Filters/Filters";
-import { sortingData } from "../../../../../data/sizeShoes";
+import { sortingData } from "../../../../../data/dataProduct";
 import useFilterHandler from "../../../../../hooks/useFilterHandler";
 
 export default function MenShoesLifeStyle(props) {

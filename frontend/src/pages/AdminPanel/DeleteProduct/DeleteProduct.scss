@@ -1,0 +1,59 @@
+.con-delete-product{
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    .box{
+        width: auto;
+        margin: auto;
+        .option-data{
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .group{
+                display: flex;
+                max-width: 300px;
+                width: 100%;
+                label{
+                    width: 100px;
+                    margin-right: 10px;
+                }
+                .select{
+                    max-width: 400px;
+                    width: 300px;
+                }
+            }
+        }
+        .searched-products{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            .card-s{
+                min-width: 300px;
+                max-width: 300px;
+            }
+        }
+    }
+ 
+}
+
+@media only screen and (max-width:965px) {
+    .con-delete-product{
+        .card-s{
+            min-width: inherit !important;
+            max-width: inherit !important;
+            width: 30%;
+        }
+    }
+}
+
+@media only screen and (max-width:635px) {
+    .con-delete-product{
+        .card-s{
+            min-width: 300px !important;
+            max-width: inherit !important;
+            flex: 1 1;
+        }
+    }
+}
