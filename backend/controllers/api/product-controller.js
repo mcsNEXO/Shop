@@ -1,8 +1,8 @@
-const Shoes = require("../../db/models/shoes");
+const Product = require("../../db/models/shoes");
 class ProductController {
   async fetchProduct(req, res) {
     try {
-      const product = await Shoes.findOne({ _id: req.body.idProduct });
+      const product = await Product.findOne({ _id: req.body.idProduct });
       return res.status(200).json({ product });
     } catch (e) {
       return res.status(402).json({ message: "Cannot find this product" });
@@ -10,7 +10,7 @@ class ProductController {
   }
   async fetchAllProduct(req, res) {
     try {
-      const products = await Shoes.find().limit(5);
+      const products = await Product.find().limit(5);
       return res.status(200).json({ products });
     } catch (e) {
       return res.status(402).json({ message: "Something went wrong" });
@@ -18,31 +18,32 @@ class ProductController {
   }
   async addProduct(req, res) {
     const data = req.body;
-    let exist = await Shoes.findOne({
-      name: data.nameProduct.toLowerCase().trim(),
-      gender: data.gender,
-    });
-    if (exist) {
-      return res.status(401).json({ message: "These shoes already exist!" });
-    }
+    console.log(data);
+    // let exist = await Product.findOne({
+    // name: data.nameProduct.toLowerCase().trim(),
+    // gender: data.gender,
+    // });
+    // if (exist) {
+    //   return res.status(401).json({ message: "These shoes already exist!" });
+    // }
     try {
-      if (data.type === "shoes") {
-        const newShoes = new Shoes({
-          gender: data.gender,
-          name: data.nameProduct,
-          colors: data.colors,
-          price: data.price,
-          size: data.size,
-          image: data.colors.map(
-            (el) =>
-              `${data.type}-${data.nameProduct
-                .trim()
-                .replace(/ /g, "-")}-${el}.png`
-          ),
-          type: data.type,
-        });
-        await newShoes.save();
-      }
+      const product = new Product({
+        name: data.name,
+        type: data.type,
+        gender: data.gender,
+        price: data.price,
+        colors: data.size.map((item) => {
+          return {
+            ...item,
+            image: `${data.type}-${data.name.trim().replace(/ /g, "-")}-${
+              item.color
+            }.png`,
+          };
+        }),
+        type: data.type,
+      });
+      console.log(product);
+      await product.save();
       return res.status(200).json({ message: "ok" });
     } catch (e) {
       console.log("e", e);

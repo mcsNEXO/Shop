@@ -1,7 +1,31 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const shoesSchema = new Schema({
+const sizeSchema = new Schema({
+  size: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+});
+
+const colorsSchema = new Schema({
+  color: {
+    type: String,
+    required: true,
+  },
+  sizes: [sizeSchema],
+  image: {
+    type: String,
+    required: true,
+  },
+});
+
+const productSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -15,21 +39,7 @@ const shoesSchema = new Schema({
     required: true,
     lowercase: true,
   },
-  colors: {
-    type: Array,
-    required: [true, "Select min 1 color!"],
-  },
-  size: {
-    type: Array,
-    required: [true, "Select min 1 size!"],
-  },
-  image: [
-    {
-      type: String,
-      required: true,
-      lowercase: true,
-    },
-  ],
+  colors: [colorsSchema],
   price: {
     type: Number,
     required: [true, "Write price!"],
@@ -45,6 +55,6 @@ const shoesSchema = new Schema({
   },
 });
 
-const Shoes = mongoose.model("Shoes", shoesSchema);
+const Product = mongoose.model("Product", productSchema);
 
-module.exports = Shoes;
+module.exports = Product;

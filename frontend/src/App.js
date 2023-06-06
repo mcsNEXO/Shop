@@ -26,7 +26,7 @@ import ErrorContext from "./context/errorContext";
 import FilterHandlerContext from "./context/filterHandlerContext";
 import Favorite from "./pages/Favorite/Favorite";
 import FavoriteContext from "./context/favoriteContext";
-import AddProduct from './pages/AdminPanel/AddProduct/AddProduct'
+import AddProduct from "./pages/AdminPanel/AddProduct/AddProduct";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -61,13 +61,16 @@ function App() {
           </RequireAuth>
         }
       />
-      <Route path="admin-panel/add-product" element={
-        <RequireAuth>
-        <RequireAdmin>
-          <AddProduct/>
-        </RequireAdmin>
-      </RequireAuth>
-      }/>
+      <Route
+        path="admin-panel/add-product"
+        element={
+          <RequireAuth>
+            <RequireAdmin>
+              <AddProduct />
+            </RequireAdmin>
+          </RequireAuth>
+        }
+      />
       <Route
         path="profile/*"
         element={

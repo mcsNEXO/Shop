@@ -1,12 +1,10 @@
-const { compareSync } = require("bcrypt");
-const { copyFileSync } = require("fs");
-const Shoes = require("../../db/models/shoes");
+const Product = require("../../db/models/shoes");
 class ShoesController {
   async getShoes(req, res) {
     const url = req.body.url;
-    let shoes = await Shoes.find();
+    let shoes = await Product.find();
     if (url !== "") {
-      shoes = await Shoes.aggregate([
+      shoes = await Product.aggregate([
         {
           $project: {
             _id: 1,
