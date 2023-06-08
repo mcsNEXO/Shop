@@ -78,19 +78,21 @@ export const genderOptions = [
   { label: "small kids", value: "smallKids" },
 ];
 
-export const typeClothes = [{ label: "shoes", value: "shoes" }];
+export const typeClothes = [{ label: "Shoes", value: "shoes" }];
+
+export const categoryClothes = [{ label: "Lifestyle", value: "lifestyle" }];
 
 export const sortingData = [
   {
-    name: "Featured",
+    label: "Featured",
   },
   {
-    name: "Newest",
+    label: "Newest",
   },
   {
-    name: "Price: High-Low",
+    label: "Price: High-Low",
   },
   {
-    name: "Price: Low-High",
+    label: "Price: Low-High",
   },
 ];

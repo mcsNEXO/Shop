@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useMemo } from "react";
-import { Checkbox, Input, Select, InputNumber, Tag, Button, Modal } from "antd";
+import { Input, Select, InputNumber, Tag, Button, Modal } from "antd";
 import axios from "../../../axios";
 import {
   bigKidsSize,
@@ -8,20 +8,26 @@ import {
   manSize,
   genderOptions,
   typeClothes,
+  categoryClothes,
 } from "../../../data/sizeShoes";
 import { colorsData } from "../../../data/sizeShoes";
 import "./AddProduct.scss";
+const { TextArea } = Input;
 
 export default function AddProduct(props) {
   const [name, setName] = useState("");
   const [type, setType] = useState(
     typeClothes.length > 1 ? "" : typeClothes[0].value
   );
+  const [category, setCategory] = useState(
+    categoryClothes.length > 1 ? "" : categoryClothes[0].value
+  );
   const [colors, setColors] = useState([]);
   const [price, setPrice] = useState(100);
   const [gender, setGender] = useState("");
   const [sizeOptions, setSizeOptions] = useState([]);
   const [size, setSize] = useState([]);
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState();
 
   useEffect(() => {
@@ -44,7 +50,7 @@ export default function AddProduct(props) {
 
   const addProduct = async () => {
     setLoading(true);
-    const data = { name, type, price, gender, size };
+    const data = { name, type, price, gender, size, category, description };
     try {
       const res = await axios.post("add-product-db", data);
       setLoading(false);
@@ -151,6 +157,18 @@ export default function AddProduct(props) {
             />
           </div>
 
+          <div className="group type-select">
+            <label htmlFor="type">Category</label>
+            <Select
+              defaultValue={category || "Select type"}
+              value={category}
+              options={categoryClothes}
+              className={"select"}
+              id="type"
+              onChange={(value) => setCategory(value)}
+            />
+          </div>
+
           <div className="group gender-select">
             <label htmlFor="gender">Gender</label>
             <Select
@@ -243,6 +261,18 @@ export default function AddProduct(props) {
               </div>
             )}
           </div>
+
+          <div className="group colors-checkbox">
+            <label>Description</label>
+            <TextArea
+              placeholder="Write description"
+              maxLength={500}
+              autoSize
+              className="select"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
           <div className="btn-andt">
             <Button
               loading={loading}
@@ -255,7 +285,8 @@ export default function AddProduct(props) {
                 gender === "" ||
                 colors.length === 0 ||
                 price === null ||
-                size.some((x) => x.sizes.length === 0)
+                size.some((x) => x.sizes.length === 0) ||
+                description === ""
               }
               onClick={addProduct}
             >

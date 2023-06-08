@@ -53,6 +53,11 @@ export default function Filters(props) {
     setSearch(search);
   };
 
+  const priceHandler = (x, y) => {
+    search.set("price", `${x}-${y}`);
+    setSearch(search);
+  };
+
   return (
     <>
       <div className={`con-filter-bar ${open ? "open" : "close"}`}>
@@ -62,8 +67,7 @@ export default function Filters(props) {
             onClick={() => setOpen(false)}
           ></i>
           <span className="title-filter">
-            Filter{" "}
-            {search.toString() !== "" ? `(${props.products?.length})` : ""}
+            Filter {search.toString() !== "" ? `(${props.productsLength})` : ""}
           </span>
           <hr className="filter-line" />
           <div className="options">
@@ -87,7 +91,7 @@ export default function Filters(props) {
               <div className="d-center">
                 <button
                   className="price-btn"
-                  onClick={() => props.priceHandler(value, value2)}
+                  onClick={() => priceHandler(value, value2)}
                 >
                   Save
                 </button>
@@ -98,23 +102,23 @@ export default function Filters(props) {
           <div className="colors responsive">
             <div className="title-option">Colors</div>
             <div className="option">
-              {colorsData.map((color, index) => (
+              {colorsData.map((item, index) => (
                 <button
                   className="color-item"
-                  onClick={(e) => chooseColor(color)}
+                  onClick={(e) => chooseColor(item.value)}
                   key={index}
                 >
                   <div
-                    style={{ backgroundColor: color }}
+                    style={{ backgroundColor: item.value }}
                     className={`${
-                      search.get("colors")?.includes(color) ? "active" : ""
+                      search.get("colors")?.includes(item.value) ? "active" : ""
                     }`}
                   >
-                    {search.get("colors")?.includes(color) ? (
+                    {search.get("colors")?.includes(item.value) ? (
                       <i
                         className="bi bi-check-lg"
                         style={
-                          color === "white"
+                          item.value === "white"
                             ? { color: "black" }
                             : { color: "white" }
                         }

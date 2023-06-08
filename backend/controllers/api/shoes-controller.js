@@ -1,55 +1,52 @@
-const Product = require("../../db/models/shoes");
+const Product = require("../../db/models/product");
 class ShoesController {
   async getShoes(req, res) {
-    const url = req.body.url;
-    let shoes = await Product.find();
-    if (url !== "") {
-      shoes = await Product.aggregate([
+    const sortingData = req.body.sortingData;
+    try {
+      const shoes = await Product.aggregate([
         {
           $project: {
             _id: 1,
             name: 1,
             type: 1,
-            colors: url.colors
+            colors: sortingData.colors
               ? {
-                  $setIntersection: ["$colors", url.colors?.split(",")],
+                  $filter: {
+                    input: "$colors",
+                    as: "color",
+                    cond: {
+                      $in: ["$$color.color", sortingData.colors.split(",")],
+                    },
+                  },
                 }
               : 1,
             price: 1,
-            image: 1,
-            size: url.size
-              ? {
-                  $setIntersection: [
-                    "$size",
-                    url.size?.split(",")?.map((el) => parseInt(el)),
-                  ],
-                }
-              : 1,
-            image: 1,
             gender: 1,
             index: 1,
-            date: 1,
           },
         },
         {
           $match: {
-            "colors.0": {
-              $exists: true,
+            "colors.sizes": {
+              $elemMatch: {
+                size: {
+                  $exists: true,
+                },
+              },
             },
-            "size.0": {
-              $exists: true,
-            },
-            gender: url.gender ? url.gender : { $exists: true },
+            gender: sortingData.gender ? sortingData.gender : { $exists: true },
           },
         },
         {
           $sort: {
-            price: url.sort === "high-low" ? 1 : -1,
+            price: sortingData.sort === "high-low" ? 1 : -1,
           },
         },
       ]);
+      return res.status(200).json({ shoes });
+    } catch (e) {
+      return res.status(400).json({ message: "Cannot find any products" });
     }
-    return res.status(200).json({ shoes });
   }
 }
 

@@ -1,8 +1,10 @@
-const Product = require("../../db/models/shoes");
+const Product = require("../../db/models/product");
 class ProductController {
   async fetchProduct(req, res) {
     try {
-      const product = await Product.findOne({ _id: req.body.idProduct });
+      const product = await Product.findOne({
+        _id: req.body.idProduct,
+      });
       return res.status(200).json({ product });
     } catch (e) {
       return res.status(402).json({ message: "Cannot find this product" });
@@ -18,7 +20,6 @@ class ProductController {
   }
   async addProduct(req, res) {
     const data = req.body;
-    console.log(data);
     // let exist = await Product.findOne({
     // name: data.nameProduct.toLowerCase().trim(),
     // gender: data.gender,
@@ -30,6 +31,7 @@ class ProductController {
       const product = new Product({
         name: data.name,
         type: data.type,
+        category: data.category,
         gender: data.gender,
         price: data.price,
         colors: data.size.map((item) => {
@@ -40,9 +42,8 @@ class ProductController {
             }.png`,
           };
         }),
-        type: data.type,
+        description: data.description,
       });
-      console.log(product);
       await product.save();
       return res.status(200).json({ message: "ok" });
     } catch (e) {

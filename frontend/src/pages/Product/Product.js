@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
-import "./Shoe.scss";
+import "./Product.scss";
 import { NavLink, useParams } from "react-router-dom";
-import axios from "../../../../../../axios";
-import useCart from "../../../../../../hooks/useCart";
-import ErrorModal from "../../../../../../components/Modals/ErrorModal/ErrorModal";
-import useError from "../../../../../../hooks/useError";
-import useAuth from "../../../../../../hooks/useAuth";
-import useFavorite from "../../../../../../hooks/useFavorite";
+import axios from "../../axios";
+import useCart from "../../hooks/useCart";
+import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
+import useError from "../../hooks/useError";
+import useAuth from "../../hooks/useAuth";
+import useFavorite from "../../hooks/useFavorite";
 
-export default function Shoe(props) {
+export default function Product(props) {
   const { id } = useParams();
   const idProduct = id.split("-")[0];
-  const index = id.split("-")[1];
-  const [cart, setCart] = useCart();
+  const colorProduct = id.split("-")[1];
   const [product, setProduct] = useState();
+  const [currentProduct, setCurrentProduct] = useState();
+
+  const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const pathImage = process.env.PUBLIC_URL + "/img/jpg/shoes/";
-  const [currentSize, setCurrentProduct] = useState();
+  const [currentSize, setCurrentSize] = useState();
   const [error, setError] = useError();
   const [favorite, setFavorite] = useFavorite();
   const newProduct = {
     ...product,
-    colors: product?.colors?.filter((x) => x === index).toString(),
-    image: product?.image?.filter((x) => x.includes(index)).toString(),
+    colors: product?.colors?.filter((x) => x === colorProduct).toString(),
+    image: product?.image?.filter((x) => x.includes(colorProduct)).toString(),
     quantity: 1,
   };
 
@@ -32,6 +34,12 @@ export default function Shoe(props) {
   const fetchProduct = async () => {
     const res = await axios.post("fetch-product", { idProduct });
     setProduct(res.data.product);
+    console.log(
+      res.data.product.colors.filter((item) => item.color === colorProduct)
+    );
+    setCurrentProduct(
+      res.data.product.colors.filter((item) => item.color === colorProduct)[0]
+    );
   };
   const chooseSize = (e, size) => {
     document
@@ -39,7 +47,7 @@ export default function Shoe(props) {
       .forEach((x) => x.classList.remove("active"));
 
     e.target.classList.add("active");
-    setCurrentProduct(size);
+    setCurrentSize(size);
   };
 
   const deleteFavProduct = async (product) => {
@@ -50,7 +58,6 @@ export default function Shoe(props) {
     const res = await axios.post("delete-favorite", data);
     setFavorite(res.data.newFavorites);
   };
-
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -59,27 +66,22 @@ export default function Shoe(props) {
           <div className="res-name">{product?.name}</div>
           <div className="res-gender">{product?.gender}'s shoes</div>
           <div className="res-price">Price: {product?.price}$</div>
-          <div className="res-color">Current color: {index}</div>
+          <div className="res-color">
+            Current color: {currentProduct?.color}
+          </div>
         </div>
         <div className="left-side">
           <div className="con-img">
             <div>
-              <img
-                src={
-                  pathImage + product?.image.filter((x) => x.includes(index))
-                }
-                alt="product"
-              />
+              <img src={pathImage + currentProduct?.image} alt="product" />
             </div>
             <div className="under-images">
-              {product?.image.map((image, index) => (
+              {product?.colors.map((item, index) => (
                 <NavLink
                   key={index}
-                  to={`/product/${product._id}-${
-                    image.split("-").at(-1).split(".")[0]
-                  }`}
+                  to={`/product/${product._id}-${item.color}`}
                 >
-                  <img src={pathImage + image} alt="underimage" />
+                  <img src={pathImage + item.image} alt="underimage" />
                 </NavLink>
               ))}
             </div>
@@ -88,24 +90,23 @@ export default function Shoe(props) {
         <div className="right-side">
           <div className="desc">
             <div className="name">{product?.name}</div>
-            <div className="gender">{product?.gender}'s shoes</div>
+            <div className="gender">
+              {product?.gender}'s {product?.type}
+            </div>
             <div className="price">Price: {product?.price}$</div>
-            <div className="color">Current color: {index}</div>
+            <div className="color">Current color: {currentProduct?.color}</div>
           </div>
-          <div className="description">
-            Lorem impsum,Lorem impsum,Lorem impsum,Lorem impsum,Lorem
-            impsum,Lorem impsum,Lorem impsum,Lorem impsum,Lorem impsum
-          </div>
+          <div className="description">{product?.description}</div>
           <div className="size-box">
             <span>Select size: </span>
             <div className="sizes">
-              {product?.size.map((size, index) => (
+              {currentProduct?.sizes?.map((item, index) => (
                 <div
                   className="size"
                   key={index}
-                  onClick={(e) => chooseSize(e, size)}
+                  onClick={(e) => chooseSize(e, item.size)}
                 >
-                  {size}
+                  {item.size}
                 </div>
               ))}
             </div>

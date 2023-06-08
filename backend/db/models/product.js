@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const sizeSchema = new Schema({
   size: {
     type: String,
-    required: true,
+    required: [true, "Select size!"],
   },
   quantity: {
     type: Number,
-    required: true,
+    required: [true, "Write quantity!"],
     default: 0,
   },
 });
@@ -16,7 +16,7 @@ const sizeSchema = new Schema({
 const colorsSchema = new Schema({
   color: {
     type: String,
-    required: true,
+    required: [true, "Select color!"],
   },
   sizes: [sizeSchema],
   image: {
@@ -34,24 +34,38 @@ const productSchema = new Schema({
     lowercase: true,
     trim: true,
   },
-  type: {
-    type: String,
-    required: true,
-    lowercase: true,
-  },
-  colors: [colorsSchema],
-  price: {
-    type: Number,
-    required: [true, "Write price!"],
-  },
   gender: {
     type: String,
     required: [true, "Select gender!"],
     lowercase: true,
   },
-  index: {
+  type: {
+    type: String,
+    required: [true, "Select type!"],
+    lowercase: true,
+  },
+  category: {
+    type: String,
+    required: [true, "Select gender!"],
+    lowercase: true,
+  },
+  price: {
     type: Number,
-    default: 0,
+    required: [true, "Write price!"],
+  },
+  colors: [colorsSchema],
+  description: {
+    type: String,
+    trim: true,
+    required: [true, "Write description!"],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

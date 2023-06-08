@@ -16,17 +16,15 @@ import MyData from "./pages/Profile/MyData/MyData";
 import ProfilePage from "./pages/Profile/ProfilePage/ProfilePage";
 import RequireAuth from "./hoc/RequireAuth";
 import RequireAdmin from "./hoc/RequireAdmin";
-import Men from "./pages/Category/Man/Men";
-import ShoesLifeStyle from "./pages/Category/Man/MenProducts/ShoesLifeStyle/ShoesLifeStyle";
-import ShoesRunning from "./pages/Category/Man/MenProducts/ShoesRunning/ShoesRunning";
 import Cart from "./pages/Cart/Cart";
-import Shoe from "./pages/Category/Man/MenProducts/ShoesLifeStyle/Shoe/Shoe";
+import Product from "./pages/Product/Product";
 import CartContext from "./context/cartContext";
 import ErrorContext from "./context/errorContext";
 import FilterHandlerContext from "./context/filterHandlerContext";
 import Favorite from "./pages/Favorite/Favorite";
 import FavoriteContext from "./context/favoriteContext";
 import AddProduct from "./pages/AdminPanel/AddProduct/AddProduct";
+import Products from "./pages/Products/Products";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -35,10 +33,8 @@ function App() {
   const menu = (
     <Routes>
       <Route path="/" element={<Menu />} />
-      <Route path="/men" element={<Men />} />
       <Route path="/w">
-        <Route path="men-shoes-lifestyle/" element={<ShoesLifeStyle />}></Route>
-        <Route path="men-shoes-running" element={<ShoesRunning />} />
+        <Route path="men-shoes-lifestyle/" element={<Products />}></Route>
       </Route>
       <Route
         path="favorite"
@@ -50,7 +46,7 @@ function App() {
       />
 
       <Route path="cart" element={<Cart />} />
-      <Route path="/product/:id" element={<Shoe />} />
+      <Route path="/product/:id" element={<Product />} />
       <Route
         path="admin-panel"
         element={

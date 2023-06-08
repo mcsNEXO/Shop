@@ -1,0 +1,444 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.conLifestyle {
+  width: 100%;
+  padding: 1rem 3rem;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    .web-title {
+    }
+    .buttons {
+      display: flex;
+      align-self: flex-end;
+      gap: 10px;
+      height: fit-content;
+      position: relative;
+      font-size: 1.2rem;
+
+      .filter-btn {
+        border: 2px solid black;
+        padding: 2px;
+        border-radius: 8px;
+        background-color: white;
+        width: 100px;
+        padding: 3px;
+        text-align: center;
+        cursor: pointer;
+        div {
+          text-transform: capitalize;
+        }
+      }
+      .open ~ .filter-select .box-select {
+        transform: translateY(0%) !important;
+        transition: all 150ms ease;
+        background-color: black;
+        visibility: visible !important;
+      }
+      .filter-btn:last-of-type {
+        width: auto;
+        min-width: 100px;
+        .filter-select {
+          width: 100%;
+          max-width: 200px;
+          position: absolute;
+          top: 100%;
+          right: 0;
+          overflow: hidden;
+          z-index: 2;
+          padding: 1px;
+          border-radius: 12px;
+
+          .box-select {
+            box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
+            border-radius: 12px;
+            transition: all 250ms ease-in-out;
+            transform: translateY(-120%);
+            background-color: white;
+            padding: 10px;
+            text-align: right;
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            visibility: hidden;
+          }
+          .active {
+            background-color: rgb(233, 233, 233);
+          }
+          span {
+            display: block;
+            font-size: 1.2rem;
+            padding: 4px;
+            width: 100%;
+            padding-right: 20px;
+            background-color: transparent;
+            border-radius: 20px;
+            margin: 5px;
+          }
+          span:hover {
+            background-color: rgb(244, 243, 243);
+          }
+        }
+      }
+    }
+  }
+  .con-content {
+    display: flex;
+    .closer {
+      visibility: hidden;
+      display: none;
+    }
+    .con-filter-bar {
+      max-width: 300px;
+      padding: 1rem 1.5rem 1rem 0.5rem;
+      overflow: hidden;
+    }
+    .con-filter-bar.open {
+      visibility: visible;
+      transform: translate(0);
+      transition: all 250ms ease;
+      opacity: 1;
+    }
+    .con-filter-bar.close {
+      position: absolute;
+      transform: translateX(-200%);
+      visibility: hidden;
+      transition: all 250ms ease;
+      opacity: 0;
+    }
+    .filter-bar {
+      max-width: 300px;
+      padding: 1rem 1.5rem 1rem 0.5rem;
+      overflow: hidden;
+      .filter-line {
+        background-color: black;
+        width: 100%;
+        height: 2px;
+      }
+      .title-filter {
+        font-size: 1.4rem;
+        font-family: "Kanit";
+      }
+      .title-option {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-family: "Kanit";
+      }
+      .options {
+        padding: 5px;
+        width: 100%;
+        .price {
+          width: 100%;
+          .option {
+            width: 100%;
+            display: flex;
+            padding: 5px 10px;
+            align-items: center;
+            .inp-price {
+              width: 50%;
+              border-radius: 10px;
+              border: 2px solid black;
+              outline: none;
+              padding: 5px 15px;
+            }
+            .inp-price::-webkit-outer-spin-button,
+            .inp-price::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+          }
+          .price-btn {
+            width: 50%;
+            background-color: black;
+            color: white;
+            border-radius: 12px;
+            margin-top: 8px;
+            padding: 2px;
+          }
+        }
+      }
+      .colors {
+        width: 100%;
+        .option {
+          width: 100%;
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+          .color-item:hover {
+            transform: scale(1.05);
+          }
+          .color-item {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid gray;
+            border-radius: 50%;
+            overflow: hidden;
+            div {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 2px 2px 0 0;
+              i::before {
+                font-size: 1.5rem;
+              }
+            }
+          }
+        }
+      }
+      .size {
+        flex-wrap: wrap;
+        .option {
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+        .active {
+          background-color: rgb(243, 241, 241);
+          border: 2px solid black !important;
+          transform: scale(1.05);
+        }
+        .number:hover {
+          transform: scale(1.05);
+          background-color: rgb(243, 241, 241);
+        }
+        .number {
+          width: 40px;
+          cursor: pointer;
+          border: 1px solid gray;
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          height: 40px;
+          background-color: rgb(248, 247, 247);
+          padding: 5px;
+          border-radius: 10px;
+          position: relative;
+          i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+    .contents {
+      width: 100%;
+      margin-top: 2rem;
+      display: flex;
+      height: auto;
+      gap: 20px;
+      flex-wrap: wrap;
+      .box-product {
+        flex: 1;
+        max-width: 32%;
+        width: 100%;
+        min-width: 28%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 20px;
+        box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
+        height: min-content;
+        .main-img-product {
+          width: 100%;
+          img {
+            border-radius: 20px;
+            width: 100%;
+          }
+        }
+        .show {
+          height: 56px;
+          transition: all 400ms ease;
+          opacity: 1;
+        }
+        .hide {
+          transition: all 400ms ease;
+          opacity: 0;
+          height: 0;
+        }
+        .con-imgs {
+          width: 100%;
+          display: flex;
+          padding: 5px;
+          cursor: pointer;
+          .box-img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            border: 1px solid rgb(160, 156, 156);
+            margin: 2px;
+            border-radius: 10px;
+            overflow: hidden;
+          }
+        }
+        .active {
+          border: 2px solid rgb(0, 0, 0) !important;
+        }
+        .description {
+          padding: 15px 20px;
+          font-size: 120%;
+          .gender-product {
+            font-size: 0.95rem;
+            color: rgb(101, 96, 96);
+            text-transform: capitalize;
+            font-family: "Kanit";
+          }
+          .name-product {
+            text-transform: capitalize;
+            font-family: "Rubik", sans-serif;
+          }
+          .price-product {
+            font-size: 1.1rem;
+            font-family: "Rubik";
+          }
+
+          .colors {
+            color: rgb(101, 96, 96);
+            font-family: "Kanit";
+          }
+        }
+      }
+      .box-product:hover {
+        transform: scale(1.02);
+        transition: all 100ms ease-in;
+        box-shadow: 0 5px 10px -1px rgb(130, 130, 130);
+      }
+    }
+  }
+
+  a:visited,
+  a:link {
+    color: black;
+    text-decoration: none;
+  }
+
+  .box-img img {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media only screen and (max-width: 650px) {
+  .conLifestyle {
+    .responsive {
+      width: 60%;
+    }
+    .header {
+      display: block !important;
+      width: 100%;
+      height: auto;
+    }
+    .buttons {
+      justify-content: center;
+      margin-top: 10px;
+    }
+  }
+}
+@media only screen and (max-width: 950px) {
+  body:has(.con-filter-bar.open) {
+    overflow-y: hidden;
+  }
+  .conLifestyle {
+    .buttons {
+      button {
+        font-size: 0.8rem !important;
+        font-weight: 600 !important;
+      }
+    }
+    .buttons:nth-child(2) {
+      font-size: 0.8rem !important;
+      font-weight: 600;
+    }
+    .con-content {
+      display: block;
+      .con-filter-bar.open {
+        visibility: visible;
+        transform: translate(0);
+        transition: all 350ms ease;
+        opacity: 1;
+      }
+      .con-filter-bar.close {
+        position: absolute;
+        transform: translateY(200%);
+        visibility: hidden;
+        transition: all 350ms ease;
+        opacity: 0;
+      }
+      .con-filter-bar {
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        max-width: inherit;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 101;
+        padding: 0;
+        .closer {
+          display: flex;
+          visibility: visible;
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          font-size: 2rem;
+          cursor: pointer;
+        }
+        .filter-bar {
+          width: 100%;
+          overflow: scroll;
+          padding: 20px;
+          max-width: inherit;
+          .price {
+            input,
+            button {
+              max-width: 130px;
+            }
+            .d-center {
+              text-align: ce;
+              display: block;
+            }
+          }
+        }
+      }
+
+      .contents {
+        .box-product {
+          max-width: 50%;
+          width: 100%;
+          min-width: 45%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .conLifestyle {
+    .container-icon,
+    .searchbar {
+      width: 45px;
+    }
+    .btn-icon {
+      width: 100%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
