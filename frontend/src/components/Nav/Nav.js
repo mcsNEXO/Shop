@@ -23,7 +23,7 @@ export default function Nav(props) {
   const [amount, setAmount] = useState();
 
   let resizeWindow = () => {
-    window.innerWidth >= 1000 ? setIsOpen(false) : console.log();
+    window.innerWidth >= 1000 && setIsOpen(false);
   };
 
   useEffect(() => {
@@ -66,9 +66,8 @@ export default function Nav(props) {
     e.target.classList.add("open");
   };
   const closeHamburger = () => {
-    hamburger.current.classList.value.includes("open")
-      ? handleHamburger()
-      : console.log();
+    hamburger.current.classList.value.includes("open") && handleHamburger();
+
     setIsOpen(false);
   };
 

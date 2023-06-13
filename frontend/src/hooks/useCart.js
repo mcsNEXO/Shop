@@ -2,39 +2,70 @@ import { useContext, useDebugValue } from "react";
 import CartContext from "../context/cartContext";
 import axios from "../axios";
 import AuthContext from "../context/authContext";
+import FavoriteContext from "../context/favoriteContext";
+import Favorite from "../pages/Favorite/Favorite";
 
 export default function useCart() {
   const cartContext = useContext(CartContext);
   const authContext = useContext(AuthContext);
+  const favoriteContext = useContext(FavoriteContext);
 
   const cart = cartContext.item;
   const auth = authContext.user;
+  const favorite = favoriteContext.item;
 
-  const setCart = async (product) => {
+  const setCart = async (product, type) => {
     let newProduct;
+    console.log("xDD", product);
     if (Array.isArray(product)) {
-      cartContext.login(product);
-      return localStorage.setItem("cart", JSON.stringify(product));
+      console.log("x");
+      if (type === "cart") {
+        cartContext.login(product);
+        return localStorage.setItem("cart", JSON.stringify(product));
+      } else if (type === "favorite") {
+        favoriteContext.setFavorite(product);
+        return localStorage.setItem("favorite", JSON.stringify(product));
+      }
     }
-    const index = window?.location.pathname.split("-").at(-1);
-    if (!index.includes("/")) {
-      newProduct = {
-        ...product,
-        colors: product.colors?.filter((x) => x === index).toString(),
-        image: product.image?.filter((x) => x.includes(index)).toString(),
-      };
-    } else {
-      newProduct = product;
-    }
+    // if (!index.includes("/")) {
+    //   newProduct = {
+    //     ...product,
+    //     colors: product.colors?.filter((x) => x === index).toString(),
+    //     image: product.image?.filter((x) => x.includes(index)).toString(),
+    //   };
+    // } else {
+    //   newProduct = product;
+    // }
     if (auth) {
-      const data = {
-        userId: auth._id,
-        product: newProduct,
-        type: "cart",
-      };
-      const res = await axios.post("add-product", data);
-      cartContext.login(res.data.cart);
-      localStorage.setItem("cart", JSON.stringify(res.data.cart));
+      const addedProduct =
+        type === "cart"
+          ? {
+              userId: auth._id,
+              productId: product.productId,
+              size: product.size,
+              color: product.color,
+              quantity: 1,
+            }
+          : {
+              userId: auth._id,
+              productId: product.productId,
+              size: product.size,
+              color: product.color,
+            };
+
+      const res = await axios.post(
+        "add-product",
+        type === "cart"
+          ? { type: "cart", product: addedProduct }
+          : { type: "favorite", product: addedProduct }
+      );
+      if (type === "cart") {
+        cartContext.login(res.data.products);
+        localStorage.setItem("cart", JSON.stringify(res.data.products));
+      } else if (type === "favorite") {
+        favoriteContext.setFavorite(res.data.products);
+        localStorage.setItem("favorite", JSON.stringify(res.data.products));
+      }
     } else if (!auth) {
       if (cart) {
         const exist = cart?.find(

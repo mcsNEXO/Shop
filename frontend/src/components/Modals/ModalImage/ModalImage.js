@@ -21,7 +21,7 @@ export default function ModalImage(props) {
   );
 
   const uploadImage = async (e) => {
-    e ? e.preventDefault() : console.log();
+    e && e.preventDefault();
     setLoading(true);
     const formdata = new FormData();
     formdata.append("image", image);
@@ -38,7 +38,7 @@ export default function ModalImage(props) {
     setLoading(false);
   };
   const deleteUploadImage = async (e, flag) => {
-    e ? e.preventDefault() : console.log("no");
+    e && e.preventDefault();
     setLoading(true);
     if (!newImage) {
       return props.closeModal();
@@ -53,7 +53,7 @@ export default function ModalImage(props) {
       console.log(e);
     }
     setLoading(false);
-    flag ? props.closeModal() : console.log();
+    flag && props.closeModal();
   };
 
   const deleteImage = async (e) => {

@@ -21,43 +21,46 @@ export default function Product(props) {
   const [currentSize, setCurrentSize] = useState();
   const [error, setError] = useError();
   const [favorite, setFavorite] = useFavorite();
-  const newProduct = {
-    ...product,
-    colors: product?.colors?.filter((x) => x === colorProduct).toString(),
-    image: product?.image?.filter((x) => x.includes(colorProduct)).toString(),
-    quantity: 1,
-  };
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
+
   const fetchProduct = async () => {
     const res = await axios.post("fetch-product", { idProduct });
-    setProduct(res.data.product);
-    console.log(
-      res.data.product.colors.filter((item) => item.color === colorProduct)
-    );
+    setProduct(res?.data?.product);
     setCurrentProduct(
-      res.data.product.colors.filter((item) => item.color === colorProduct)[0]
+      res?.data?.product?.colors.filter(
+        (item) => item.color === colorProduct
+      )[0]
     );
   };
   const chooseSize = (e, size) => {
     document
       .querySelectorAll(".size")
       .forEach((x) => x.classList.remove("active"));
-
     e.target.classList.add("active");
     setCurrentSize(size);
   };
-
-  const deleteFavProduct = async (product) => {
-    const data = {
-      userId: auth._id,
-      product: product,
-    };
-    const res = await axios.post("delete-favorite", data);
-    setFavorite(res.data.newFavorites);
+  {
+    console.log(product);
+  }
+  const deleteFavProduct = async () => {
+    try {
+      const res = await axios.post("delete-favorite", {
+        userId: auth._id,
+        product: {
+          productId: product._id,
+          color: currentProduct.color,
+        },
+      });
+      console.log(res);
+      setCart(res.data.products, "favorite");
+    } catch (e) {
+      console.log(e);
+    }
   };
+
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -78,8 +81,8 @@ export default function Product(props) {
             <div className="under-images">
               {product?.colors.map((item, index) => (
                 <NavLink
-                  key={index}
                   to={`/product/${product._id}-${item.color}`}
+                  key={index}
                 >
                   <img src={pathImage + item.image} alt="underimage" />
                 </NavLink>
@@ -116,7 +119,16 @@ export default function Product(props) {
               className="add-to-cart"
               onClick={() =>
                 currentSize
-                  ? setCart({ ...product, size: currentSize })
+                  ? setCart(
+                      {
+                        userId: auth._id,
+                        productId: product._id,
+                        size: currentSize ? Number(currentSize) : null,
+                        color: currentProduct.color,
+                        quantity: 1,
+                      },
+                      "cart"
+                    )
                   : setError("Select size!")
               }
             >
@@ -124,14 +136,18 @@ export default function Product(props) {
             </button>
             {favorite?.find(
               (x) =>
-                JSON.stringify({ ...newProduct, size: x.size }) ===
-                JSON.stringify(x)
+                JSON.stringify({
+                  productId: product?._id,
+                  color: currentProduct?.color,
+                  size: x.size,
+                  _id: x._id,
+                }) === JSON.stringify(x)
             ) ? (
               <button
                 className="favorite"
                 onClick={() =>
                   auth
-                    ? deleteFavProduct(newProduct)
+                    ? deleteFavProduct()
                     : setError("Sign in to add product to favorites!")
                 }
               >
@@ -142,9 +158,15 @@ export default function Product(props) {
                 className="favorite"
                 onClick={() =>
                   auth
-                    ? currentSize
-                      ? setFavorite({ ...product, size: currentSize })
-                      : setFavorite(product)
+                    ? setCart(
+                        {
+                          productId: product._id,
+                          userId: auth._id,
+                          color: colorProduct,
+                          size: currentSize ? Number(currentSize) : null,
+                        },
+                        "favorite"
+                      )
                     : setError("Sign in to add product to favorites!")
                 }
               >

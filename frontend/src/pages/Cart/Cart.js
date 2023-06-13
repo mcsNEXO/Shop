@@ -14,6 +14,18 @@ export default function Cart(props) {
   const [favorite, setFavorite] = useFavorite();
   const [auth] = useAuth();
 
+  const getCartProducts = async () => {
+    try {
+      const res = await axios.post("get-user-products", {
+        userId: auth._id,
+        type: "cart",
+      });
+      setCart(res.data.cart);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const price = () => {
     let price = 0;
     for (let i = 0; i < cart?.length; i++) {

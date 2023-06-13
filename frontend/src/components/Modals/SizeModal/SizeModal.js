@@ -3,12 +3,13 @@ import "./SizeModal.scss";
 import useError from "../../../hooks/useError";
 import useCart from "../../../hooks/useCart";
 import ErrorModal from "../ErrorModal/ErrorModal";
+import useAuth from "../../../hooks/useAuth";
 
 export default function SizeModal(props) {
   const [currentSize, setCurrentSize] = useState();
   const [error, setError] = useError();
   const [cart, setCart] = useCart();
-
+  const [auth] = useAuth();
   const chooseSize = (e, size) => {
     document
       .querySelectorAll(".size")
@@ -17,10 +18,24 @@ export default function SizeModal(props) {
     e.target.classList.add("active");
     setCurrentSize(size);
   };
-  const addProduct = () => {
+  console.log(props);
+  const addProduct = async () => {
     if (currentSize) {
-      setCart({ ...props.product, size: currentSize });
-      return props.setOpen(false);
+      try {
+        setCart(
+          {
+            userId: auth._id,
+            productId: props.product.product._id,
+            size: currentSize,
+            color: props.product.product.colors.color,
+            quantity: 1,
+          },
+          "cart"
+        );
+        props.closeModal();
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       return setError("Select size!");
     }
@@ -31,16 +46,13 @@ export default function SizeModal(props) {
       <div className="black-bg"></div>
       <div className="container-size-modal">
         <div className="box">
-          <i
-            className="bi bi-x-circle"
-            onClick={() => props.setOpen(false)}
-          ></i>
+          <i className="bi bi-x-circle" onClick={props.closeModal}></i>
           <div className="left-side">
             <img
               src={
                 process.env.PUBLIC_URL +
                 "img/jpg/shoes/" +
-                props?.product?.image
+                props?.product?.product?.colors.image
               }
               alt="shoe"
             />
@@ -48,14 +60,14 @@ export default function SizeModal(props) {
           <div className="right-side">
             <div className="size-title">Select size</div>
             <div className="sizes-box">
-              {Array.isArray(props.product.size) ? (
-                props.product.size.map((x, index) => (
+              {!props.product.size ? (
+                props?.product?.product?.colors.sizes?.map((x, index) => (
                   <div
                     className="size"
-                    onClick={(e) => chooseSize(e, x)}
+                    onClick={(e) => chooseSize(e, x.size)}
                     key={index.toString()}
                   >
-                    {x}
+                    {x.size}
                   </div>
                 ))
               ) : (
@@ -63,7 +75,7 @@ export default function SizeModal(props) {
               )}
             </div>
             <div className="btn-add">
-              <button onClick={() => addProduct()}>Add product</button>
+              <button onClick={addProduct}>Add product</button>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function Filters(props) {
   );
   const [open, setOpen] = useFilterHandler();
   let resizeWindow = () => {
-    window.innerWidth <= 950 ? setOpen(false) : console.log();
+    window.innerWidth <= 950 && setOpen(false);
   };
 
   useEffect(() => {

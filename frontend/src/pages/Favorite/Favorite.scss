@@ -1,19 +1,19 @@
-.container-favorite{
-  a{
+.container-favorite {
+  a {
     color: black;
   }
-    padding: 20px 40px;
-    width: 100%;
-    .products{
-      margin-top: 30px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px 20px;
-      justify-content: flex-start;
-    }
-.box-product{
-  position: relative;
-  margin-bottom: 12px;
+  padding: 20px 40px;
+  width: 100%;
+  .products {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 20px;
+    justify-content: flex-start;
+  }
+  .box-product {
+    position: relative;
+    margin-bottom: 12px;
     flex: 1;
     max-width: 31%;
     width: 100%;
@@ -22,77 +22,77 @@
     border-radius: 20px;
     box-shadow: 0 5px 10px -4px rgb(176, 176, 176);
     height: min-content;
-   .icons{
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    display: flex;
-    gap: 8px;
-    font-size: 1.3rem;
-    z-index: 1;
-    .icon:has(.name-bag):hover{
-      transition : width 0.5s ease;
-      justify-content: flex-end;
-      border-radius: 0;
-      border-top-right-radius: 25%;
-      border-bottom-right-radius:25%;
-      border-bottom-left-radius: 10px;
-      border-top-left-radius: 10px;
-      width : 156px;
-      padding-right : 16px;
-    }
-    .icon:has(.bi-trash3-fill):hover{
-      scale: 1.1;
-    }
-    .icon:hover .name-bag{
-      display : flex;
-      width : 100%;
-    }
-    .icon{
+    .icons {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      font-size: 1.3rem;
+      z-index: 1;
+      .icon:has(.name-bag):hover {
+        transition: width 0.5s ease;
+        justify-content: flex-end;
+        border-radius: 0;
+        border-top-right-radius: 25%;
+        border-bottom-right-radius: 25%;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        width: 156px;
+        padding-right: 16px;
+      }
+      .icon:has(.bi-trash3-fill):hover {
+        scale: 1.1;
+      }
+      .icon:hover .name-bag {
+        display: flex;
+        width: 100%;
+      }
+      .icon {
         width: 52px;
         height: 52px;
         display: flex;
-        align-items:center;
+        align-items: center;
         justify-content: center;
         background-color: rgba(233, 233, 233, 0.658);
         border-radius: 100%;
         overflow: hidden;
         transition: none;
         cursor: pointer;
-      .add-icon{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(233, 233, 233, 0.658);
-        z-index: 1;
-        i.bi-bag-plus{
+        .add-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(233, 233, 233, 0.658);
+          z-index: 1;
+          i.bi-bag-plus {
+            color: rgb(2, 155, 2);
+            font-size: 1.5rem;
+          }
+        }
+        .name-bag {
+          z-index: 0;
+          overflow: hidden;
+          display: none;
+          display: none;
+          width: 0;
+          min-width: 120px;
           color: rgb(2, 155, 2);
+          font-size: 1.2rem;
+          span {
+            padding: 3px;
+            padding-left: 16px;
+          }
+        }
+        i.bi-trash3-fill {
+          color: rgb(194, 11, 11);
           font-size: 1.5rem;
         }
       }
-      .name-bag{
-        z-index: 0;
-        overflow: hidden;
-        display: none;
-        display:none;
-        width :0;
-        min-width: 120px;
-        color: rgb(2, 155, 2);
-        font-size: 1.2rem;
-        span{
-          padding: 3px;
-          padding-left: 16px;
-        }
-      }
-      i.bi-trash3-fill{
-        color: rgb(194, 11, 11);
-        font-size: 1.5rem;
-      }
     }
-   }
-    .main-img-product{
+    .main-img-product {
       width: 100%;
-      img{
+      img {
         border-radius: 20px;
         width: 100%;
       }
@@ -112,7 +112,7 @@
       display: flex;
       padding: 5px;
       cursor: pointer;
-      .box-img{
+      .box-img {
         width: 50px;
         height: 50px;
         display: flex;
@@ -122,7 +122,7 @@
         overflow: hidden;
       }
     }
-    .active{
+    .active {
       border: 2px solid rgb(0, 0, 0) !important;
     }
     .description {
@@ -132,20 +132,21 @@
         font-size: 0.95rem;
         color: rgb(101, 96, 96);
         text-transform: capitalize;
-        font-family: 'Kanit';
+        font-family: "Kanit";
       }
       .name-product {
         text-transform: capitalize;
-        font-family: 'Rubik', sans-serif;
-      
+        font-family: "Rubik", sans-serif;
+        color: black;
       }
       .price-product {
         font-size: 1.1rem;
-        font-family: 'Rubik';
+        font-family: "Rubik";
+        color: black;
       }
     }
   }
-  .box-product:hover{
+  .box-product:hover {
     transform: scale(1.02);
     transition: all 100ms ease-in;
     box-shadow: 0 5px 10px -1px rgb(130, 130, 130);

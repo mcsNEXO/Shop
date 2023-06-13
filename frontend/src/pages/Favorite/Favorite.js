@@ -3,51 +3,87 @@ import useFavorite from "../../hooks/useFavorite";
 import { NavLink } from "react-router-dom";
 import axios from "../../axios";
 import useAuth from "../../hooks/useAuth";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SizeModal from "../../components/Modals/SizeModal/SizeModal.js";
 import useCart from "../../hooks/useCart";
 
 export default function Favorite(props) {
-  const [favorite, setFavorite] = useFavorite();
-  const [auth] = useAuth();
+  //states
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [productForModal, setProductForModal] = useState(null);
+
+  //hooks
+  const [auth] = useAuth();
+  const [favorite, setFavorite] = useFavorite();
   const [cart, setCart] = useCart();
-  const [product, setProduct] = useState("");
+
+  useEffect(() => {
+    getFavoriteProducts();
+  }, [JSON.stringify(favorite)]);
+
+  const getFavoriteProducts = async () => {
+    const res = await axios.post("get-user-products", {
+      userId: auth._id,
+      type: "favorite",
+    });
+    setFavoriteProducts(res.data.products);
+  };
 
   const deleteFavProduct = async (product) => {
-    const data = {
-      userId: auth._id,
-      product: product,
-    };
-    const res = await axios.post("delete-favorite", data);
-    setFavorite(res.data.newFavorites);
+    try {
+      const res = await axios.post("delete-favorite", {
+        userId: auth._id,
+        product: {
+          productId: product.product._id,
+          color: product.product.colors.color,
+        },
+      });
+      setCart(res.data.products, "favorite");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const addProduct = async (product) => {
-    if (!Array.isArray(product.size)) {
-      return setCart(product);
+    if (product?.size) {
+      try {
+        const res = await axios.post("add-cart", {
+          userId: auth._id,
+          productId: product.productId,
+          size: product.size,
+          color: product.product.colors.color,
+          quantity: 1,
+        });
+        setCart(res.data.products, "cart");
+      } catch (e) {
+        console.log(e);
+      }
     } else {
-      setProduct(product);
+      setProductForModal(product);
       setOpen(true);
     }
   };
 
   return (
     <>
-      {open ? <SizeModal product={product} setOpen={setOpen} /> : null}
+      {open ? (
+        <SizeModal
+          product={productForModal}
+          closeModal={() => setOpen(false)}
+        />
+      ) : null}
       <div className="container-favorite">
         <h2>Favorite</h2>
         <div className="products">
-          {favorite.length > 0 ? (
-            favorite?.map((product, index) => (
+          {favoriteProducts?.length > 0 ? (
+            favoriteProducts?.map((product, index) => (
               <div className="box-product" key={index}>
                 <div className="icons">
                   <div className="icon" onClick={() => addProduct(product)}>
                     <div className="name-bag">
                       <span>
-                        {Array.isArray(product.size)
-                          ? "Select size!"
-                          : "Add to bag!"}
+                        {product.size ? "Add to bag!" : "Select size!"}
                       </span>
                     </div>
                     <div className="add-icon">
@@ -62,27 +98,27 @@ export default function Favorite(props) {
                   </div>
                 </div>
                 <NavLink
-                  to={`/product/${product._id}-${product.colors}`}
-                  key={`${product._id}-${index}`}
+                  to={`/product/${product.product._id}-${product.product.colors.color}`}
+                  key={`${product.product._id}-${product.product.color}`}
                 >
                   <div className="main-img-product">
                     <img
                       src={
                         process.env.PUBLIC_URL +
                         "/img/jpg/shoes/" +
-                        product?.image
+                        product?.product.colors.image
                       }
                       alt="shoe"
                     />
                   </div>
                   <div className="description">
                     <div className="gender-product">
-                      {product?.gender === "man"
-                        ? `${product?.gender}'s shoes`
-                        : `${product?.gender}'s shoes`}
+                      {`${product.product?.gender}'s ${product.product.type}`}
                     </div>
-                    <div className="name-product">{product?.name}</div>
-                    <div className="price-product">${product?.price}</div>
+                    <div className="name-product">{product.product?.name}</div>
+                    <div className="price-product">
+                      ${product.product?.price}
+                    </div>
                   </div>
                 </NavLink>
               </div>

@@ -34,6 +34,9 @@ router.post("/update-product", cartController.updateProduct);
 router.post("/get-product", cartController.getProduct);
 router.post("/get-fav-product", cartController.getFavProduct);
 router.post("/delete-favorite", cartController.deleteFavorite);
+// router.post("/add-fav-new", cartController.addFavorite);
+router.post("/get-user-products", cartController.getUserProducts);
+// router.post("/add-cart", cartController.addCart);
 
 router.post("/get-shoes", shoesController.getShoes);
 router.post("/get-promocode", promoCodeController.getCode);
