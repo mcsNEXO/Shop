@@ -42,9 +42,6 @@ export default function Product(props) {
     e.target.classList.add("active");
     setCurrentSize(size);
   };
-  {
-    console.log(product);
-  }
   const deleteFavProduct = async () => {
     try {
       const res = await axios.post("delete-favorite", {
@@ -54,7 +51,6 @@ export default function Product(props) {
           color: currentProduct.color,
         },
       });
-      console.log(res);
       setCart(res.data.products, "favorite");
     } catch (e) {
       console.log(e);

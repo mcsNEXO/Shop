@@ -1,9 +1,8 @@
-import { useContext, useDebugValue } from "react";
+import { useContext } from "react";
 import CartContext from "../context/cartContext";
 import axios from "../axios";
 import AuthContext from "../context/authContext";
 import FavoriteContext from "../context/favoriteContext";
-import Favorite from "../pages/Favorite/Favorite";
 
 export default function useCart() {
   const cartContext = useContext(CartContext);
@@ -16,9 +15,7 @@ export default function useCart() {
 
   const setCart = async (product, type) => {
     let newProduct;
-    console.log("xDD", product);
     if (Array.isArray(product)) {
-      console.log("x");
       if (type === "cart") {
         cartContext.login(product);
         return localStorage.setItem("cart", JSON.stringify(product));
@@ -27,15 +24,6 @@ export default function useCart() {
         return localStorage.setItem("favorite", JSON.stringify(product));
       }
     }
-    // if (!index.includes("/")) {
-    //   newProduct = {
-    //     ...product,
-    //     colors: product.colors?.filter((x) => x === index).toString(),
-    //     image: product.image?.filter((x) => x.includes(index)).toString(),
-    //   };
-    // } else {
-    //   newProduct = product;
-    // }
     if (auth) {
       const addedProduct =
         type === "cart"

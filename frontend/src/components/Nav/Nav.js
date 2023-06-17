@@ -42,7 +42,7 @@ export default function Nav(props) {
     } else {
       setAmount();
     }
-  }, [JSON.stringify(cart)]);
+  }, [JSON.stringify(cart), auth]);
 
   const handleHamburger = () => {
     hamburger.current.classList.toggle("open");

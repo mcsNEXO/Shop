@@ -1,5 +1,5 @@
 import "./Cart.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";
@@ -8,11 +8,16 @@ import useFavorite from "../../hooks/useFavorite";
 
 export default function Cart(props) {
   const [cart, setCart] = useCart("");
+  const [products, setProducts] = useState([]);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
   const [favorite, setFavorite] = useFavorite();
   const [auth] = useAuth();
+
+  useEffect(() => {
+    getCartProducts();
+  }, [JSON.stringify(cart)]);
 
   const getCartProducts = async () => {
     try {
@@ -20,7 +25,7 @@ export default function Cart(props) {
         userId: auth._id,
         type: "cart",
       });
-      setCart(res.data.cart);
+      setProducts(res.data.products);
     } catch (err) {
       console.log(err);
     }
@@ -28,8 +33,8 @@ export default function Cart(props) {
 
   const price = () => {
     let price = 0;
-    for (let i = 0; i < cart?.length; i++) {
-      price += cart[i].price * cart[i].quantity;
+    for (let i = 0; i < products?.length; i++) {
+      price += products[i].product.price * products[i].quantity;
     }
     let deliveryCost = 0;
     let endPrice = (price * (100 - discount)) / 100 + deliveryCost;
@@ -51,19 +56,29 @@ export default function Cart(props) {
     setDiscount(res?.data?.precent);
   };
 
-  const updateQuantity = async (value, item) => {
+  const updateQuantityProduct = async (value, product) => {
     if (auth) {
       const data = {
         userId: auth._id,
-        product: item,
-        quantity: value,
+        product: {
+          productId: product.product._id,
+          color: product.product.colors.color,
+          size: product.size,
+          quantity: value,
+        },
       };
-      const res = await axios.post("update-product", data);
-      setCart(res.data.cart);
+      try {
+        const res = await axios.post("update-quantity-product", data);
+        setCart(res.data.products, "cart");
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       setCart(
         cart.map((x) =>
-          x._id === item._id && x.color === item.color && x.size === item.size
+          x._id === product._id &&
+          x.color === product.color &&
+          x.size === product.size
             ? { ...x, quantity: Number(value) }
             : x
         )
@@ -74,24 +89,41 @@ export default function Cart(props) {
     if (auth) {
       const data = {
         userId: auth._id,
-        product: product,
+        product: {
+          productId: product.product._id,
+          color: product.product.colors.color,
+          size: product.size,
+          quantity: product.quantity,
+        },
       };
-      const res = await axios.post("delete-product", data);
-      setCart(res.data.cart);
+      try {
+        const res = await axios.post("delete-product", data);
+        setCart(res.data.products, "cart");
+      } catch (e) {
+        console.log(e);
+      }
     } else {
-      setCart(
-        cart.filter((x) => JSON.stringify(x) !== JSON.stringify(product))
-      );
+      // setCart(
+      //   cart.filter((x) => JSON.stringify(x) !== JSON.stringify(product))
+      // );
     }
   };
   const deleteFavProduct = async (product) => {
-    const data = {
-      userId: auth._id,
-      product: product,
-      type: "favorite",
-    };
-    const res = await axios.post("delete-favorite", data);
-    setFavorite(res.data.newFavorites);
+    if (auth) {
+      const data = {
+        userId: auth._id,
+        product: {
+          productId: product.product._id,
+          color: product.product.colors.color,
+        },
+      };
+      try {
+        const res = await axios.post("delete-favorite", data);
+        setFavorite(res.data.products, "favorite");
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
   return (
     <>
@@ -102,23 +134,23 @@ export default function Cart(props) {
           <hr></hr>
           <div className="box">
             <div className="box-of-products">
-              {cart?.length > 0 ? (
-                cart?.map((item, index) => (
+              {products?.length > 0 ? (
+                products?.map((item, index) => (
                   <div className="keyDiv" key={index}>
                     <div className="box-product">
                       <img
                         src={
                           process.env.PUBLIC_URL +
                           "/img/jpg/shoes/" +
-                          item.image
+                          item.product.colors.image
                         }
                         alt="product"
                       ></img>
                       <div className="right-side">
                         <div className="information">
-                          <div className="name">{item.name}</div>
-                          <div className="gender">{`${item.gender}'s ${item.type}`}</div>
-                          <div className="color">{`Color: ${item.colors}`}</div>
+                          <div className="name">{item.product.name}</div>
+                          <div className="gender">{`${item.product.gender}'s ${item.product.type}`}</div>
+                          <div className="color">{`Color: ${item.product.colors.color}`}</div>
                           <div style={{ display: "flex" }}>
                             <div className="size">{`Size: ${item.size} `}</div>
                             <div className="quantity">
@@ -126,7 +158,7 @@ export default function Cart(props) {
                               <select
                                 value={item?.quantity}
                                 onChange={(e) =>
-                                  updateQuantity(e.target.value, item)
+                                  updateQuantityProduct(e.target.value, item)
                                 }
                               >
                                 <option>1</option>
@@ -144,7 +176,7 @@ export default function Cart(props) {
                           </div>
                         </div>
                         <div className="other-information">
-                          <div className="price">${item.price}</div>
+                          <div className="price">${item.product.price}</div>
                           <div
                             className="delete"
                             onClick={() => deleteProduct(item)}
@@ -154,12 +186,12 @@ export default function Cart(props) {
                           <div className="favorites">
                             {favorite?.find(
                               (x) =>
-                                JSON.stringify(x) ===
                                 JSON.stringify({
-                                  ...item,
+                                  productId: item?.product._id,
+                                  color: item?.product.colors.color,
                                   size: x.size,
-                                  quantity: 1,
-                                })
+                                  _id: x._id,
+                                }) === JSON.stringify(x)
                             ) ? (
                               <button
                                 className="favorite"
@@ -178,7 +210,17 @@ export default function Cart(props) {
                                 className="favorite"
                                 onClick={() =>
                                   auth
-                                    ? setFavorite(item)
+                                    ? setCart(
+                                        {
+                                          userId: auth._id,
+                                          productId: item.product._id,
+                                          color: item.product.colors.color,
+                                          size: item.size
+                                            ? Number(item.size)
+                                            : null,
+                                        },
+                                        "favorite"
+                                      )
                                     : setError(
                                         "Sign in to add product to favorites!"
                                       )
