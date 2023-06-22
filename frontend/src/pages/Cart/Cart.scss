@@ -117,13 +117,16 @@
           font-weight: 600;
         }
       }
-      button.checkout {
+      button {
         background-color: black;
         font-size: 1.1rem;
         color: white;
         width: 60%;
         height: 40px;
         border-radius: 10px;
+        a {
+          color: white;
+        }
       }
     }
     .promo-code {

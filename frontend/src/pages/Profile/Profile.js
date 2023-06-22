@@ -11,7 +11,8 @@ export default function Profile(props) {
 
   const logoutUser = () => {
     setAuth("");
-    setCart("");
+    setCart(null, "cart");
+    setCart(null, "favorite");
   };
 
   return (

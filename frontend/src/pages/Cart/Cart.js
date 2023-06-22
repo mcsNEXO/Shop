@@ -5,6 +5,8 @@ import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";
 import useAuth from "../../hooks/useAuth";
 import useFavorite from "../../hooks/useFavorite";
+import { NavLink } from "react-router-dom";
+import { useDiscountContext } from "../../context/discountContext";
 
 export default function Cart(props) {
   const [cart, setCart] = useCart("");
@@ -14,20 +16,34 @@ export default function Cart(props) {
   const [discount, setDiscount] = useState(0);
   const [favorite, setFavorite] = useFavorite();
   const [auth] = useAuth();
+  const { setDiscountContext } = useDiscountContext();
 
   useEffect(() => {
     getCartProducts();
   }, [JSON.stringify(cart)]);
 
   const getCartProducts = async () => {
-    try {
-      const res = await axios.post("get-user-products", {
-        userId: auth._id,
-        type: "cart",
-      });
-      setProducts(res.data.products);
-    } catch (err) {
-      console.log(err);
+    if (auth) {
+      try {
+        const res = await axios.post("get-user-products", {
+          userId: auth._id,
+          type: "cart",
+        });
+        setProducts(res.data.products);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      if (cart) {
+        try {
+          const res = await axios.post("get-cart-not-logged", {
+            products: cart,
+          });
+          setProducts(res.data.products);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   };
 
@@ -52,8 +68,11 @@ export default function Cart(props) {
 
   const acceptCode = async (e) => {
     e.preventDefault();
-    const res = await axios.post("get-promocode", { code });
-    setDiscount(res?.data?.precent);
+    try {
+      const res = await axios.post("get-promocode", { code });
+      setDiscount(res?.data?.precent);
+      setDiscountContext({ label: code, value: res.data.precent });
+    } catch (e) {}
   };
 
   const updateQuantityProduct = async (value, product) => {
@@ -76,12 +95,13 @@ export default function Cart(props) {
     } else {
       setCart(
         cart.map((x) =>
-          x._id === product._id &&
-          x.color === product.color &&
+          x.productId === product.product._id &&
+          x.color === product.product.colors.color &&
           x.size === product.size
             ? { ...x, quantity: Number(value) }
             : x
-        )
+        ),
+        "cart"
       );
     }
   };
@@ -103,11 +123,31 @@ export default function Cart(props) {
         console.log(e);
       }
     } else {
-      // setCart(
-      //   cart.filter((x) => JSON.stringify(x) !== JSON.stringify(product))
-      // );
+      setCart(
+        cart.filter(
+          (x) =>
+            JSON.stringify(x) !==
+            JSON.stringify({
+              userId: null,
+              productId: product.product._id,
+              size: product.size,
+              color: product.product.colors.color,
+              quantity: x.quantity,
+            })
+        ),
+        "cart"
+      );
     }
   };
+
+  // JSON.stringify(x) !==
+  // JSON.stringify({
+  //   userId: null,
+  //   productId: product.product._id,
+  //   size: product.size,
+  //   color: product.color,
+  //   quantity: x.quantity,
+  // })
   const deleteFavProduct = async (product) => {
     if (auth) {
       const data = {
@@ -273,7 +313,9 @@ export default function Cart(props) {
                   <span>${price().endPrice}</span>
                 </div>
                 <hr></hr>
-                <button className="checkout">Checkout</button>
+                <NavLink to={"/checkout"} className="checkout">
+                  <button>Checkout</button>
+                </NavLink>
               </div>
               <div className="promo-code">
                 <span onClick={expandContract}>

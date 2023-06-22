@@ -20,18 +20,17 @@ export default function Login(props) {
       email: email,
       password: password,
     };
-    const localCart = cart;
     try {
       const res = await axios.post("/sign-in", data);
-      setAuth(res.data.user);
-      if (localCart) {
+      setAuth({ ...res.data.user, token: res.data.token });
+      if (data) {
         const data2 = {
-          cart: localCart,
+          cart: cart,
           userId: res.data.user._id,
           type: "cart",
         };
-        const res2 = await axios.post("/add-product", data2);
-        setCart(res2.data.cart);
+        // const res2 = await axios.post("/add-product", data2);
+        // setCart(res2.data.cart);
       }
 
       navigate("/");

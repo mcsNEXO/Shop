@@ -5,8 +5,10 @@ const shoesController = require("../controllers/api/shoes-controller");
 const promoCodeController = require("../controllers/api/promo-code-controller");
 const productController = require("../controllers/api/product-controller");
 const cartController = require("../controllers/api/cart-controller");
+const orderController = require("../controllers/api/order-controller");
 const path = require("path");
 const multer = require("multer");
+const authenticateToken = require("../middlewares/verify-token-middleware");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -28,21 +30,29 @@ router.post("/sign-up", userController.register);
 router.put("/edit-data", userController.edit);
 router.put("/edit-password", userController.editPassword);
 
-router.post("/add-product", cartController.addProdcut);
-router.post("/delete-product", cartController.deleteProduct);
-router.post("/update-quantity-product", cartController.updateQuantityProduct);
+router.post("/add-product", authenticateToken, cartController.addProdcut);
+router.post("/delete-product", authenticateToken, cartController.deleteProduct);
+router.post(
+  "/update-quantity-product",
+  authenticateToken,
+  cartController.updateQuantityProduct
+);
 router.post("/get-product", cartController.getProduct);
+router.post(
+  "/get-cart-not-logged",
+  cartController.getProductsCartNotLoggedUser
+);
 router.post("/get-fav-product", cartController.getFavProduct);
 router.post("/delete-favorite", cartController.deleteFavorite);
-// router.post("/add-fav-new", cartController.addFavorite);
 router.post("/get-user-products", cartController.getUserProducts);
-// router.post("/add-cart", cartController.addCart);
 
 router.post("/get-shoes", shoesController.getShoes);
 router.post("/get-promocode", promoCodeController.getCode);
 
 router.post("/fetch-product", productController.fetchProduct);
 router.get("/fetch-all-products", productController.fetchAllProduct);
-router.post("/add-product-db", productController.addProduct);
+router.post("/add-product-db", authenticateToken, productController.addProduct);
+
+router.post("/order", authenticateToken, orderController.makeOrder);
 
 module.exports = router;

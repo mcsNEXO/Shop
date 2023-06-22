@@ -15,7 +15,7 @@ export default function Nav(props) {
   const [prevPath, setPrevPath] = useState("");
   const [currentPath, setCurrentPath] = useState("");
   const navigate = useNavigate();
-  const [cart] = useCart();
+  const [cart, setCart] = useCart();
   const hamburger = useRef();
   const mainNav = useRef();
   const defaultMenu = useRef();
@@ -34,15 +34,15 @@ export default function Nav(props) {
 
   useEffect(() => {
     let amountItems = 0;
-    if (true) {
+    if (cart) {
       for (let i = 0; i < cart?.length; i++) {
-        amountItems += cart[i].quantity;
+        amountItems += cart[i]?.quantity;
       }
       setAmount(amountItems);
     } else {
-      setAmount();
+      setAmount(0);
     }
-  }, [JSON.stringify(cart), auth]);
+  }, [JSON.stringify(cart), JSON.stringify(auth)]);
 
   const handleHamburger = () => {
     hamburger.current.classList.toggle("open");
@@ -139,6 +139,7 @@ export default function Nav(props) {
                   {item.title}
                 </NavLink>
                 <Dropdown
+                  gender={item.path}
                   path={item.path}
                   item={item.submenu}
                   closeMenu={closeDdMenu}

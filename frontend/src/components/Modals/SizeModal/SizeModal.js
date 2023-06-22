@@ -18,7 +18,6 @@ export default function SizeModal(props) {
     e.target.classList.add("active");
     setCurrentSize(size);
   };
-  console.log(props);
   const addProduct = async () => {
     if (currentSize) {
       try {

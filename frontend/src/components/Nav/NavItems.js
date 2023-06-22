@@ -8,21 +8,21 @@ export const navItems = [
   },
   {
     id: 2,
-    title: "Men",
-    path: "men",
+    title: "Man",
+    path: "man",
     submenu: DropItem.man,
   },
 
   {
     id: 3,
-    title: "Women",
-    path: "women",
+    title: "Woman",
+    path: "woman",
     submenu: DropItem.women,
   },
   {
     id: 4,
-    title: "Children",
-    path: "children",
+    title: "Kids",
+    path: "kids",
     submenu: DropItem.children,
   },
   {

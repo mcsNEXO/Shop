@@ -6,15 +6,17 @@ import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import Filters from "../../components/Filters/Filters";
 import ProductComponent from "./components/ProductComponent/ProductComponent";
 import HeaderProducts from "./components/HeaderProducts/HeaderProducts";
+import usePath from "../../hooks/usePath";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState();
   const [search, setSearch] = useSearchParams();
+  const { gender, type, category } = usePath();
 
   useEffect(() => {
     getProducts();
-  }, [search]);
+  }, [search, gender, type, category]);
 
   const getProducts = async () => {
     const sortingData = {
@@ -22,7 +24,9 @@ export default function Products() {
       sort: search.get("sort"),
       price: search.get("price"),
       size: search.get("size"),
-      gender: window.location.pathname.includes("men" || "man") && "man",
+      gender: gender,
+      type: type,
+      category: category,
     };
     try {
       const res = await axios.post("get-shoes", { sortingData });

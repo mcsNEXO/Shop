@@ -13,7 +13,7 @@ export default function HeaderProducts() {
 
   useEffect(() => {
     setWebLink(webPath());
-  }, [search]);
+  }, [search, window.location.pathname]);
 
   const openSortData = () => {
     return filterRef.current.classList.toggle("open");

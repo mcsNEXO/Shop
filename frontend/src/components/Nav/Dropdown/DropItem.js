@@ -60,12 +60,16 @@ export const DropItem = {
     },
     {
       title: "Shoes",
+      value: "shoes",
+      path: "man-shoes",
       submenuOption: [
         {
           title: "All shoes",
         },
         {
           title: "Lifestyle",
+          value: "lifestyle",
+          path: "man-shoes-lifestyle",
         },
         {
           title: "Running",
@@ -181,12 +185,14 @@ export const DropItem = {
     },
     {
       title: "Shoes",
+      value: "shoes",
       submenuOption: [
         {
           title: "All shoes",
         },
         {
           title: "Lifestyle",
+          value: "lifestyle",
         },
         {
           title: "Running",

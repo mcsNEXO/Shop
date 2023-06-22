@@ -25,6 +25,9 @@ import Favorite from "./pages/Favorite/Favorite";
 import FavoriteContext from "./context/favoriteContext";
 import AddProduct from "./pages/AdminPanel/AddProduct/AddProduct";
 import Products from "./pages/Products/Products";
+import Checkout from "./pages/Checkout/Checkout";
+import { DeliveryProvider } from "./context/deliveryOptionContext";
+import { DiscountProvider } from "./context/discountContext";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -34,7 +37,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Menu />} />
       <Route path="/w">
-        <Route path="men-shoes-lifestyle/" element={<Products />}></Route>
+        <Route index element={<div>Gender</div>} />
+        <Route path=":gender" element={<div>Gender</div>} />
+        <Route path=":gender-:type" element={<div>Type</div>} />
+        <Route path=":gender/:type/:category" element={<Products />} />
       </Route>
       <Route
         path="favorite"
@@ -44,7 +50,7 @@ function App() {
           </RequireAuth>
         }
       />
-
+      <Route path="checkout" element={<Checkout />} />
       <Route path="cart" element={<Cart />} />
       <Route path="/product/:id" element={<Product />} />
       <Route
@@ -94,36 +100,45 @@ function App() {
           setError: (error) => dispatch({ type: "error", error }),
         }}
       >
-        <CartContext.Provider
-          value={{
-            item: state.cart,
-            login: (item) => dispatch({ type: "cart", item }),
-          }}
-        >
-          <AuthContext.Provider
+        <DiscountProvider>
+          <CartContext.Provider
             value={{
-              user: state.user,
-              login: (user) => dispatch({ type: "login", user }),
-              logout: () => dispatch({ type: "logout" }),
+              item: state.cart,
+              login: (item) => dispatch({ type: "cart", item }),
             }}
           >
-            <FavoriteContext.Provider
-              value={{
-                item: state.favorite,
-                setFavorite: (item) => dispatch({ type: "favorite", item }),
-              }}
-            >
-              <FilterHandlerContext.Provider
+            <DeliveryProvider>
+              <AuthContext.Provider
                 value={{
-                  open: state.open,
-                  setOpen: (value) => dispatch({ type: "filter", value }),
+                  user: state.user,
+                  login: (user) => dispatch({ type: "login", user }),
+                  logout: () => dispatch({ type: "logout" }),
                 }}
               >
-                <Layout header={header} nav={nav} menu={menu} footer={footer} />
-              </FilterHandlerContext.Provider>
-            </FavoriteContext.Provider>
-          </AuthContext.Provider>
-        </CartContext.Provider>
+                <FavoriteContext.Provider
+                  value={{
+                    item: state.favorite,
+                    setFavorite: (item) => dispatch({ type: "favorite", item }),
+                  }}
+                >
+                  <FilterHandlerContext.Provider
+                    value={{
+                      open: state.open,
+                      setOpen: (value) => dispatch({ type: "filter", value }),
+                    }}
+                  >
+                    <Layout
+                      header={header}
+                      nav={nav}
+                      menu={menu}
+                      footer={footer}
+                    />
+                  </FilterHandlerContext.Provider>
+                </FavoriteContext.Provider>
+              </AuthContext.Provider>
+            </DeliveryProvider>
+          </CartContext.Provider>
+        </DiscountProvider>
       </ErrorContext.Provider>
     </Router>
   );

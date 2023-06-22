@@ -4,7 +4,7 @@ import MainImage from "./MainImage";
 import ColorUnderImage from "./ColorUnderImage";
 
 const ProductComponent = ({ id, type, gender, name, colors, price }) => {
-  const [selectedColor, setSelectedColor] = useState(colors[0].color);
+  const [selectedColor, setSelectedColor] = useState(colors[0]?.color);
   const [showThumbnails, setShowThumbnails] = useState(false);
 
   const handleThumbnailMouseOver = (color) => {

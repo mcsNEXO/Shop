@@ -48,18 +48,31 @@ export default function AddProduct(props) {
     });
   };
 
+  const clearInputs = () => {
+    setLoading(false);
+    setName("");
+    setCategory("");
+    setType("");
+    setColors([]);
+    setPrice("");
+    setGender("");
+    setSizeOptions([]);
+    setSize([]);
+    setDescription("");
+  };
+
   const addProduct = async () => {
     setLoading(true);
     const data = { name, type, price, gender, size, category, description };
     try {
       const res = await axios.post("add-product-db", data);
-      setLoading(false);
+      clearInputs();
       return success();
     } catch (err) {
       error(err.response.data.message);
+      setLoading(false);
     }
   };
-
   const handleSizeOptions = useMemo(() => {
     const handleSizeOptions = (genderValue) => {
       if (!type) {
@@ -132,7 +145,7 @@ export default function AddProduct(props) {
     <>
       <div className="con-add-product">
         <form>
-          <h2>Add new product</h2>
+          <h2 onClick={clearInputs}>Add new product</h2>
           <div className="group name-input">
             <label htmlFor="name">Name</label>
             <Input
@@ -147,9 +160,7 @@ export default function AddProduct(props) {
           <div className="group type-select">
             <label htmlFor="type">Type</label>
             <Select
-              defaultValue={
-                typeClothes.length > 1 ? "Select type" : typeClothes[0].value
-              }
+              value={type || "Select type"}
               options={typeClothes}
               className={"select"}
               id="type"
@@ -158,13 +169,12 @@ export default function AddProduct(props) {
           </div>
 
           <div className="group type-select">
-            <label htmlFor="type">Category</label>
+            <label htmlFor="category">Category</label>
             <Select
-              defaultValue={category || "Select type"}
-              value={category}
+              value={category || "Select category"}
               options={categoryClothes}
               className={"select"}
-              id="type"
+              id="categoty"
               onChange={(value) => setCategory(value)}
             />
           </div>
@@ -172,12 +182,8 @@ export default function AddProduct(props) {
           <div className="group gender-select">
             <label htmlFor="gender">Gender</label>
             <Select
-              defaultValue={
-                genderOptions.length > 1
-                  ? "Select gender"
-                  : genderOptions[0].value
-              }
               options={genderOptions}
+              value={gender || "Select gender"}
               className={"select"}
               id="gender"
               onChange={(value) => {
@@ -206,6 +212,7 @@ export default function AddProduct(props) {
               className="select"
               placeholder="Select colors"
               onChange={handleColorChange}
+              value={colors}
               options={colorsData}
             />
           </div>
@@ -269,6 +276,7 @@ export default function AddProduct(props) {
               maxLength={500}
               autoSize
               className="select"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>

@@ -1,4 +1,6 @@
+const config = require("../../config");
 const User = require("../../db/models/user");
+const jwt = require("jsonwebtoken");
 const fs = require("fs");
 class UserController {
   async register(req, res) {
@@ -20,6 +22,9 @@ class UserController {
   }
 
   async login(req, res) {
+    const generateAccessToken = (username) => {
+      return jwt.sign(username, config.secretTokenKey, { expiresIn: "1800s" });
+    };
     try {
       const user = await User.findOne({ email: req.body.email });
       if (!user) {
@@ -29,10 +34,10 @@ class UserController {
       if (!isValidPassword) {
         return res.status(401).send({ message: "Invalid Email or Password" });
       }
-      const token = user.generateAuthToken(user._id);
-
-      return res.status(200).json({ user: user, token });
+      const token = generateAccessToken({ username: user.firstName });
+      return res.status(200).json({ user, token });
     } catch (e) {
+      console.log(e);
       return res.status(401).json({ message: [e.message] });
     }
   }

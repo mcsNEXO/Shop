@@ -21,19 +21,22 @@ const InputText = ({ props }) => {
     });
   });
   return (
-    <div className={`${props.class}-con-input`}>
+    <div className={`${props.class}-con-input ${props?.classContainer ?? ""}`}>
       <input
         type={props.type}
         name={props.name}
         value={props?.value}
-        className={`${props.class}-input`}
+        className={`${props.class}-input  ${props?.classInput ?? ""}`}
         onChange={props?.onChange}
         id={`${props.name}-input`}
         disabled={props.disabled ? true : false}
         onBlur={fun}
         placeholder={props.placeholder}
       />
-      <label className={`${props.class}-label`} htmlFor={`${props.name}-input`}>
+      <label
+        className={`${props.class}-label ${props.value && "filled"}`}
+        htmlFor={`${props.name}-input`}
+      >
         {props.placeholder}
       </label>
     </div>

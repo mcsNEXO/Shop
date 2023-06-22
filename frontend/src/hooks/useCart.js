@@ -11,10 +11,8 @@ export default function useCart() {
 
   const cart = cartContext.item;
   const auth = authContext.user;
-  const favorite = favoriteContext.item;
 
   const setCart = async (product, type) => {
-    let newProduct;
     if (Array.isArray(product)) {
       if (type === "cart") {
         cartContext.login(product);
@@ -24,7 +22,7 @@ export default function useCart() {
         return localStorage.setItem("favorite", JSON.stringify(product));
       }
     }
-    if (auth) {
+    if (auth && product !== null) {
       const addedProduct =
         type === "cart"
           ? {
@@ -40,12 +38,19 @@ export default function useCart() {
               size: product.size,
               color: product.color,
             };
-
       const res = await axios.post(
         "add-product",
         type === "cart"
           ? { type: "cart", product: addedProduct }
-          : { type: "favorite", product: addedProduct }
+          : { type: "favorite", product: addedProduct },
+        {
+          headers: {
+            authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("token-data"))?.token
+            }`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       if (type === "cart") {
         cartContext.login(res.data.products);
@@ -55,32 +60,32 @@ export default function useCart() {
         localStorage.setItem("favorite", JSON.stringify(res.data.products));
       }
     } else if (!auth) {
-      if (cart) {
+      if (type === "cart" && cart) {
         const exist = cart?.find(
           (x) =>
-            x._id === newProduct._id &&
-            x.colors === newProduct.colors &&
-            x.size === newProduct.size
+            x.productId?.toString() === product.productId &&
+            x.color === product.color &&
+            Number(x.size) === Number(product.size)
         );
+
         if (exist) {
           const newCart = cart.map((x) =>
-            x._id === newProduct._id && x.size === newProduct.size
-              ? { ...x, quantity: x.quantity + 1 }
+            x.productId === product.productId &&
+            x.size === Number(product.size) &&
+            x.color === product.color
+              ? { ...x, quantity: x.quantity + product.quantity }
               : x
           );
           cartContext.login(newCart);
           localStorage.setItem("cart", JSON.stringify(newCart));
         } else {
-          const items = [...cart, { ...newProduct, quantity: 1 }];
+          const items = [...cart, product];
           cartContext.login(items);
           localStorage.setItem("cart", JSON.stringify(items));
         }
       } else {
-        cartContext.login([{ ...newProduct, quantity: 1 }]);
-        localStorage.setItem(
-          "cart",
-          JSON.stringify([{ ...newProduct, quantity: 1 }])
-        );
+        cartContext.login([product]);
+        localStorage.setItem("cart", JSON.stringify([product]));
       }
     }
   };

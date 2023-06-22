@@ -117,7 +117,7 @@ export default function Product(props) {
                 currentSize
                   ? setCart(
                       {
-                        userId: auth._id,
+                        userId: auth?._id || null,
                         productId: product._id,
                         size: currentSize ? Number(currentSize) : null,
                         color: currentProduct.color,

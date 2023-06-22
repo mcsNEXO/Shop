@@ -1,51 +1,85 @@
 const Product = require("../../db/models/product");
+
 class ShoesController {
   async getShoes(req, res) {
     const sortingData = req.body.sortingData;
     try {
       const shoes = await Product.aggregate([
         {
-          $project: {
-            _id: 1,
-            name: 1,
-            type: 1,
-            colors: sortingData.colors
-              ? {
-                  $filter: {
-                    input: "$colors",
-                    as: "color",
-                    cond: {
-                      $in: ["$$color.color", sortingData.colors.split(",")],
-                    },
-                  },
-                }
-              : 1,
-            price: 1,
-            gender: 1,
-            index: 1,
-          },
+          $unwind: "$colors",
         },
         {
           $match: {
-            "colors.sizes": {
-              $elemMatch: {
-                size: {
-                  $exists: true,
-                },
+            $and: [
+              {
+                "colors.color": sortingData.colors
+                  ? { $in: sortingData.colors.split(",") }
+                  : { $exists: true },
               },
-            },
-            gender: sortingData.gender ? sortingData.gender : { $exists: true },
+              {
+                "colors.sizes.size": sortingData.size
+                  ? { $in: sortingData.size.split(",") }
+                  : { $exists: true },
+              },
+              {
+                gender: sortingData.gender
+                  ? sortingData.gender
+                  : { $exists: true },
+              },
+              { type: sortingData.type ? sortingData.type : { $exists: true } },
+              {
+                category: sortingData.category
+                  ? sortingData.category
+                  : { $exists: false },
+              },
+              {
+                price: sortingData?.price
+                  ? {
+                      $gt: Number(sortingData?.price.split("-")[0]),
+                      $lt: Number(sortingData.price.split("-")[1]),
+                    }
+                  : { $exists: true },
+              },
+            ],
           },
         },
         {
-          $sort: {
-            price: sortingData.sort === "high-low" ? 1 : -1,
+          $addFields: {
+            "colors.sizes": sortingData.size && {
+              $filter: {
+                input: "$colors.sizes",
+                as: "size",
+                cond: { $in: ["$$size.size", sortingData.size.split(",")] },
+              },
+            },
           },
         },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            gender: { $first: "$gender" },
+            type: { $first: "$type" },
+            category: { $first: "$category" },
+            price: { $first: "$price" },
+            colors: { $push: "$colors" },
+          },
+        },
+        {
+          $sort:
+            sortingData.sort === "high-low" || sortingData.sort === "low-high"
+              ? { price: sortingData.sort === "high-low" ? -1 : 1 }
+              : sortingData.sort === "date"
+              ? { createdAt: 1 }
+              : { type: 1 },
+        },
       ]);
-      return res.status(200).json({ shoes });
+      return res.status(200).json({ shoes: shoes });
     } catch (e) {
-      return res.status(400).json({ message: "Cannot find any products" });
+      console.log(e);
+      return res.status(400).json({
+        message: [{ message: "Cannot find any products", message2: e.message }],
+      });
     }
   }
 }

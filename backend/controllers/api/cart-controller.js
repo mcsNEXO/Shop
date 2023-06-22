@@ -1,4 +1,5 @@
 const Cart = require("../../db/models/cart");
+const Product = require("../../db/models/product");
 const Favorite = require("../../db/models/favorite");
 
 class CartController {
@@ -16,11 +17,11 @@ class CartController {
 
       const products = userProducts?.products?.map((mappedProduct) => {
         const { productId, color, size, quantity } = mappedProduct;
-        let currentColorObj = productId.colors.find(
+        let currentColorObj = productId?.colors?.find(
           (item) => item.color === color
         );
         if (type === "cart") {
-          currentColorObj.sizes = currentColorObj.sizes?.find(
+          currentColorObj.sizes = currentColorObj?.sizes?.find(
             (item) => Number(item.size) === Number(size)
           );
         }
@@ -160,6 +161,40 @@ class CartController {
     }
   }
 
+  async getProductsCartNotLoggedUser(req, res) {
+    const resultArray = [];
+    for (const item of req.body.products) {
+      const productId = item.productId;
+      const product = await Product.findOne({ _id: productId });
+      const { color, size, quantity } = item;
+      let currentColorObj = product.colors.find((item) => item.color === color);
+      currentColorObj.sizes = currentColorObj.sizes?.find(
+        (item) => Number(item.size) === Number(size)
+      );
+      if (product) {
+        resultArray.push({
+          size,
+          quantity: quantity && quantity,
+          product: {
+            _id: product._id,
+            name: product.name,
+            gender: product.gender,
+            type: product.type,
+            category: product.category,
+            price: product.price,
+            colors: currentColorObj,
+            description: product.description,
+            createdAt: product.createdAt,
+            updatedAt: product.updatedAt,
+          },
+        });
+      } else {
+        console.log(`Nie znaleziono produktu o ID: ${productId}`);
+      }
+    }
+    return res.status(200).json({ products: resultArray });
+  }
+
   async deleteProduct(req, res) {
     const userCart = await Cart.findOne({ user: req.body.userId });
     userCart.products = userCart.products.filter(
@@ -194,8 +229,12 @@ class CartController {
   }
 
   async getProduct(req, res) {
-    const userCart = await Cart.findOne({ user: req.body.userId });
-    res.status(200).json({ cart: userCart?.products ?? [] });
+    try {
+      const userCart = await Cart.findOne({ user: req.body.userId });
+      return res.status(200).json({ products: userCart?.products });
+    } catch (e) {
+      return res.status(400).json({ message: "Problems" });
+    }
   }
   async getFavProduct(req, res) {
     const userFav = await Favorite.findOne({ user: req.body.userId });

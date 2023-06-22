@@ -64,7 +64,7 @@
 }
 
 .btn-choose button a:link,
-a:visited {
+.option-choose > a:visited {
   color: white;
 }
 

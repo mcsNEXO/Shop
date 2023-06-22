@@ -4,6 +4,7 @@ export const initialState = {
   open: JSON.parse(localStorage.getItem("openFilter")) ?? true,
   error: JSON.parse(localStorage.getItem("error") ?? null),
   favorite: JSON.parse(localStorage.getItem("favorite") ?? null),
+  options: JSON.parse(localStorage.getItem("userDeliveryOptions") ?? null),
 };
 
 export const reducer = (state, action) => {
@@ -18,6 +19,8 @@ export const reducer = (state, action) => {
       return { ...state, cart: action.item };
     case "favorite":
       return { ...state, favorite: action.item };
+    case "deliveryOptions":
+      return { ...state, userDeliveryOptions: action.options };
     case "filter":
       return { ...state, open: action.value };
     case "error":
