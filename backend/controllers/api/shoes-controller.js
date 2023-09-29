@@ -1,6 +1,15 @@
 const Product = require("../../db/models/product");
 
 class ShoesController {
+  async getShoess(req, res) {
+    try {
+      const shoes = await Product.find();
+      return res.json(shoes);
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json("XD");
+    }
+  }
   async getShoes(req, res) {
     const sortingData = req.body.sortingData;
     try {
@@ -35,8 +44,8 @@ class ShoesController {
               {
                 price: sortingData?.price
                   ? {
-                      $gt: Number(sortingData?.price.split("-")[0]),
-                      $lt: Number(sortingData.price.split("-")[1]),
+                      $gte: Number(sortingData?.price.split("-")[0]),
+                      $lte: Number(sortingData.price.split("-")[1]),
                     }
                   : { $exists: true },
               },
@@ -74,7 +83,8 @@ class ShoesController {
               : { type: 1 },
         },
       ]);
-      return res.status(200).json({ shoes: shoes });
+      // return res.status(200).json(shoes);
+      return res.status(200).json(shoes);
     } catch (e) {
       console.log(e);
       return res.status(400).json({

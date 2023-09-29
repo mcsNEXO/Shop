@@ -23,3 +23,14 @@ a:visited,
 a:link {
   text-decoration: none;
 }
+
+.shapeImage {
+  width: 100% !important;
+  height: 500px !important ;
+  border-radius: 12px !important;
+}
+
+.error {
+  color: red;
+  padding-left: 6px;
+}

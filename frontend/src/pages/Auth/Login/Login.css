@@ -30,6 +30,8 @@
 .auth-con-input {
   width: 80%;
   position: relative;
+  margin: auto;
+  margin: 16px auto 16px auto;
 }
 
 .usuall-con-input {
@@ -97,7 +99,6 @@
 .filled {
   top: -10px;
   color: #4096ff;
-  background-color: white;
   font-size: 14px;
   font-weight: 600;
 }

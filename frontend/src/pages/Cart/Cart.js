@@ -1,5 +1,5 @@
 import "./Cart.scss";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../axios";
 import ErrorModal from "../../components/Modals/ErrorModal/ErrorModal";
 import useCart from "../../hooks/useCart";
@@ -7,8 +7,10 @@ import useAuth from "../../hooks/useAuth";
 import useFavorite from "../../hooks/useFavorite";
 import { NavLink } from "react-router-dom";
 import { useDiscountContext } from "../../context/discountContext";
+import { PulseLoader, SyncLoader } from "react-spinners";
 
 export default function Cart(props) {
+  const [loading, setLoading] = useState(false);
   const [cart, setCart] = useCart("");
   const [products, setProducts] = useState([]);
   const [code, setCode] = useState("");
@@ -23,6 +25,7 @@ export default function Cart(props) {
   }, [JSON.stringify(cart)]);
 
   const getCartProducts = async () => {
+    setLoading(true);
     if (auth) {
       try {
         const res = await axios.post("get-user-products", {
@@ -32,6 +35,8 @@ export default function Cart(props) {
         setProducts(res.data.products);
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     } else {
       if (cart) {
@@ -42,21 +47,24 @@ export default function Cart(props) {
           setProducts(res.data.products);
         } catch (e) {
           console.log(e);
+        } finally {
+          setLoading(false);
         }
       }
+      setLoading(false);
     }
   };
 
-  const price = () => {
+  const price = React.useMemo(() => {
     let price = 0;
+    let deliveryCost = 0;
     for (let i = 0; i < products?.length; i++) {
       price += products[i].product.price * products[i].quantity;
     }
-    let deliveryCost = 0;
+    let totalDiscount = (price * discount) / 100;
     let endPrice = (price * (100 - discount)) / 100 + deliveryCost;
-
-    return { price, endPrice };
-  };
+    return { price, totalDiscount, endPrice };
+  }, [JSON.stringify(products), discount]);
 
   const expandContract = () => {
     const el = document.querySelector(".div-promo");
@@ -140,14 +148,6 @@ export default function Cart(props) {
     }
   };
 
-  // JSON.stringify(x) !==
-  // JSON.stringify({
-  //   userId: null,
-  //   productId: product.product._id,
-  //   size: product.size,
-  //   color: product.color,
-  //   quantity: x.quantity,
-  // })
   const deleteFavProduct = async (product) => {
     if (auth) {
       const data = {
@@ -165,6 +165,7 @@ export default function Cart(props) {
       }
     }
   };
+
   return (
     <>
       {error ? <ErrorModal text={error} /> : null}
@@ -173,119 +174,138 @@ export default function Cart(props) {
           <div className="title-cart">Cart</div>
           <hr></hr>
           <div className="box">
-            <div className="box-of-products">
-              {products?.length > 0 ? (
-                products?.map((item, index) => (
-                  <div className="keyDiv" key={index}>
-                    <div className="box-product">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/img/jpg/shoes/" +
-                          item.product.colors.image
-                        }
-                        alt="product"
-                      ></img>
-                      <div className="right-side">
-                        <div className="information">
-                          <div className="name">{item.product.name}</div>
-                          <div className="gender">{`${item.product.gender}'s ${item.product.type}`}</div>
-                          <div className="color">{`Color: ${item.product.colors.color}`}</div>
-                          <div style={{ display: "flex" }}>
-                            <div className="size">{`Size: ${item.size} `}</div>
-                            <div className="quantity">
-                              Quantity:
-                              <select
-                                value={item?.quantity}
-                                onChange={(e) =>
-                                  updateQuantityProduct(e.target.value, item)
-                                }
-                              >
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                              </select>
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <PulseLoader />
+              </div>
+            ) : (
+              <div className="box-of-products">
+                {products?.length > 0 ? (
+                  products?.map((item, index) => (
+                    <div className="keyDiv" key={index}>
+                      <div className="box-product">
+                        <img
+                          loading="lazy"
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/img/jpg/shoes/" +
+                            item.product.colors.image
+                          }
+                          alt="product"
+                        ></img>
+                        <div className="right-side">
+                          <div className="information">
+                            <div className="name">{item.product.name}</div>
+                            <div className="gender">{`${item.product.gender}'s ${item.product.type}`}</div>
+                            <div className="color">{`Color: ${item.product.colors.color}`}</div>
+                            <div style={{ display: "flex" }}>
+                              <div className="size">{`Size: ${item.size} `}</div>
+                              <div className="quantity">
+                                Quantity:
+                                <select
+                                  value={item?.quantity}
+                                  onChange={(e) =>
+                                    updateQuantityProduct(e.target.value, item)
+                                  }
+                                >
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                  <option>6</option>
+                                  <option>7</option>
+                                  <option>8</option>
+                                  <option>9</option>
+                                  <option>10</option>
+                                </select>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="other-information">
-                          <div className="price">${item.product.price}</div>
-                          <div
-                            className="delete"
-                            onClick={() => deleteProduct(item)}
-                          >
-                            <i className="bi bi-trash3"></i>
+                          <div className="other-information">
+                            <div className="price">${item.product.price}</div>
+                            <div
+                              className="delete"
+                              onClick={() => deleteProduct(item)}
+                            >
+                              <i className="bi bi-trash3"></i>
+                            </div>
+                            <div className="favorites">
+                              {favorite?.find(
+                                (x) =>
+                                  JSON.stringify({
+                                    productId: item?.product._id,
+                                    color: item?.product.colors.color,
+                                    size: x.size,
+                                    _id: x._id,
+                                  }) === JSON.stringify(x)
+                              ) ? (
+                                <button
+                                  className="favorite"
+                                  onClick={() =>
+                                    auth
+                                      ? deleteFavProduct(item)
+                                      : setError(
+                                          "Sign in to add product to favorites!"
+                                        )
+                                  }
+                                >
+                                  <i className="bi bi-heart-fill"></i>
+                                </button>
+                              ) : (
+                                <button
+                                  className="favorite"
+                                  onClick={() =>
+                                    auth
+                                      ? setCart(
+                                          {
+                                            userId: auth._id,
+                                            productId: item.product._id,
+                                            color: item.product.colors.color,
+                                            size: item.size
+                                              ? Number(item.size)
+                                              : null,
+                                          },
+                                          "favorite"
+                                        )
+                                      : setError(
+                                          "Sign in to add product to favorites!"
+                                        )
+                                  }
+                                >
+                                  <i className="bi bi-heart"></i>
+                                </button>
+                              )}
+                            </div>
                           </div>
-                          <div className="favorites">
-                            {favorite?.find(
-                              (x) =>
-                                JSON.stringify({
-                                  productId: item?.product._id,
-                                  color: item?.product.colors.color,
-                                  size: x.size,
-                                  _id: x._id,
-                                }) === JSON.stringify(x)
-                            ) ? (
-                              <button
-                                className="favorite"
-                                onClick={() =>
-                                  auth
-                                    ? deleteFavProduct(item)
-                                    : setError(
-                                        "Sign in to add product to favorites!"
-                                      )
-                                }
-                              >
-                                <i className="bi bi-heart-fill"></i>
-                              </button>
-                            ) : (
-                              <button
-                                className="favorite"
-                                onClick={() =>
-                                  auth
-                                    ? setCart(
-                                        {
-                                          userId: auth._id,
-                                          productId: item.product._id,
-                                          color: item.product.colors.color,
-                                          size: item.size
-                                            ? Number(item.size)
-                                            : null,
-                                        },
-                                        "favorite"
-                                      )
-                                    : setError(
-                                        "Sign in to add product to favorites!"
-                                      )
-                                }
-                              >
-                                <i className="bi bi-heart"></i>
-                              </button>
-                            )}
-                          </div>
+                          <hr></hr>
                         </div>
-                        <hr></hr>
                       </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                <div className="box-product">No items in the cart</div>
-              )}
-            </div>
+                  ))
+                ) : (
+                  <div className="box-product">No items in the cart</div>
+                )}
+              </div>
+            )}
             <div className="to-pay">
               <div className="title-pay">To pay</div>
               <div className="box-pay">
                 <div className="style-div">
                   <div className="value">Value of products </div>
-                  <span>${price().price}</span>
+                  {loading ? (
+                    <span style={{ minWidth: 100 }}>
+                      <SyncLoader color="black" />
+                    </span>
+                  ) : (
+                    <span>${price.price}</span>
+                  )}
                 </div>
                 <div className="style-div">
                   <div className="delivery">Cost of delivery </div>
@@ -295,7 +315,13 @@ export default function Cart(props) {
                   <>
                     <div className="style-div">
                       <div className="discount">Total discount: </div>
-                      <span>${(price().price * discount) / 100}</span>
+                      {loading ? (
+                        <span style={{ minWidth: 100 }}>
+                          <SyncLoader color="black" />
+                        </span>
+                      ) : (
+                        <span>${price.totalDiscount}</span>
+                      )}
                     </div>
                     <div className="style-div">
                       <div className="code-discount">
@@ -310,11 +336,23 @@ export default function Cart(props) {
                 <hr></hr>
                 <div className="style-div">
                   <div className="sum">Sum</div>
-                  <span>${price().endPrice}</span>
+                  {loading ? (
+                    <span style={{ minWidth: 100 }}>
+                      <SyncLoader color="black" />
+                    </span>
+                  ) : (
+                    <span>${price.endPrice}</span>
+                  )}
                 </div>
                 <hr></hr>
-                <NavLink to={"/checkout"} className="checkout">
-                  <button>Checkout</button>
+
+                <NavLink
+                  to={cart.length > 0 ? "/checkout" : ""}
+                  className="checkout"
+                >
+                  <button disabled={cart.length > 0 ? false : true}>
+                    Checkout
+                  </button>
                 </NavLink>
               </div>
               <div className="promo-code">

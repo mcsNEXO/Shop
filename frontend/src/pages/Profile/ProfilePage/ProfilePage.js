@@ -12,6 +12,7 @@ export default function ProfilePage(props) {
         <div className="pg-img">
           <NavLink to="my-data">
             <img
+              loading="lazy"
               src={process.env.PUBLIC_URL + "/uploads/" + auth.image}
               alt="avatar"
             />
@@ -60,6 +61,7 @@ export default function ProfilePage(props) {
             favorite?.map((item, index) => (
               <div className="pg-favorite" key={index.toString()}>
                 <img
+                  loading="lazy"
                   src={process.env.PUBLIC_URL + "img/jpg/shoes/" + item.image}
                   alt="prodcut"
                 />

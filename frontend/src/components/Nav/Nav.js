@@ -120,7 +120,7 @@ export default function Nav(props) {
             navigate("/");
           }}
         >
-          <img src={logo} alt="logo" />
+          <img loading="lazy" src={logo} alt="logo" />
         </div>
         <div className="main-panel-menu">
           <div className="icon-hamburger">
@@ -203,7 +203,11 @@ export default function Nav(props) {
           <i className="bi bi-x-circle"></i>
         </div>
         <div className="logo">
-          <img src={process.env.PUBLIC_URL + "/img/svg/logo.svg"} alt="logo" />
+          <img
+            loading="lazy"
+            src={process.env.PUBLIC_URL + "/img/svg/logo.svg"}
+            alt="logo"
+          />
         </div>
         <div className="line-list"></div>
         <div className="box">

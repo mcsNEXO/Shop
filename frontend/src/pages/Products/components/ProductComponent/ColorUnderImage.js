@@ -4,6 +4,7 @@ const ColorUnderImage = React.memo(
   ({ color, image, onMouseOver, selectedColor }) => (
     <div className={`box-img ${color === selectedColor ? "active" : ""}`}>
       <img
+        loading="lazy"
         onMouseOver={onMouseOver}
         src={process.env.PUBLIC_URL + "/img/jpg/shoes/" + image}
         alt={color}

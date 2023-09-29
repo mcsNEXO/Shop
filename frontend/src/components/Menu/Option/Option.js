@@ -12,7 +12,7 @@ export default function Option(props) {
         {optionItems.map((item) => {
           return (
             <div key={item.id} className="option-choose">
-              <img src={item.img} alt={item.alt} />
+              <img loading="lazy" src={item.img} alt={item.alt} />
               <div className="title-choose">{item.title}</div>
               <div className="btn-choose">
                 <button>

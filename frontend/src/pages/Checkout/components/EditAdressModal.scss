@@ -1,0 +1,45 @@
+.container-edit-adress-modal {
+  height: 0;
+  padding: 0 5px 0 5px;
+  transition: all 200ms ease;
+  overflow: hidden;
+  .usuall-label {
+    background-color: white;
+  }
+  .flex-gap {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      padding: 6px 10px;
+      background-color: black;
+      outline: none;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: gray;
+    }
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+.open-modal {
+  min-height: 340px;
+  height: auto;
+  // max-height: 360px;
+  transition: all 200ms ease;
+}
+
+.option-country {
+  border-radius: 12px;
+  border: 1px solid gray;
+}

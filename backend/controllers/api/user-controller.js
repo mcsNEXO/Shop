@@ -1,6 +1,7 @@
 const config = require("../../config");
 const User = require("../../db/models/user");
 const jwt = require("jsonwebtoken");
+const session = require("express-session");
 const fs = require("fs");
 class UserController {
   async register(req, res) {
@@ -22,9 +23,6 @@ class UserController {
   }
 
   async login(req, res) {
-    const generateAccessToken = (username) => {
-      return jwt.sign(username, config.secretTokenKey, { expiresIn: "1800s" });
-    };
     try {
       const user = await User.findOne({ email: req.body.email });
       if (!user) {
@@ -34,11 +32,23 @@ class UserController {
       if (!isValidPassword) {
         return res.status(401).send({ message: "Invalid Email or Password" });
       }
-      const token = generateAccessToken({ username: user.firstName });
-      return res.status(200).json({ user, token });
+      console.log("before", req.session);
+      req.session.isAuthenticated = true;
+      console.log("after", req.session);
+      return res.status(200).json({ user });
     } catch (e) {
       console.log(e);
       return res.status(401).json({ message: [e.message] });
+    }
+  }
+
+  async logout(req, res) {
+    try {
+      console.log(req.session);
+      req.session.destroy();
+      return res.status(200).json({ message: "Logged" });
+    } catch (e) {
+      return res.status(400).json(e);
     }
   }
 

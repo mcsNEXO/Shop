@@ -1,7 +1,35 @@
+const searchProducts = require("../../functions/searchProductByName");
+const mongoose = require("mongoose");
+
 const Product = require("../../db/models/product");
 class ProductController {
   async fetchProduct(req, res) {
+    const id = req.params.id;
+    const color = req.params.color;
     try {
+      if (id) {
+        const product = await Product.aggregate([
+          { $match: { _id: mongoose.Types.ObjectId(id) } },
+          { $unwind: "$colors" },
+          { $match: { "colors.color": color } },
+          {
+            $project: {
+              name: 1,
+              gender: 1,
+              type: 1,
+              category: 1,
+              price: 1,
+              description: 1,
+              selectedColor: {
+                color: "$colors.color",
+                sizes: "$colors.sizes",
+                image: "$colors.image",
+              },
+            },
+          },
+        ]);
+        return res.status(200).json(product[0]);
+      }
       const product = await Product.findOne({
         _id: req.body.idProduct,
       });
@@ -18,6 +46,56 @@ class ProductController {
       return res.status(402).json({ message: "Something went wrong" });
     }
   }
+
+  async getSearchedProduct(req, res) {
+    const sortingData = { ...req.body };
+    const obj = new Object();
+    if (sortingData.sort) obj[sortingData.sort.value] = sortingData.sort.sort;
+    console.log(sortingData);
+    let products;
+    try {
+      products = await Product.aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                gender: sortingData?.gender
+                  ? sortingData?.gender
+                  : { $exists: true },
+              },
+              {
+                type: sortingData?.type ? sortingData?.type : { $exists: true },
+              },
+              {
+                category: sortingData?.category
+                  ? sortingData?.category
+                  : { $exists: true },
+              },
+            ],
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            gender: { $first: "$gender" },
+            type: { $first: "$type" },
+            category: { $first: "$category" },
+            price: { $first: "$price" },
+            colors: { $first: "$colors" },
+          },
+        },
+      ]);
+      console.log(products);
+      if (sortingData.inputText) {
+        products = searchProducts(sortingData.inputText, products);
+      }
+      return res.status(200).json({ products });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async addProduct(req, res) {
     const data = req.body;
     // let exist = await Product.findOne({

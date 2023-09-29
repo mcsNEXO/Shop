@@ -26,15 +26,16 @@ router.post("/cancel-image", userController.cancelUpload);
 router.post("/delete-image", userController.deleteImage);
 router.post("/image", upload, userController.uploadImage);
 router.post("/sign-in", userController.login);
+router.get("/logout", userController.logout);
 router.post("/sign-up", userController.register);
 router.put("/edit-data", userController.edit);
 router.put("/edit-password", userController.editPassword);
 
-router.post("/add-product", authenticateToken, cartController.addProdcut);
-router.post("/delete-product", authenticateToken, cartController.deleteProduct);
+router.post("/add-product", cartController.addProdcut);
+router.post("/delete-product", cartController.deleteProduct);
 router.post(
   "/update-quantity-product",
-  authenticateToken,
+
   cartController.updateQuantityProduct
 );
 router.post("/get-product", cartController.getProduct);
@@ -45,14 +46,17 @@ router.post(
 router.post("/get-fav-product", cartController.getFavProduct);
 router.post("/delete-favorite", cartController.deleteFavorite);
 router.post("/get-user-products", cartController.getUserProducts);
-
+router.get("/get-favorite-products/:id", cartController.getFavoriteProducts);
+router.get("/get-shoess", shoesController.getShoess);
 router.post("/get-shoes", shoesController.getShoes);
 router.post("/get-promocode", promoCodeController.getCode);
 
+router.get("/get-product/:id/:color", productController.fetchProduct);
 router.post("/fetch-product", productController.fetchProduct);
 router.get("/fetch-all-products", productController.fetchAllProduct);
-router.post("/add-product-db", authenticateToken, productController.addProduct);
+router.post("/add-product-db", productController.addProduct);
 
-router.post("/order", authenticateToken, orderController.makeOrder);
+router.post("/order", orderController.makeOrder);
+router.post("/get-searched-products", productController.getSearchedProduct);
 
 module.exports = router;

@@ -103,6 +103,7 @@ export default function Favorite(props) {
                 >
                   <div className="main-img-product">
                     <img
+                      loading="lazy"
                       src={
                         process.env.PUBLIC_URL +
                         "/img/jpg/shoes/" +

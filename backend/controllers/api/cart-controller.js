@@ -1,11 +1,15 @@
 const Cart = require("../../db/models/cart");
 const Product = require("../../db/models/product");
 const Favorite = require("../../db/models/favorite");
+const mongoose = require("mongoose");
 
 class CartController {
   async getUserProducts(req, res) {
+    const userID = req.params.id;
     try {
       let type = req.body.type;
+      if (userID) {
+      }
       const userProducts =
         type === "favorite"
           ? await Favorite.findOne({
@@ -43,6 +47,46 @@ class CartController {
           },
         };
       });
+      return res.status(200).json({ products });
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ message: "Problems" });
+    }
+  }
+
+  async getFavoriteProducts(req, res) {
+    const userID = req.params.id;
+    try {
+      const userProducts = await Favorite.findOne({
+        user: userID,
+      }).populate("products.productId");
+
+      const products = userProducts?.products?.map((mappedProduct) => {
+        console.log("xD");
+        const { productId, color, size, quantity } = mappedProduct;
+        let currentColorObj = productId?.colors?.find(
+          (item) => item.color === color
+        );
+
+        return {
+          size,
+          quantity: quantity && quantity,
+          product: {
+            _id: productId._id,
+            name: productId.name,
+            gender: productId.gender,
+            type: productId.type,
+            category: productId.category,
+            price: productId.price,
+            colors: currentColorObj,
+            description: productId.description,
+            createdAt: productId.createdAt,
+            updatedAt: productId.updatedAt,
+          },
+        };
+      });
+      console.log("products", products);
+
       return res.status(200).json({ products });
     } catch (err) {
       console.log(err);
@@ -196,6 +240,7 @@ class CartController {
   }
 
   async deleteProduct(req, res) {
+    console.log("auth", req.session);
     const userCart = await Cart.findOne({ user: req.body.userId });
     userCart.products = userCart.products.filter(
       (x) =>

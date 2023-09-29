@@ -98,6 +98,7 @@ export default function ModalImage(props) {
         <div className="box-modal-pass">
           <div className="box-image">
             <img
+              loading="lazy"
               src={
                 newImage
                   ? newImage

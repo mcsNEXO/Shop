@@ -26,6 +26,8 @@ export default function useAuth() {
       localStorage.setItem("favorite", JSON.stringify(res2.data.products));
       setCart(res2.data.products, "favorite");
     } else {
+      const res = await axios.get("logout");
+      console.log(res);
       setCart([], "cart");
       setCart([], "favorite");
       localStorage.removeItem("cart");

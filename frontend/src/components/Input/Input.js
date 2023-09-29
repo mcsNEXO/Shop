@@ -27,7 +27,7 @@ const InputText = ({ props }) => {
         name={props.name}
         value={props?.value}
         className={`${props.class}-input  ${props?.classInput ?? ""}`}
-        onChange={props?.onChange}
+        onChange={props.onChange}
         id={`${props.name}-input`}
         disabled={props.disabled ? true : false}
         onBlur={fun}
@@ -39,6 +39,7 @@ const InputText = ({ props }) => {
       >
         {props.placeholder}
       </label>
+      {props?.error ? <div className="error">{props?.error}</div> : null}
     </div>
   );
 };

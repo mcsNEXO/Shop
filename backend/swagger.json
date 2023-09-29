@@ -1,0 +1,161 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Chat app API",
+    "description": "API for chat app",
+    "version": "1.0.0"
+  },
+  "tags": {
+    "name": "products"
+  },
+  "paths": {
+    "/api/get-shoess": {
+      "tags": ["products"],
+      "get": {
+        "summary": "Get all clothes",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/api/get-shoes": {
+      "get": {
+        "summary": "Get all clothes",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "example": "Example Product"
+          },
+          "gender": {
+            "type": "string",
+            "example": "male"
+          },
+          "type": {
+            "type": "string",
+            "example": "shirt"
+          },
+          "category": {
+            "type": "string",
+            "example": "clothing"
+          },
+          "price": {
+            "type": "number",
+            "example": 19.99
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Color"
+            }
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example product description."
+          }
+        },
+        "required": [
+          "name",
+          "gender",
+          "type",
+          "category",
+          "price",
+          "colors",
+          "description"
+        ]
+      },
+      "Color": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "blue"
+          },
+          "sizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Size"
+            }
+          },
+          "image": {
+            "type": "string",
+            "example": "https://example.com/image.png"
+          }
+        },
+        "required": ["color", "sizes", "image"]
+      },
+      "Size": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "example": "XL"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": ["size"]
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    }
+  }
+}

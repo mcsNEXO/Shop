@@ -88,6 +88,7 @@ export default function MyData(props) {
             <div className="md-input-file">
               <div className="md-img">
                 <img
+                  loading="lazy"
                   src={
                     auth.image
                       ? process.env.PUBLIC_URL + "/uploads/" + auth.image

@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Chat app API",
+    "description": "API for chat app",
+    "version": "1.0.11"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "products"
+    }
+  ],
+  "paths": {
+    "/get-clothes": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Get all clothes",
+        "operationId": "getAllClotches",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/get-product/{id}/{color}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Get product by id & color",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "product ID"
+          },
+          {
+            "in": "path",
+            "name": "color",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "product color"
+          }
+        ],
+        "operationId": "getProductById",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "example": "Example Product"
+          },
+          "gender": {
+            "type": "string",
+            "example": "male"
+          },
+          "type": {
+            "type": "string",
+            "example": "shirt"
+          },
+          "category": {
+            "type": "string",
+            "example": "clothing"
+          },
+          "price": {
+            "type": "number",
+            "example": 19.99
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Color"
+            }
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example product description."
+          }
+        },
+        "required": [
+          "name",
+          "gender",
+          "type",
+          "category",
+          "price",
+          "colors",
+          "description"
+        ]
+      },
+      "Color": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "example": "blue"
+          },
+          "sizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Size"
+            }
+          },
+          "image": {
+            "type": "string",
+            "example": "https://example.com/image.png"
+          }
+        },
+        "required": ["color", "sizes", "image"]
+      },
+      "Size": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "string",
+            "example": "XL"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": ["size"]
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,114 @@
+.checkout-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px 200px 50px 200px;
+  height: auto;
+  .options-checkout {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    .title-checkout {
+      font-size: 2rem;
+      color: "black";
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      .btn-checkout {
+        flex: 1;
+        background-color: white;
+        height: 50px;
+        border: 2px solid lightgray;
+        border-radius: 12px;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+        i {
+          z-index: 0;
+          font-size: 22px;
+          border: 0px !important;
+        }
+      }
+    }
+    .active {
+      border: 2px solid black !important;
+    }
+    .btn-buy {
+      width: 100%;
+      margin-top: 30px;
+      padding: 2px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      color: white;
+      background-color: black;
+    }
+  }
+  .user-data {
+    margin-top: 10px;
+
+    .title-data {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      font-size: 1.15rem;
+      color: black;
+      .edit-btn {
+        color: black;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        text-decoration: underline;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+    .data {
+      color: gray;
+      padding-left: 4px;
+    }
+  }
+  .cart {
+    flex: 1;
+    padding-top: 10px;
+    .spans {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 4px;
+    }
+    .title-price {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .title-cart {
+      margin-top: 10px;
+      font-size: 1.2rem;
+    }
+    .container-product {
+      display: flex;
+      .image {
+        width: 50%;
+        border-radius: 12px;
+      }
+      .description {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        .name {
+          font-size: 1rem;
+          font-weight: 600;
+          text-transform: capitalize;
+        }
+        .other {
+          padding-left: 2px;
+          color: gray;
+          font-size: 0.88rem;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ import Option from "./Option/Option";
 import OftenChosen from "./OftenChosen/OftenChosen";
 import SummerCollection from "./SummerCollection/SummerCollection";
 
-export default function Menu(props) {
+export default function Menu() {
   const picture = process.env.PUBLIC_URL + "/img/jpg/picture4.webp";
   return (
     <main>
@@ -20,7 +20,7 @@ export default function Menu(props) {
           </div>
         </div>
         <div className="picture">
-          <img src={picture} alt="img-clothes" />
+          <img loading="lazy" src={picture} alt="img-clothes" />
         </div>
       </div>
       <Collection />

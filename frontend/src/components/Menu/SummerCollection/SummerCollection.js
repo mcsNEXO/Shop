@@ -9,7 +9,7 @@ export default function SummerCollection(props) {
       <div className="block-summer-desc">See what we have prepared for you</div>
       <div className="thumb-summer">
         <div className="img-summer">
-          <img src={beach} alt="beach"></img>
+          <img loading="lazy" src={beach} alt="beach"></img>
         </div>
         <div className="block-summer">
           <div className="desc-summer">Say hello to summer with SUDO</div>

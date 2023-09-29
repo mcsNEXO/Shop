@@ -1,15 +1,19 @@
 import "./Searchbar.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Skeleton } from "antd";
 import axios from "../../../axios";
 import { NavLink } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 export default function Serachbar(props) {
   const [products, setProducts] = useState();
+  const [loading, setLoading] = useState(false);
   const [searchedProducts, setSearchedProducts] = useState();
   const conResponsiveSearch = useRef();
   const [open, setOpen] = useState();
   const inputSearch = useRef();
+
   const handleSearch = (e) => {
     const classes = [...conResponsiveSearch.current.classList];
     window.innerWidth <= 1000 &&
@@ -21,11 +25,6 @@ export default function Serachbar(props) {
     setSearchedProducts([]);
   };
 
-  const search = async () => {
-    const res = await axios.get("fetch-all-products");
-    setProducts(res.data.products);
-  };
-
   const closeSearchBar = () => {
     props.setIsOpen(false);
     setOpen(false);
@@ -33,20 +32,30 @@ export default function Serachbar(props) {
     conResponsiveSearch.current.classList.remove("open");
   };
 
-  const searchHandler = (e) => {
-    const value = e.target.value;
-    if (value && e.target === inputSearch.current) {
-      props.setIsOpen(true);
+  const searchHandler = async (e) => {
+    setLoading(true);
+    if (e.target === inputSearch.current) {
       setOpen(true);
+      props.setIsOpen(true);
     } else {
       props.setIsOpen(false);
       setOpen(false);
     }
-    const newProducts = products.filter((x) =>
-      x.name.includes(value) ? x : null
-    );
-    value === "" ? setSearchedProducts([]) : setSearchedProducts(newProducts);
+    try {
+      if (!e.target.value) return setSearchedProducts([]);
+      const response = await axios.post("get-searched-products", {
+        inputText: e.target.value,
+      });
+      response.data.products.length === 0
+        ? setSearchedProducts([])
+        : setSearchedProducts(response.data.products);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+  const debouncedChangeHandler = useCallback(debounce(searchHandler, 300), []);
 
   const next = () => {
     const container = [...document.querySelectorAll(".slider-search")];
@@ -63,9 +72,6 @@ export default function Serachbar(props) {
     });
   };
 
-  useEffect(() => {
-    search();
-  }, []);
   return (
     <>
       {open ? (
@@ -88,19 +94,20 @@ export default function Serachbar(props) {
             type="text"
             className="search-input"
             name="search"
-            onChange={(e) => searchHandler(e)}
+            onChange={(e) => debouncedChangeHandler(e)}
             placeholder="Search"
           ></input>
         </form>
         <span className="clear-text-search"></span>
       </div>
+
       <div className="responsive-search" ref={conResponsiveSearch}>
         <div className="header-search">
           <div className="input">
             <input
               type="text"
               placeholder="Search"
-              onChange={(e) => searchHandler(e)}
+              onChange={(e) => debouncedChangeHandler(e)}
             />
             <i className="bi bi-search"></i>
           </div>
@@ -112,17 +119,18 @@ export default function Serachbar(props) {
           <div className="hint">
             <div className="slider-search">
               {searchedProducts?.map((product) =>
-                product.image.map((x, index) => (
+                product.colors?.map((x, index) => (
                   <NavLink
-                    to={`product/${product._id}-${product.colors[index]}`}
+                    to={`product/${product._id}-${x.color}`}
                     onClick={closeSearchBar}
                     key={index.toString()}
                   >
                     <div className="product-search">
                       <div className="image">
                         <img
+                          loading="lazy"
                           src={`${
-                            process.env.PUBLIC_URL + "/img/jpg/shoes/" + x
+                            process.env.PUBLIC_URL + "/img/jpg/shoes/" + x.image
                           }`}
                           alt="product"
                         />
@@ -150,28 +158,55 @@ export default function Serachbar(props) {
             <div className="box">
               <h4>Names</h4>
               <div className="product-names">
-                {searchedProducts?.map((product, index) => (
-                  <div className="product-name" key={index.toString()}>
-                    {product.name}
+                {loading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "100%",
+                      gap: 12,
+                    }}
+                  >
+                    <Skeleton.Button active={true} style={{ width: "70%" }} />
+                    <Skeleton.Button active={true} style={{ width: "70%" }} />
+                    <Skeleton.Button active={true} style={{ width: "70%" }} />
                   </div>
-                ))}
+                ) : (
+                  searchedProducts?.map((product, index) => (
+                    <div className="product-name" key={index.toString()}>
+                      <NavLink to={"/products"}>{product.name}</NavLink>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
           <div className="right">
-            {searchedProducts.length > 0 ? (
+            {console.log(searchedProducts)}
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <Skeleton active />
+              </div>
+            ) : searchedProducts?.length > 0 ? (
               searchedProducts?.map((product) =>
-                product.image.map((x, index) => (
+                product?.colors?.map((x, index) => (
                   <NavLink
-                    to={`product/${product._id}-${product.colors[index]}`}
+                    to={`product/${product._id}-${x.color}`}
                     onClick={closeSearchBar}
                     key={index.toString()}
                   >
                     <div className="s-product">
                       <div className="image">
                         <img
+                          loading="lazy"
                           src={`${
-                            process.env.PUBLIC_URL + "/img/jpg/shoes/" + x
+                            process.env.PUBLIC_URL + "/img/jpg/shoes/" + x.image
                           }`}
                           alt="product"
                         />

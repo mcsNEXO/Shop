@@ -48,6 +48,7 @@ export default function SizeModal(props) {
           <i className="bi bi-x-circle" onClick={props.closeModal}></i>
           <div className="left-side">
             <img
+              loading="lazy"
               src={
                 process.env.PUBLIC_URL +
                 "img/jpg/shoes/" +
